@@ -18,12 +18,214 @@ public class ChamberView extends JPanel {
 	private int animationType; //0 default, 1 rotate right, 2 rotate left, 3 forwards, 4 upwards, 5 downwards
 	public double doorAngleN, doorAngleS, doorAngleE, doorAngleW, doorAngleU, doorAngleD;
 	public Color[] doorColorArray, nextRoomDoorColorArray;
-	private boolean pressed=false;
+	private boolean pressed=false, timerrun=false, menuOn=false;
+	private int speed;
 	private int phicount;
-	private ChamberLayers chamberLayers;
 
-	public ChamberView (Game game, Maze maze, ChamberLayers chamberLayers) {
-		this.chamberLayers = chamberLayers;
+	private class MovementListener implements ActionListener, KeyListener, MouseListener {
+		private static final boolean left=true;
+		private static final boolean right=false;
+		private static final int forward=0;
+		private static final int down=1;
+		private static final int up=2;
+		private Player player;
+		
+		public MovementListener() {
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals("up")) {
+				moveUp();
+			} else if (e.getActionCommand().equals("left")) {
+				turnLeft();
+			} else if (e.getActionCommand().equals("forward")) {
+				moveForward();
+			} else if (e.getActionCommand().equals("right")) {
+				turnRight();
+			} else if (e.getActionCommand().equals("down")) {
+				moveDown();
+			} else if (e.getActionCommand().equals("Menu")) {
+				menuOn=!menuOn;
+			}
+		}
+		public void keyTyped (KeyEvent event) {}
+		public void keyPressed (KeyEvent event) {}
+		public void keyReleased (KeyEvent event) {
+			if (event.getKeyCode() == KeyEvent.VK_TAB) {
+				game.goToMapView();
+			}
+			if (event.getKeyCode() == KeyEvent.VK_1) { speed+=5; System.out.println(speed);}
+			if (event.getKeyCode() == KeyEvent.VK_2) { speed-=5; System.out.println(speed);}
+			if (event.getKeyCode() == KeyEvent.VK_4) { timerrun=!timerrun; if (!timerrun) timerOne();}
+			if (event.getKeyCode() == KeyEvent.VK_3) { timerOne();}
+
+
+			//cameraPos = cameraPos.plus(new Position(0, -5, 0));
+			if (event.getKeyCode() == KeyEvent.VK_UP && new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1).isValid(maze.getSize())
+					&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.up)) {
+				//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(0.25));
+
+				//					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+				//					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+				//					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+
+				if (!pressed) {
+					pressed = true;
+					animationTimer = 0;
+					animationType = 4;
+					nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+					nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+				}
+
+			} else if (event.getKeyCode() == KeyEvent.VK_DOWN && new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1).isValid(maze.getSize())
+					&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.down)) {
+				//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(-0.25));
+
+				//					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+				//					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+				//					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+
+				if (!pressed) {
+					pressed = true;
+					animationTimer = 0;
+					animationType = 5;
+					nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+					nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+				}
+
+			} else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
+				if (!pressed) {
+					pressed=true;
+					//theta += (4*Math.PI)/(2*90);
+					//theta += Math.PI/2;
+					playerDirection = (playerDirection + 1) % 4;
+					//theta = playerDirection*Math.PI/2;
+					animationTimer = 0;
+					animationType = 1;
+				}
+			} else if (event.getKeyCode() == KeyEvent.VK_LEFT) {
+				if (!pressed) {
+					pressed=true;
+					//theta -= (4*Math.PI)/(2*90);
+					//theta -= Math.PI/2;
+					playerDirection = (playerDirection + 3) % 4;
+					//theta = playerDirection*Math.PI/2;
+					animationTimer = 0;
+					animationType = 2;
+				}
+			} else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+				if (!pressed) {
+					pressed=true;
+					System.out.println(currentRoom);
+					boolean shouldMove = false;
+					if (playerDirection == 0 && new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ()).isValid(maze.getSize()) && 
+							maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.north)) {
+						//playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+						nextRoomPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+						nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+						shouldMove = true;
+					} else if (playerDirection == 2 && new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ()).isValid(maze.getSize()) &&
+							maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.south)) {
+						//playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+						nextRoomPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+						nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+						shouldMove = true;
+					} else if (playerDirection == 1 && new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
+							maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.east)) {
+						//playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+						nextRoomPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+						nextRoom = maze.getRoom(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+						shouldMove = true;
+					} else if (playerDirection == 3 && new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
+							maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.west)) {
+						//playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+						nextRoomPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+						nextRoom = maze.getRoom(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+						shouldMove = true;
+					} else {
+						pressed=false;
+					}
+
+					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+					System.out.println("playerDirection: " + playerDirection);
+					System.out.println("playerPos: " + playerPos);
+					if (shouldMove) {
+						animationTimer = 0;
+						animationType = 3;
+					}
+				}
+			} else if (event.getKeyCode() == KeyEvent.VK_W) {
+				phicount++;
+				phi = phicount*Math.PI/40;
+				//phi += Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_S) {
+				phicount--;
+				phi = phicount*Math.PI/40;
+				//phi -= Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_O) {
+				doorAngleN += Math.PI/2 /10;
+			} else if (event.getKeyCode() == KeyEvent.VK_L) {
+				doorAngleS += Math.PI/2 /10;
+			} else if (event.getKeyCode() == KeyEvent.VK_P) {
+				doorAngleE += Math.PI/2 /10;
+			} else if (event.getKeyCode() == KeyEvent.VK_I) {
+				doorAngleW += Math.PI/2 /10;
+			}
+			//				screenPlaneRelPos = new Vector(20*Math.cos(phi)*Math.sin(theta), 20*Math.cos(phi)*Math.cos(theta), 20*Math.sin(phi));
+			//				panel.repaint();
+			//				System.out.println("--------------------");
+			//				System.out.println("cameraPos: " + cameraPos);
+			//				System.out.println("screenPlaneRelPos: " + screenPlaneRelPos);
+			if (timerrun)
+				timer();
+			}
+
+		public void move(int direction) {
+			player.moveForward();
+			int[] position=player.getPosition();
+			if (position[0]==0&&position[1]==0&&position[2]==0) {
+				//game.win();
+			}
+		}
+		
+		public void rotate(boolean leftOrRight) {
+			if (leftOrRight) {
+				player.turnLeft();
+			} else {
+				player.turnRight();
+			}
+		}
+		
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		public void mouseReleased(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	}
+
+	
+	public ChamberView (Game game, Maze maze) {
 		this.setBackground(Color.WHITE);
 		this.maze = maze;
 		doorColorArray = new Color[6];
@@ -31,232 +233,526 @@ public class ChamberView extends JPanel {
 		animationTimer = -1;
 		animationType = 0;
 		playerPos = new Position(maze.getSize()-1,maze.getSize()-1,maze.getSize()-1);
-		System.out.println("Maze size: " + maze.getSize());
+		//System.out.println("Maze size: " + maze.getSize());
 		currentRoom = maze.getRoom(playerPos);
 		nextRoom = null;
 		theta = 0;
 		phi = 0;
 		phicount = 0;
+		speed = 20;
 		cameraPos = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ()).clone().plus(new Vector(50,50,50));
 		screenPlaneRelPos = new Vector(0, 13, 0);
 		setUpRoom();
 
 		this.setFocusable(true);
 		ChamberView panel = this;
+		this.addKeyListener((new MovementListener()));
 		//System.out.println("hi1");
-		game.getFrame().addKeyListener(new KeyListener () {
-			public void keyTyped (KeyEvent event) {}
-			public void keyPressed (KeyEvent event) {
-				//System.out.println("KEY PRESSED");
-				//cameraPos = cameraPos.plus(new Position(0, -5, 0));
-				if (event.getKeyCode() == KeyEvent.VK_UP && new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1).isValid(maze.getSize())
-						&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.up)) {
-					//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(0.25));
-					
-//					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
-//					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
-//					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
-					
-					if (!pressed) {
-						pressed = true;
-						animationTimer = 0;
-						animationType = 4;
-						nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
-						nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
-					}
-					
-				} else if (event.getKeyCode() == KeyEvent.VK_DOWN && new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1).isValid(maze.getSize())
-						&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.down)) {
-					//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(-0.25));
-					
-//					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
-//					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
-//					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
-					
-					if (!pressed) {
-						pressed = true;
-						animationTimer = 0;
-						animationType = 5;
-						nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
-						nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
-					}
-					
-				} else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
-					if (!pressed) {
-						pressed=true;
-					//theta += (4*Math.PI)/(2*90);
-					//theta += Math.PI/2;
-					playerDirection = (playerDirection + 1) % 4;
-					//theta = playerDirection*Math.PI/2;
-					animationTimer = 0;
-					animationType = 1;
-					}
-				} else if (event.getKeyCode() == KeyEvent.VK_LEFT) {
-					if (!pressed) {
-						pressed=true;
-					//theta -= (4*Math.PI)/(2*90);
-					//theta -= Math.PI/2;
-					playerDirection = (playerDirection + 3) % 4;
-					//theta = playerDirection*Math.PI/2;
-					animationTimer = 0;
-					animationType = 2;
-					}
-				} else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-					if (!pressed) {
-						pressed=true;
-						//System.out.println(currentRoom);
-						boolean shouldMove = false;
-						if (playerDirection == 0 && new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ()).isValid(maze.getSize()) && 
-								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.north)) {
-							//playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
-							nextRoomPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
-							nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
-							shouldMove = true;
-						} else if (playerDirection == 2 && new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ()).isValid(maze.getSize()) &&
-								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.south)) {
-							//playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
-							nextRoomPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
-							nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
-							shouldMove = true;
-						} else if (playerDirection == 1 && new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
-								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.east)) {
-							//playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
-							nextRoomPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
-							nextRoom = maze.getRoom(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
-							shouldMove = true;
-						} else if (playerDirection == 3 && new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
-								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.west)) {
-							//playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
-							nextRoomPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
-							nextRoom = maze.getRoom(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
-							shouldMove = true;
-						} else {
-							pressed=false;
-						}
+//		this.addKeyListener(new KeyListener () {
+//			public void keyTyped (KeyEvent event) {}
+//			public void keyPressed (KeyEvent event) {
+//				//System.out.println("KEY PRESSED");
+//				//cameraPos = cameraPos.plus(new Position(0, -5, 0));
+//				if (event.getKeyCode() == KeyEvent.VK_UP && new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1).isValid(maze.getSize())
+//						&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.up)) {
+//					//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(0.25));
+//					
+////					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+////					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+////					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+//					
+//					if (!pressed) {
+//						pressed = true;
+//						animationTimer = 0;
+//						animationType = 4;
+//						nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+//						nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+//					}
+//					
+//				} else if (event.getKeyCode() == KeyEvent.VK_DOWN && new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1).isValid(maze.getSize())
+//						&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.down)) {
+//					//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(-0.25));
+//					
+////					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+////					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+////					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+//					
+//					if (!pressed) {
+//						pressed = true;
+//						animationTimer = 0;
+//						animationType = 5;
+//						nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+//						nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+//					}
+//					
+//				} else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
+//					if (!pressed) {
+//						pressed=true;
+//					//theta += (4*Math.PI)/(2*90);
+//					//theta += Math.PI/2;
+//					playerDirection = (playerDirection + 1) % 4;
+//					//theta = playerDirection*Math.PI/2;
+//					animationTimer = 0;
+//					animationType = 1;
+//					}
+//				} else if (event.getKeyCode() == KeyEvent.VK_LEFT) {
+//					if (!pressed) {
+//						pressed=true;
+//					//theta -= (4*Math.PI)/(2*90);
+//					//theta -= Math.PI/2;
+//					playerDirection = (playerDirection + 3) % 4;
+//					//theta = playerDirection*Math.PI/2;
+//					animationTimer = 0;
+//					animationType = 2;
+//					}
+//				} else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+//					if (!pressed) {
+//						pressed=true;
+//						//System.out.println(currentRoom);
+//						boolean shouldMove = false;
+//						if (playerDirection == 0 && new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ()).isValid(maze.getSize()) && 
+//								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.north)) {
+//							//playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+//							nextRoomPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+//							nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+//							shouldMove = true;
+//						} else if (playerDirection == 2 && new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ()).isValid(maze.getSize()) &&
+//								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.south)) {
+//							//playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+//							nextRoomPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+//							nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+//							shouldMove = true;
+//						} else if (playerDirection == 1 && new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
+//								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.east)) {
+//							//playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+//							nextRoomPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+//							nextRoom = maze.getRoom(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+//							shouldMove = true;
+//						} else if (playerDirection == 3 && new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
+//								maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.west)) {
+//							//playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+//							nextRoomPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+//							nextRoom = maze.getRoom(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+//							shouldMove = true;
+//						} else {
+//							pressed=false;
+//						}
+//
+//						Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+//						cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+//						//System.out.println("playerDirection: " + playerDirection);
+//						//System.out.println("playerPos: " + playerPos);
+//						if (shouldMove) {
+//							animationTimer = 0;
+//							animationType = 3;
+//						}
+//					}
+//				} else if (event.getKeyCode() == KeyEvent.VK_W) {
+//					phicount++;
+//					phi = phicount*Math.PI/40;
+//					//phi += Math.PI/2/30;
+//				} else if (event.getKeyCode() == KeyEvent.VK_S) {
+//					phicount--;
+//					phi = phicount*Math.PI/40;
+//					//phi -= Math.PI/2/30;
+//				} else if (event.getKeyCode() == KeyEvent.VK_O) {
+//					doorAngleN += Math.PI/2 /10;
+//				} else if (event.getKeyCode() == KeyEvent.VK_L) {
+//					doorAngleS += Math.PI/2 /10;
+//				} else if (event.getKeyCode() == KeyEvent.VK_P) {
+//					doorAngleE += Math.PI/2 /10;
+//				} else if (event.getKeyCode() == KeyEvent.VK_I) {
+//					doorAngleW += Math.PI/2 /10;
+//				}
+////				screenPlaneRelPos = new Vector(20*Math.cos(phi)*Math.sin(theta), 20*Math.cos(phi)*Math.cos(theta), 20*Math.sin(phi));
+////				panel.repaint();
+////				System.out.println("--------------------");
+////				System.out.println("cameraPos: " + cameraPos);
+////				System.out.println("screenPlaneRelPos: " + screenPlaneRelPos);
+//			}
+//			public void keyReleased (KeyEvent event) {}
+		}
 
-						Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
-						cameraPos = roomVector.clone().plus(new Vector(50,50,50));
-						//System.out.println("playerDirection: " + playerDirection);
-						//System.out.println("playerPos: " + playerPos);
-						if (shouldMove) {
-							animationTimer = 0;
-							animationType = 3;
-						}
-					}
-				} else if (event.getKeyCode() == KeyEvent.VK_W) {
-					phicount++;
-					phi = phicount*Math.PI/40;
-					//phi += Math.PI/2/30;
-				} else if (event.getKeyCode() == KeyEvent.VK_S) {
-					phicount--;
-					phi = phicount*Math.PI/40;
-					//phi -= Math.PI/2/30;
-				} else if (event.getKeyCode() == KeyEvent.VK_O) {
-					doorAngleN += Math.PI/2 /10;
-				} else if (event.getKeyCode() == KeyEvent.VK_L) {
-					doorAngleS += Math.PI/2 /10;
-				} else if (event.getKeyCode() == KeyEvent.VK_P) {
-					doorAngleE += Math.PI/2 /10;
-				} else if (event.getKeyCode() == KeyEvent.VK_I) {
-					doorAngleW += Math.PI/2 /10;
-				}
-//				screenPlaneRelPos = new Vector(20*Math.cos(phi)*Math.sin(theta), 20*Math.cos(phi)*Math.cos(theta), 20*Math.sin(phi));
-//				panel.repaint();
-//				System.out.println("--------------------");
-//				System.out.println("cameraPos: " + cameraPos);
-//				System.out.println("screenPlaneRelPos: " + screenPlaneRelPos);
+	public void moveForward() {
+		if (!pressed) {
+			pressed=true;
+			System.out.println(currentRoom);
+			boolean shouldMove = false;
+			if (playerDirection == 0 && new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ()).isValid(maze.getSize()) && 
+					maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.north)) {
+				//playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+				nextRoomPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+				nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+				shouldMove = true;
+			} else if (playerDirection == 2 && new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ()).isValid(maze.getSize()) &&
+					maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.south)) {
+				//playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+				nextRoomPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+				nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+				shouldMove = true;
+			} else if (playerDirection == 1 && new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
+					maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.east)) {
+				//playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+				nextRoomPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+				nextRoom = maze.getRoom(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+				shouldMove = true;
+			} else if (playerDirection == 3 && new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ()).isValid(maze.getSize()) &&
+					maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.west)) {
+				//playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+				nextRoomPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+				nextRoom = maze.getRoom(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+				shouldMove = true;
+			} else {
+				pressed=false;
 			}
-			public void keyReleased (KeyEvent event) {}
-		});
 
-		timer = new java.util.Timer();
-		timer.scheduleAtFixedRate(new TimerTask () {
-			public void run () {
-				setUpRoom();
-				if (animationTimer == 41 && (animationType != 4 && animationType != 5)) {
-					animationTimer = -1;
-					pressed=false;
-					if (animationType == 3) {
-						if (playerDirection == 0)
-							playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
-						else if (playerDirection == 1)
-							playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
-						else if (playerDirection == 2)
-							playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
-						else
-							playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
-					}
-					animationType = 0;
-					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
-					nextRoom = null;
-				} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
-					animationTimer = -1;
-					pressed=false;
-					if (animationType == 4) {
-						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
-					} else if (animationType == 5) {
-						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
-					}
-					animationType = 0;
-					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
-					nextRoom = null;
-				}
-				if (animationTimer == -1) {
-					theta = playerDirection*Math.PI/2;
-					phicount = 0;
-					phi = 0;
-				}else if (animationType == 1) {
-					animationTimer++;
-					theta += Math.PI/(2*40);
-				} else if (animationType == 2) {
-					animationTimer++;
-					theta -= Math.PI/(2*40);
-				} else if (animationType == 3) {
-					animationTimer++;
-					cameraPos = cameraPos.plus(screenPlaneRelPos.scale(100/screenPlaneRelPos.magnitude()/40));
-					if (playerDirection == 0)
-						doorAngleN = Math.min(animationTimer, 20)*Math.PI/2/20;
-					else if (playerDirection == 1)
-						doorAngleE = Math.min(animationTimer, 20)*Math.PI/2/20;
-					else if (playerDirection == 2)
-						doorAngleS = Math.min(animationTimer, 20)*Math.PI/2/20;
-					else
-						doorAngleW = Math.min(animationTimer, 20)*Math.PI/2/20;
-				} else if (animationType == 4) {
-					if (animationTimer < 20) {
-						phicount++;
-						phi = phicount*Math.PI/40;
-					} else if (animationTimer < 60) {
-						cameraPos = cameraPos.plus(new Vector(0,0,(double) 100/40));
-					} else {
-						phicount--;
-						phi = phicount*Math.PI/40;
-					}
-					if (animationTimer < 40) {
-						doorAngleU += Math.PI /40;
-					}
-					animationTimer++;
-				} else if (animationType == 5) {
-					if (animationTimer < 20) {
-						phicount--;
-						phi = phicount*Math.PI/40;
-					} else if (animationTimer < 60) {
-						cameraPos = cameraPos.plus(new Vector(0,0,(double) -100/40));
-					} else {
-						phicount++;
-						phi = phicount*Math.PI/40;
-					}
-					if (animationTimer < 40) {
-						doorAngleD += Math.PI /40;
-					}
-					animationTimer++;
-				}
-				//System.out.println(phicount);
-				screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
-				panel.repaint();
+			Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+			cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+			System.out.println("playerDirection: " + playerDirection);
+			System.out.println("playerPos: " + playerPos);
+			if (shouldMove) {
+				animationTimer = 0;
+				animationType = 3;
 			}
-		}, 0, 20);
+		}
 	}
+
+	
+		public void moveUp() {
+			if (new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1).isValid(maze.getSize())
+					&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.up)) {
+				//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(0.25));
+
+				//					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+				//					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+				//					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+
+				if (!pressed) {
+					pressed = true;
+					animationTimer = 0;
+					animationType = 4;
+					nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+					nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+				}
+			}
+		}
+
+		public void moveDown() {
+			if (new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1).isValid(maze.getSize())
+					&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.down)) {
+				//cameraPos = cameraPos.plus(screenPlaneRelPos.scale(-0.25));
+
+				//					playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+				//					Vector roomVector = new Vector(100*playerPos.getX(), 100*playerPos.getY(), 100*playerPos.getZ());
+				//					cameraPos = roomVector.clone().plus(new Vector(50,50,50));
+
+				if (!pressed) {
+					pressed = true;
+					animationTimer = 0;
+					animationType = 5;
+					nextRoomPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+					nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+				}
+
+			}
+
+		}
+		
+		public void turnLeft() {
+			if (!pressed) {
+				pressed=true;
+				//theta -= (4*Math.PI)/(2*90);
+				//theta -= Math.PI/2;
+				playerDirection = (playerDirection + 3) % 4;
+				//theta = playerDirection*Math.PI/2;
+				animationTimer = 0;
+				animationType = 2;
+			}
+		}
+
+		public void turnRight() {
+			if (!pressed) {
+				pressed=true;
+				//theta += (4*Math.PI)/(2*90);
+				//theta += Math.PI/2;
+				playerDirection = (playerDirection + 1) % 4;
+				//theta = playerDirection*Math.PI/2;
+				animationTimer = 0;
+				animationType = 1;
+			}
+		}
+		
+		public void timer() {
+			timer.cancel();
+			timer = new java.util.Timer();
+			timer.scheduleAtFixedRate(new TimerTask () {
+				public void run () {
+					setUpRoom();
+					if (animationTimer == 41 && (animationType != 4 && animationType != 5)) {
+						animationTimer = -1;
+						pressed=false;
+						if (animationType == 3) {
+							if (playerDirection == 0)
+								playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+							else if (playerDirection == 1)
+								playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+							else if (playerDirection == 2)
+								playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+							else
+								playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+						}
+						animationType = 0;
+						doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+						nextRoom = null;
+					} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
+						animationTimer = -1;
+						pressed=false;
+						if (animationType == 4) {
+							playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+						} else if (animationType == 5) {
+							playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+						}
+						animationType = 0;
+						doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+						nextRoom = null;
+					}
+					if (animationTimer == -1) {
+						theta = playerDirection*Math.PI/2;
+						phicount = 0;
+						phi = 0;
+					}else if (animationType == 1) {
+						animationTimer++;
+						theta += Math.PI/(2*40);
+					} else if (animationType == 2) {
+						animationTimer++;
+						theta -= Math.PI/(2*40);
+					} else if (animationType == 3) {
+						animationTimer++;
+						cameraPos = cameraPos.plus(screenPlaneRelPos.scale(100/screenPlaneRelPos.magnitude()/40));
+						if (playerDirection == 0)
+							doorAngleN = Math.min(animationTimer, 20)*Math.PI/2/20;
+						else if (playerDirection == 1)
+							doorAngleE = Math.min(animationTimer, 20)*Math.PI/2/20;
+						else if (playerDirection == 2)
+							doorAngleS = Math.min(animationTimer, 20)*Math.PI/2/20;
+						else
+							doorAngleW = Math.min(animationTimer, 20)*Math.PI/2/20;
+					} else if (animationType == 4) {
+						if (animationTimer < 20) {
+							phicount++;
+							phi = phicount*Math.PI/40;
+						} else if (animationTimer < 60) {
+							cameraPos = cameraPos.plus(new Vector(0,0,(double) 100/40));
+						} else {
+							phicount--;
+							phi = phicount*Math.PI/40;
+						}
+						if (animationTimer < 40) {
+							doorAngleU += Math.PI /40;
+						}
+						animationTimer++;
+					} else if (animationType == 5) {
+						if (animationTimer < 20) {
+							phicount--;
+							phi = phicount*Math.PI/40;
+						} else if (animationTimer < 60) {
+							cameraPos = cameraPos.plus(new Vector(0,0,(double) -100/40));
+						} else {
+							phicount++;
+							phi = phicount*Math.PI/40;
+						}
+						if (animationTimer < 40) {
+							doorAngleD += Math.PI /40;
+						}
+						animationTimer++;
+					}
+					//System.out.println(phicount);
+					screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
+					ChamberView.this.repaint();
+				}
+			}, 0, speed);
+		}
+
+		private void timerOne() {
+			timer.cancel();
+			timer = new java.util.Timer();
+			timer.schedule(new TimerTask () {
+				public void run () {
+					setUpRoom();
+					if (animationTimer == 41 && (animationType != 4 && animationType != 5)) {
+						animationTimer = -1;
+						pressed=false;
+						if (animationType == 3) {
+							if (playerDirection == 0)
+								playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+							else if (playerDirection == 1)
+								playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+							else if (playerDirection == 2)
+								playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+							else
+								playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+						}
+						animationType = 0;
+						doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+						nextRoom = null;
+					} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
+						animationTimer = -1;
+						pressed=false;
+						if (animationType == 4) {
+							playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+						} else if (animationType == 5) {
+							playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+						}
+						animationType = 0;
+						doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+						nextRoom = null;
+					}
+					if (animationTimer == -1) {
+						theta = playerDirection*Math.PI/2;
+						phicount = 0;
+						phi = 0;
+					}else if (animationType == 1) {
+						animationTimer++;
+						theta += Math.PI/(2*40);
+					} else if (animationType == 2) {
+						animationTimer++;
+						theta -= Math.PI/(2*40);
+					} else if (animationType == 3) {
+						animationTimer++;
+						cameraPos = cameraPos.plus(screenPlaneRelPos.scale(100/screenPlaneRelPos.magnitude()/40));
+						if (playerDirection == 0)
+							doorAngleN = Math.min(animationTimer, 20)*Math.PI/2/20;
+						else if (playerDirection == 1)
+							doorAngleE = Math.min(animationTimer, 20)*Math.PI/2/20;
+						else if (playerDirection == 2)
+							doorAngleS = Math.min(animationTimer, 20)*Math.PI/2/20;
+						else
+							doorAngleW = Math.min(animationTimer, 20)*Math.PI/2/20;
+					} else if (animationType == 4) {
+						if (animationTimer < 20) {
+							phicount++;
+							phi = phicount*Math.PI/40;
+						} else if (animationTimer < 60) {
+							cameraPos = cameraPos.plus(new Vector(0,0,(double) 100/40));
+						} else {
+							phicount--;
+							phi = phicount*Math.PI/40;
+						}
+						if (animationTimer < 40) {
+							doorAngleU += Math.PI /40;
+						}
+						animationTimer++;
+					} else if (animationType == 5) {
+						if (animationTimer < 20) {
+							phicount--;
+							phi = phicount*Math.PI/40;
+						} else if (animationTimer < 60) {
+							cameraPos = cameraPos.plus(new Vector(0,0,(double) -100/40));
+						} else {
+							phicount++;
+							phi = phicount*Math.PI/40;
+						}
+						if (animationTimer < 40) {
+							doorAngleD += Math.PI /40;
+						}
+						animationTimer++;
+					}
+					//System.out.println(phicount);
+					screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
+					ChamberView.this.repaint();
+				}
+			}, 0);
+		}
+
+		
+//		timer = new java.util.Timer();
+//		timer.scheduleAtFixedRate(new TimerTask () {
+//			public void run () {
+//				setUpRoom();
+//				if (animationTimer == 41 && (animationType != 4 && animationType != 5)) {
+//					animationTimer = -1;
+//					pressed=false;
+//					if (animationType == 3) {
+//						if (playerDirection == 0)
+//							playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+//						else if (playerDirection == 1)
+//							playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+//						else if (playerDirection == 2)
+//							playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+//						else
+//							playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+//					}
+//					animationType = 0;
+//					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+//					nextRoom = null;
+//				} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
+//					animationTimer = -1;
+//					pressed=false;
+//					if (animationType == 4) {
+//						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+//					} else if (animationType == 5) {
+//						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+//					}
+//					animationType = 0;
+//					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+//					nextRoom = null;
+//				}
+//				if (animationTimer == -1) {
+//					theta = playerDirection*Math.PI/2;
+//					phicount = 0;
+//					phi = 0;
+//				}else if (animationType == 1) {
+//					animationTimer++;
+//					theta += Math.PI/(2*40);
+//				} else if (animationType == 2) {
+//					animationTimer++;
+//					theta -= Math.PI/(2*40);
+//				} else if (animationType == 3) {
+//					animationTimer++;
+//					cameraPos = cameraPos.plus(screenPlaneRelPos.scale(100/screenPlaneRelPos.magnitude()/40));
+//					if (playerDirection == 0)
+//						doorAngleN = Math.min(animationTimer, 20)*Math.PI/2/20;
+//					else if (playerDirection == 1)
+//						doorAngleE = Math.min(animationTimer, 20)*Math.PI/2/20;
+//					else if (playerDirection == 2)
+//						doorAngleS = Math.min(animationTimer, 20)*Math.PI/2/20;
+//					else
+//						doorAngleW = Math.min(animationTimer, 20)*Math.PI/2/20;
+//				} else if (animationType == 4) {
+//					if (animationTimer < 20) {
+//						phicount++;
+//						phi = phicount*Math.PI/40;
+//					} else if (animationTimer < 60) {
+//						cameraPos = cameraPos.plus(new Vector(0,0,(double) 100/40));
+//					} else {
+//						phicount--;
+//						phi = phicount*Math.PI/40;
+//					}
+//					if (animationTimer < 40) {
+//						doorAngleU += Math.PI /40;
+//					}
+//					animationTimer++;
+//				} else if (animationType == 5) {
+//					if (animationTimer < 20) {
+//						phicount--;
+//						phi = phicount*Math.PI/40;
+//					} else if (animationTimer < 60) {
+//						cameraPos = cameraPos.plus(new Vector(0,0,(double) -100/40));
+//					} else {
+//						phicount++;
+//						phi = phicount*Math.PI/40;
+//					}
+//					if (animationTimer < 40) {
+//						doorAngleD += Math.PI /40;
+//					}
+//					animationTimer++;
+//				}
+//				//System.out.println(phicount);
+//				screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
+//				panel.repaint();
+//			}
+//		}, 0, 20);
+//	}
 
 	private void setUpRoom () {
 		planeList = new ArrayList<Plane>();
