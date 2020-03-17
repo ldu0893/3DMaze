@@ -1,7 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class ChamberLayers extends JLayeredPane{
+public class ChamberLayers extends JLayeredPane {
 	private static final long serialVersionUID = -2716144694728695338L;
 	private int animation;
 	public static final int forward = 3;
@@ -25,29 +25,33 @@ public class ChamberLayers extends JLayeredPane{
 		this.add(HUDPanel, JLayeredPane.PALETTE_LAYER);
 		this.requestFocusInWindow();
 	}
+
 	public void setAnimation(int state) {
 		this.animation = state;
 	}
+
 	public int getAnimation() {
 		return animation;
 	}
+
 	public void toggleMenu() {
 		System.out.println("Toggling Menu");
 		boolean menuOn = false;
-		for(Component comp: this.getComponents()) {
-			if(comp == menuPanel) {
+		for (Component comp : this.getComponents()) {
+			if (comp == menuPanel) {
 				menuOn = true;
 			}
 		}
-		if(menuOn) {
+		if (menuOn) {
 			this.add(menuPanel, JLayeredPane.MODAL_LAYER);
-		}else {
+		} else {
 			this.remove(menuPanel);
 		}
 	}
+
 	public static void main(String[] args) {
 		ChamberLayers chamber = new ChamberLayers(new Game(), new Maze(1));
-		
+
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JFrame.setDefaultLookAndFeelDecorated(true);

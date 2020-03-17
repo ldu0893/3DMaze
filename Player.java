@@ -20,7 +20,7 @@ public class Player {
 	public int getOrientation() {
 		return orientation;
 	}
-	
+
 	public int getMoves() {
 		return moves;
 	}

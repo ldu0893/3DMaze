@@ -25,32 +25,32 @@ public class Game {
 	private Instructions instructionScreen;
 	private Component backFromInstructions = null;;
 	private EndScreen endScreen;
-	
-	public JFrame getFrame () {
+
+	public JFrame getFrame() {
 		return gameFrame;
 	}
-	
+
 	public static void main(String[] args) {
 		Game game = new Game();
-		//game.runGame(1);
+		// game.runGame(1);
 	}
 
 	public Game() {
 		gameFrame = new JFrame();
-		gameFrame.setMinimumSize(new Dimension(800,600));
+		gameFrame.setMinimumSize(new Dimension(800, 600));
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
 		gameFrame.setFocusable(true);
-		
+
 		introScreen = new IntroScreen(this);
-		introScreen.setMinimumSize(new Dimension(800,600));
-		
+		introScreen.setMinimumSize(new Dimension(800, 600));
+
 		difficultyScreen = new DifficultyScreen(this);
-		difficultyScreen.setMinimumSize(new Dimension(800,600));
-		
+		difficultyScreen.setMinimumSize(new Dimension(800, 600));
+
 		instructionScreen = new Instructions(this);
-		instructionScreen.setMinimumSize(new Dimension(800,600));
-		
+		instructionScreen.setMinimumSize(new Dimension(800, 600));
+
 		gameFrame.add(introScreen);
 		gameFrame.setVisible(true);
 	}
@@ -60,7 +60,7 @@ public class Game {
 		gameFrame.add(introScreen);
 		gameFrame.revalidate();
 	}
-	
+
 	public void goToChamberView() {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(chamberView);
@@ -89,9 +89,9 @@ public class Game {
 		}
 		int[] positions = { size - 1, size - 1, size - 1 };
 		maze = new Maze(difficulty);
-		
+
 		chamberView = new ChamberView(this, maze, null);
-		//mapView = new MapView(this, maze);
+		// mapView = new MapView(this, maze);
 		player = new Player(positions, 2, size, size, size);
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(chamberView);

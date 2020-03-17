@@ -4,8 +4,8 @@ import javax.swing.*;
 public class GameChamberTest {
 	private JFrame frame;
 	private JPanel chamberView;
-	
-	public GameChamberTest () {
+
+	public GameChamberTest() {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setMinimumSize(new Dimension(800, 600));
@@ -16,7 +16,7 @@ public class GameChamberTest {
 		frame.add(chamberView);
 		frame.setVisible(true);
 	}
-	
+
 	public static void main(String[] args) {
 		GameChamberTest gameWindow = new GameChamberTest();
 	}
