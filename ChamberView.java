@@ -50,7 +50,27 @@ public class ChamberView extends JPanel {
 			}
 		}
 		public void keyTyped (KeyEvent event) {}
-		public void keyPressed (KeyEvent event) {}
+		public void keyPressed (KeyEvent event) {
+			if (event.getKeyCode() == KeyEvent.VK_W) {
+				phicount++;
+				phi = phicount*Math.PI/40;
+				timerOne();
+				//phi += Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_S) {
+				phicount--;
+				phi = phicount*Math.PI/40;
+				timerOne();
+				//phi -= Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_A) {
+				theta -= Math.PI/(2*40);
+				timerOne();
+				//phi += Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_D) {
+				theta += Math.PI/(2*40);
+				timerOne();
+				//phi -= Math.PI/2/30;
+			}
+		}
 		public void keyReleased (KeyEvent event) {
 			if (event.getKeyCode() == KeyEvent.VK_TAB) {
 				game.goToMapView();
@@ -156,14 +176,6 @@ public class ChamberView extends JPanel {
 						animationType = 3;
 					}
 				}
-			} else if (event.getKeyCode() == KeyEvent.VK_W) {
-				phicount++;
-				phi = phicount*Math.PI/40;
-				//phi += Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_S) {
-				phicount--;
-				phi = phicount*Math.PI/40;
-				//phi -= Math.PI/2/30;
 			} else if (event.getKeyCode() == KeyEvent.VK_O) {
 				doorAngleN += Math.PI/2 /10;
 			} else if (event.getKeyCode() == KeyEvent.VK_L) {
@@ -499,9 +511,9 @@ public class ChamberView extends JPanel {
 					nextRoom = null;
 				}
 				if (animationTimer == -1) {
-					theta = playerDirection*Math.PI/2;
-					phicount = 0;
-					phi = 0;
+//					theta = playerDirection*Math.PI/2;
+//					phicount = 0;
+//					phi = 0;
 				}else if (animationType == 1) {
 					animationTimer++;
 					theta += Math.PI/(2*40);
@@ -550,8 +562,10 @@ public class ChamberView extends JPanel {
 				}
 				//System.out.println(phicount);
 				screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
+				System.out.println(phicount);
 				ChamberView.this.repaint();
 			}
+			
 		}, 0);
 	}
 	
@@ -699,9 +713,9 @@ public class ChamberView extends JPanel {
 						nextRoom = null;
 					}
 					if (animationTimer == -1) {
-						theta = playerDirection*Math.PI/2;
-						phicount = 0;
-						phi = 0;
+//						theta = playerDirection*Math.PI/2;
+//						phicount = 0;
+//						phi = 0;
 					}else if (animationType == 1) {
 						animationTimer++;
 						theta += Math.PI/(2*40);
