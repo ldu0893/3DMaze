@@ -30,9 +30,9 @@ public class ChamberView extends JPanel {
 		private static final int down=1;
 		private static final int up=2;
 		private Player player;
-		
+
 		public MovementListener() {}
-		
+
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("up")) {
 				moveUp();
@@ -49,7 +49,23 @@ public class ChamberView extends JPanel {
 			}
 		}
 		public void keyTyped (KeyEvent event) {}
-		public void keyPressed (KeyEvent event) {}
+		public void keyPressed (KeyEvent event) {
+			if (event.getKeyCode() == KeyEvent.VK_W) {
+				phicount++;
+				phi = phicount*Math.PI/40;
+				//phi += Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_S) {
+				phicount--;
+				phi = phicount*Math.PI/40;
+				//phi -= Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_A) {
+				theta -= Math.PI/(2*40);
+				//phi -= Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_D) {
+				theta += Math.PI/(2*40);
+				//phi -= Math.PI/2/30;
+			} 
+		}
 		public void keyReleased (KeyEvent event) {
 			if (event.getKeyCode() == KeyEvent.VK_TAB) {
 				game.goToMapView();
@@ -70,15 +86,7 @@ public class ChamberView extends JPanel {
 				turnLeft();
 			else if (event.getKeyCode() == KeyEvent.VK_SPACE)
 				moveForward();
-			else if (event.getKeyCode() == KeyEvent.VK_W) {
-				phicount++;
-				phi = phicount*Math.PI/40;
-				//phi += Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_S) {
-				phicount--;
-				phi = phicount*Math.PI/40;
-				//phi -= Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_O) {
+			else if (event.getKeyCode() == KeyEvent.VK_O) {
 				doorAngleN += Math.PI/2 /10;
 			} else if (event.getKeyCode() == KeyEvent.VK_L) {
 				doorAngleS += Math.PI/2 /10;
@@ -89,7 +97,7 @@ public class ChamberView extends JPanel {
 			}
 			if (timerrun)
 				timer();
-			}
+		}
 
 		public void move(int direction) {
 			player.moveForward();
@@ -98,7 +106,7 @@ public class ChamberView extends JPanel {
 				//game.win();
 			}
 		}
-		
+
 		public void rotate(boolean leftOrRight) {
 			if (leftOrRight) {
 				player.turnLeft();
@@ -106,14 +114,14 @@ public class ChamberView extends JPanel {
 				player.turnRight();
 			}
 		}
-		
+
 		public void mouseClicked(MouseEvent arg0) {}
 		public void mouseEntered(MouseEvent arg0) {}
 		public void mouseExited(MouseEvent arg0) {}
 		public void mousePressed(MouseEvent arg0) {}
 		public void mouseReleased(MouseEvent arg0) {}
 	}
-	
+
 	public ChamberView (Game game, Maze maze, ChamberLayers chamberLayers) {
 		this.chamberLayers = chamberLayers;
 		this.setBackground(Color.WHITE);
@@ -139,14 +147,14 @@ public class ChamberView extends JPanel {
 		movementListener=new MovementListener();
 		game.getFrame().addKeyListener(movementListener);
 	}
-	
+
 	private void timerOne() {
 		timer.cancel();
 		timer = new java.util.Timer();
 		timer.schedule(new TimerTask () {
 			public void run () {
 				setUpRooms();
-				if (animationTimer == 41 && (animationType != 4 && animationType != 5)) {
+				if (animationTimer == 40 && (animationType != 4 && animationType != 5)) {
 					animationTimer = -1;
 					pressed=false;
 					if (animationType == 3) {
@@ -175,9 +183,9 @@ public class ChamberView extends JPanel {
 					nextRoom = null;
 				}
 				if (animationTimer == -1) {
-					theta = playerDirection*Math.PI/2;
-					phicount = 0;
-					phi = 0;
+//					theta = playerDirection*Math.PI/2;
+//					phicount = 0;
+//					phi = 0;
 				}else if (animationType == 1) {
 					animationTimer++;
 					theta += Math.PI/(2*40);
@@ -230,7 +238,7 @@ public class ChamberView extends JPanel {
 			}
 		}, 0);
 	}
-	
+
 	public void moveForward() {
 		if (!pressed) {
 			pressed=true;
@@ -294,7 +302,7 @@ public class ChamberView extends JPanel {
 			nextRoom = maze.getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
 		}
 	}
-		
+
 	public void turnLeft() {
 		if (!pressed) {
 			pressed=true;
@@ -312,14 +320,14 @@ public class ChamberView extends JPanel {
 			animationType = 1;
 		}
 	}
-		
+
 	public void timer() {
 		timer.cancel();
 		timer = new java.util.Timer();
 		timer.scheduleAtFixedRate(new TimerTask () {
 			public void run () {
 				setUpRooms();
-				if (animationTimer == 41 && (animationType != 4 && animationType != 5)) {
+				if (animationTimer == 40 && (animationType != 4 && animationType != 5)) {
 					animationTimer = -1;
 					pressed=false;
 					if (animationType == 3) {
@@ -348,9 +356,9 @@ public class ChamberView extends JPanel {
 					nextRoom = null;
 				}
 				if (animationTimer == -1) {
-					theta = playerDirection*Math.PI/2;
-					phicount = 0;
-					phi = 0;
+//					theta = playerDirection*Math.PI/2;
+//					phicount = 0;
+//					phi = 0;
 				}else if (animationType == 1) {
 					animationTimer++;
 					theta += Math.PI/(2*40);
@@ -402,8 +410,8 @@ public class ChamberView extends JPanel {
 			}
 		}, 0, speed);
 	}
-	
-	
+
+
 	private void setUpNextRoom () {
 		Color nextRoomColor = nextRoom.getColor();
 		Vector roomVector = new Vector(100*nextRoomPos.getX(), 100*nextRoomPos.getY(), 100*nextRoomPos.getZ());
@@ -415,7 +423,7 @@ public class ChamberView extends JPanel {
 				nextRoomDoorColorArray[i] = nextRoomColor;
 			else
 				nextRoomDoorColorArray[i] = Color.GRAY;
-		
+
 		if (animationType != 4 || animationTimer > 20) {
 			for (int i=0;i<96;i+=5)
 				for (int j=0;j<96;j+=5)
@@ -483,8 +491,8 @@ public class ChamberView extends JPanel {
 		planeList.add(new Plane(new Vector(0,0,0).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,1,105).plus(roomVector), new Vector(0,0,105).plus(roomVector), Color.BLACK));
 		planeList.add(new Plane(new Vector(99,0,0).plus(roomVector), new Vector(99,1,0).plus(roomVector), new Vector(99,1,105).plus(roomVector), new Vector(99,0,105).plus(roomVector), Color.BLACK));
 	}
-	
-	
+
+
 	private void setUpCurrentRoom () {
 		currentRoom = maze.getRoom(playerPos);
 		Color roomColor = currentRoom.getColor();
@@ -514,7 +522,7 @@ public class ChamberView extends JPanel {
 			for (int j=0;j<96;j+=5)
 				if (!currentRoom.getDoor(Room.east)||i>59||j<21||j>69)
 					planeList.add(new Plane(new Vector(100,j,i).plus(roomVector), new Vector(100,j+10,i).plus(roomVector), new Vector(100,j+10,i+10).plus(roomVector), new Vector(100,j,i+10).plus(roomVector), roomColor));
-		
+
 		planeList.add(new Plane(new Vector(1,99,0).plus(roomVector), new Vector(2,99,0).plus(roomVector), new Vector(0,101,107).plus(roomVector), new Vector(-1,101,107).plus(roomVector), Color.BLACK));
 		planeList.add(new Plane(new Vector(99,99,0).plus(roomVector), new Vector(100,99,0).plus(roomVector), new Vector(102,101,107).plus(roomVector), new Vector(101,101,107).plus(roomVector), Color.BLACK));
 		planeList.add(new Plane(new Vector(0,0,0).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,1,105).plus(roomVector), new Vector(0,0,105).plus(roomVector), Color.BLACK));
@@ -541,8 +549,8 @@ public class ChamberView extends JPanel {
 		planeList.add(new Plane(new Vector(30,30,0).plus(roomVector), new Vector(30,30+40*Math.cos(doorAngleD),-40*Math.sin(doorAngleD)).plus(roomVector),
 				new Vector(70,30+40*Math.cos(doorAngleD),-40*Math.sin(doorAngleD)).plus(roomVector), new Vector(70,30,0).plus(roomVector), doorColorArray[5]));
 	}
-	
-	
+
+
 	private void setUpRooms () {
 		planeList = new ArrayList<Plane>();
 		if (nextRoom != null) {
@@ -605,9 +613,9 @@ public class ChamberView extends JPanel {
 					pos3 = wallCoords[0];
 
 				//A slightly altered version of the normal algorithm to project the points
-//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_3 = ((pos3.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+				//				double d_3 = ((pos3.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				double d_3 = ((pos3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
@@ -643,8 +651,8 @@ public class ChamberView extends JPanel {
 				else
 					pos2 = wallCoords[0];
 
-//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				if (d_1 < 0 && !(d_2 < 0)) {
