@@ -49,7 +49,27 @@ public class ChamberView extends JPanel {
 			}
 		}
 		public void keyTyped (KeyEvent event) {}
-		public void keyPressed (KeyEvent event) {}
+		public void keyPressed (KeyEvent event) {
+			if (event.getKeyCode() == KeyEvent.VK_W) {
+				phicount++;
+				phi = phicount*Math.PI/40;
+				timerOne();
+				//phi += Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_S) {
+				phicount--;
+				phi = phicount*Math.PI/40;
+				timerOne();
+				//phi -= Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_A) {
+				theta -= Math.PI/(2*40);
+				timerOne();
+				//phi += Math.PI/2/30;
+			} else if (event.getKeyCode() == KeyEvent.VK_D) {
+				theta += Math.PI/(2*40);
+				timerOne();
+				//phi -= Math.PI/2/30;
+			}
+		}
 		public void keyReleased (KeyEvent event) {
 			if (event.getKeyCode() == KeyEvent.VK_TAB) {
 				game.goToMapView();
