@@ -12,6 +12,7 @@ public class ChamberView extends JPanel {
 	private Vector cameraPos, screenPlaneRelPos;
 	private Room currentRoom, nextRoom;
 	private ArrayList<Plane> planeList;
+	private ArrayList<Triangle> triList;
 	private double theta, phi;
 	private java.util.Timer timer = new java.util.Timer();
 	private int animationTimer;
@@ -232,7 +233,7 @@ public class ChamberView extends JPanel {
 					}
 					animationTimer++;
 				}
-				System.out.println("phi: " + phi);
+				System.out.println("cameraPos: " + cameraPos);
 				screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
 				ChamberView.this.repaint();
 			}
@@ -571,125 +572,200 @@ public class ChamberView extends JPanel {
 		super.paintComponent(g);
 
 		//Calculates the coordinate system of the screen-plane
-		Vector a_0 = new Vector(20*Math.cos(phi)*Math.sin(theta), 20*Math.cos(phi)*Math.cos(theta), 20*Math.sin(phi));
-		Vector b_0 = new Vector(20*Math.sin(theta+Math.PI/2), 20*Math.cos(theta+Math.PI/2), 0);
+		Vector a_0 = new Vector(Math.cos(phi)*Math.sin(theta), Math.cos(phi)*Math.cos(theta), Math.sin(phi));
+		Vector b_0 = new Vector(Math.sin(theta+Math.PI/2), Math.cos(theta+Math.PI/2), 0);
 		Vector c_0 = a_0.cross(b_0.clone()).scale(1/a_0.magnitude());
 		//		System.out.println("a_0: " + a_0);
 		//		System.out.println("b_0: " + b_0);
 		//		System.out.println("c_0: " + c_0);
-
-		for (Plane plane : planeList) {
-			g.setColor(plane.getColor());
-			//			System.out.println("Color: " + plane.getColor().toString());
-			Vector[] wallCoords = {plane.getLBCorner().clone(), plane.getRBCorner().clone(), 
-					plane.getRTCorner().clone(), plane.getLTCorner().clone()};
-
-
-			//If all points on the plane are behind the screen, nothing should be drawn			
-			int numGoodPoints = 0;
-			for (Vector pos : wallCoords)
-				if (((pos.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0)
-					numGoodPoints++;
-			if (numGoodPoints == 0)
-				continue;
-
-			//If only one point is good, draw a triangle;
-			if (numGoodPoints == 1) {
-				int goodIndex = 0;
-				for (int i = 0; i < 4; i++)
-					if (((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0) {
-						goodIndex = i;
-						break;
-					}
-				Vector pos1 = wallCoords[goodIndex];
-				Vector pos2, pos3;
-				if (goodIndex > 0)
-					pos2 = wallCoords[goodIndex-1];
-				else
-					pos2 = wallCoords[3];
-				if (goodIndex < 3)
-					pos3 = wallCoords[goodIndex+1];
-				else
-					pos3 = wallCoords[0];
-
-				//A slightly altered version of the normal algorithm to project the points
-				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				//				double d_3 = ((pos3.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				double d_3 = ((pos3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				Vector[] alteredWallCoords = new Vector[3];
-				alteredWallCoords[0] = pos1;
-				alteredWallCoords[1] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
-				alteredWallCoords[2] = pos3.plus(pos1.minus(pos3).scale((Math.abs(d_3)+0.1)/(Math.abs(d_3)+Math.abs(d_1))));
-				wallCoords = alteredWallCoords;
-				int[] x = new int[3];
-				int[] y = new int[3];
-				for (int i = 0; i < 3; i++) {
-					Vector p_0 = wallCoords[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(wallCoords[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
-					double d = ((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-					//System.out.println("d: " + d);
-					if (d == -1*a_0.magnitude()) {
-						d = -1*a_0.magnitude()+0.01;
-					}
-					x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
-					y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
+		
+		//Fix all of the triangles that may lie 
+		for (int counter = 0; counter < triList.size(); counter++) {
+			Triangle tri = triList.get(counter);
+			Color color = tri.getColor();
+			g.setColor(color);
+			Vector[] verts = tri.getVerts();
+			Vector vert1 = verts[0], vert2 = verts[1], vert3 = verts[2];
+			double d_1 = Math.abs(((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
+			double d_2 = Math.abs(((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
+			double d_3 = Math.abs(((vert3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
+			
+			int numGoodVerts = 0;
+			for (Vector pos : verts)
+				if (((pos.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0)
+					numGoodVerts++;
+			if (numGoodVerts == 0) {
+				triList.remove(counter);
+				counter--;
+			} else if (numGoodVerts == 2) {
+				if ((vert1.minus(cameraPos)).projOnto(screenPlaneRelPos).magnitude() <= 0) { //vert 1 bad 
+					Vector extraVec1 = vert2.plus( vert1.minus(vert2).unit().scale(d_2/(d_1+d_2) - 0.01) );
+					Vector extraVec2 = vert3.plus( vert1.minus(vert3).unit().scale(d_3/(d_1+d_3) - 0.01) );
+					triList.add(counter, new Triangle(vert2, extraVec1, extraVec2, color));
+					triList.add(counter, new Triangle(vert2, vert3, extraVec2, color));
+				} else if ((vert2.minus(cameraPos)).projOnto(screenPlaneRelPos).magnitude() <= 0) { //vert 2 bad
+					Vector extraVec1 = vert1.plus( vert2.minus(vert1).unit().scale(d_1/(d_2+d_1) - 0.01) );
+					Vector extraVec2 = vert3.plus( vert2.minus(vert3).unit().scale(d_3/(d_2+d_3) - 0.01) );
+					triList.add(counter, new Triangle(vert1, extraVec1, extraVec2, color));
+					triList.add(counter, new Triangle(vert1, vert3, extraVec2, color));
+				} else { //vert 3 bad
+					Vector extraVec1 = vert1.plus( vert3.minus(vert1).unit().scale(d_1/(d_3+d_1) - 0.01) );
+					Vector extraVec2 = vert2.plus( vert3.minus(vert2).unit().scale(d_2/(d_3+d_2) - 0.01) );
+					triList.add(counter, new Triangle(vert1, extraVec1, extraVec2, color));
+					triList.add(counter, new Triangle(vert1, vert2, extraVec2, color));
 				}
-				g.fillPolygon(x, y, 3);
-				continue;
-			}
-
-			//For pairs of connected points where one is behind the camera,
-			//cut it off so that the line segment is entirely in front of the camera
-			Vector[] alteredWallCoords = wallCoords.clone();
-			for (int i = 0; i < 4; i++) {
-				Vector pos1 = wallCoords[i];
-				Vector pos2;
-				if (i < 3)
-					pos2 = wallCoords[i+1];
-				else
-					pos2 = wallCoords[0];
-
-				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				if (d_1 < 0 && !(d_2 < 0)) {
-					alteredWallCoords[i] = pos1.plus(pos2.minus(pos1).scale((Math.abs(d_1)+0.1)/(Math.abs(d_1)+Math.abs(d_2))));
-					//System.out.println("d_1: " + pos1 + " to " + alteredWallCoords[i] + " " + i);
-				} else if (d_2 < 0 && !(d_1 < 0)) {
-					if (i < 3) {
-						alteredWallCoords[i+1] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
-						//System.out.println("d_2: " + pos2 + " to " + alteredWallCoords[i+1] + " " + (i+1));
-					} else {
-						alteredWallCoords[0] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
-						//System.out.println("d_2: " + pos2 + " to " + alteredWallCoords[0] + " 0");
-					}
+				triList.remove(counter+2);
+				counter++;
+			} else if (numGoodVerts == 1) {
+				if ((vert1.minus(cameraPos)).projOnto(screenPlaneRelPos).magnitude() > 0) { //vert 1 good
+					Vector vec2Prime = vert1.plus( vert2.minus(vert1).unit().scale(d_1/(d_2+d_1) - 0.01) );
+					Vector vec3Prime = vert1.plus( vert3.minus(vert1).unit().scale(d_1/(d_3+d_1) - 0.01) );
+					triList.remove(counter);
+					triList.add(counter, new Triangle(vert1, vec2Prime, vec3Prime, color));
+				} else if ((vert2.minus(cameraPos)).projOnto(screenPlaneRelPos).magnitude() > 0) { //vert 2 good
+					Vector vec1Prime = vert2.plus( vert1.minus(vert2).unit().scale(d_2/(d_1+d_2) - 0.01) );
+					Vector vec3Prime = vert2.plus( vert3.minus(vert2).unit().scale(d_2/(d_3+d_2) - 0.01) );
+					triList.remove(counter);
+					triList.add(counter, new Triangle(vec1Prime, vert2, vec3Prime, color));
+				} else { //vert 3 good
+					Vector vec1Prime = vert3.plus( vert1.minus(vert3).unit().scale(d_3/(d_1+d_3) - 0.01) );
+					Vector vec2Prime = vert3.plus( vert2.minus(vert3).unit().scale(d_3/(d_2+d_3) - 0.01) );
+					triList.remove(counter);
+					triList.add(counter, new Triangle(vec1Prime, vec2Prime, vert3, color));
 				}
 			}
-			wallCoords = alteredWallCoords;
-
-
-			//Find the intersection of the line from the camera to each point using similar triangles,
-			//then project that onto the planar axes to get the screen coordinates
-			int[] x = new int[4];
-			int[] y = new int[4];
-			for (int i = 0; i < 4; i++) {
-				Vector p_0 = wallCoords[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(wallCoords[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
-				double d = ((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-				//System.out.println("d: " + d);
+		}
+		
+		//Draws all of the triangles
+		for (Triangle tri : triList) {
+			Vector[] verts = tri.getVerts();
+			Vector vert1 = verts[0], vert2 = verts[1], vert3 = verts[2];
+			int[] x = new int[3];
+			int[] y = new int[3];
+			for (int i = 0; i < 3; i++) {
+				Vector p_0 = verts[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(verts[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
+				double d = ((verts[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				if (d == -1*a_0.magnitude()) {
 					d = -1*a_0.magnitude()+0.01;
 				}
 				x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
 				y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
 			}
-
-
-			//			for (int i = 0; i < 4; i++)
-			//				System.out.println(wallCoords[i] + " to (" + x[i] + ", " + y[i] + ") ");
-			g.fillPolygon(x, y, 4);
+			g.fillPolygon(x, y, 3);
 		}
+		
+//		for (Plane plane : planeList) {
+//			g.setColor(plane.getColor());
+//			//			System.out.println("Color: " + plane.getColor().toString());
+//			Vector[] wallCoords = {plane.getLBCorner().clone(), plane.getRBCorner().clone(), 
+//					plane.getRTCorner().clone(), plane.getLTCorner().clone()};
+//
+//
+//			//If all points on the plane are behind the screen, nothing should be drawn			
+//			int numGoodPoints = 0;
+//			for (Vector pos : wallCoords)
+//				if (((pos.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0)
+//					numGoodPoints++;
+//			if (numGoodPoints == 0)
+//				continue;
+//
+//			//If only one point is good, draw a triangle;
+//			if (numGoodPoints == 1) {
+//				int goodIndex = 0;
+//				for (int i = 0; i < 4; i++)
+//					if (((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0) {
+//						goodIndex = i;
+//						break;
+//					}
+//				Vector pos1 = wallCoords[goodIndex];
+//				Vector pos2, pos3;
+//				if (goodIndex > 0)
+//					pos2 = wallCoords[goodIndex-1];
+//				else
+//					pos2 = wallCoords[3];
+//				if (goodIndex < 3)
+//					pos3 = wallCoords[goodIndex+1];
+//				else
+//					pos3 = wallCoords[0];
+//
+//				//A slightly altered version of the normal algorithm to project the points
+//				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				//				double d_3 = ((pos3.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				double d_3 = ((pos3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				Vector[] alteredWallCoords = new Vector[3];
+//				alteredWallCoords[0] = pos1;
+//				alteredWallCoords[1] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
+//				alteredWallCoords[2] = pos3.plus(pos1.minus(pos3).scale((Math.abs(d_3)+0.1)/(Math.abs(d_3)+Math.abs(d_1))));
+//				wallCoords = alteredWallCoords;
+//				int[] x = new int[3];
+//				int[] y = new int[3];
+//				for (int i = 0; i < 3; i++) {
+//					Vector p_0 = wallCoords[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(wallCoords[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
+//					double d = ((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//					//System.out.println("d: " + d);
+//					if (d == -1*a_0.magnitude()) {
+//						d = -1*a_0.magnitude()+0.01;
+//					}
+//					x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
+//					y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
+//				}
+//				g.fillPolygon(x, y, 3);
+//				continue;
+//			}
+//
+//			//For pairs of connected points where one is behind the camera,
+//			//cut it off so that the line segment is entirely in front of the camera
+//			Vector[] alteredWallCoords = wallCoords.clone();
+//			for (int i = 0; i < 4; i++) {
+//				Vector pos1 = wallCoords[i];
+//				Vector pos2;
+//				if (i < 3)
+//					pos2 = wallCoords[i+1];
+//				else
+//					pos2 = wallCoords[0];
+//
+//				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				if (d_1 < 0 && !(d_2 < 0)) {
+//					alteredWallCoords[i] = pos1.plus(pos2.minus(pos1).scale((Math.abs(d_1)+0.1)/(Math.abs(d_1)+Math.abs(d_2))));
+//					//System.out.println("d_1: " + pos1 + " to " + alteredWallCoords[i] + " " + i);
+//				} else if (d_2 < 0 && !(d_1 < 0)) {
+//					if (i < 3) {
+//						alteredWallCoords[i+1] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
+//						//System.out.println("d_2: " + pos2 + " to " + alteredWallCoords[i+1] + " " + (i+1));
+//					} else {
+//						alteredWallCoords[0] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
+//						//System.out.println("d_2: " + pos2 + " to " + alteredWallCoords[0] + " 0");
+//					}
+//				}
+//			}
+//			wallCoords = alteredWallCoords;
+//
+//
+//			//Find the intersection of the line from the camera to each point using similar triangles,
+//			//then project that onto the planar axes to get the screen coordinates
+//			int[] x = new int[4];
+//			int[] y = new int[4];
+//			for (int i = 0; i < 4; i++) {
+//				Vector p_0 = wallCoords[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(wallCoords[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
+//				double d = ((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
+//				//System.out.println("d: " + d);
+//				if (d == -1*a_0.magnitude()) {
+//					d = -1*a_0.magnitude()+0.01;
+//				}
+//				x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
+//				y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
+//			}
+//
+//
+//			//			for (int i = 0; i < 4; i++)
+//			//				System.out.println(wallCoords[i] + " to (" + x[i] + ", " + y[i] + ") ");
+//			g.fillPolygon(x, y, 4);
+//		}
 	}
 }
