@@ -13,6 +13,10 @@ public class Triangle {
 	}
 	public Color getColor () { return color; }
 	
+	public String toString () {
+		return "Tri: " + vert1 + ", " + vert2 + ", " + vert3;
+	}
+	
 	public Triangle (Vector vert1, Vector vert2, Vector vert3, Color color) {
 		this.vert1 = vert1;
 		this.vert2 = vert2;
