@@ -243,7 +243,6 @@ public class ChamberView extends JPanel {
 	public void moveForward() {
 		if (!pressed) {
 			pressed=true;
-			//System.out.println(currentRoom);
 			boolean shouldMove = false;
 			if (playerDirection == 0 && new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ()).isValid(maze.getSize()) && 
 					maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.north)) {
@@ -561,8 +560,6 @@ public class ChamberView extends JPanel {
 		triList.add(new Triangle(new Vector(0, 65, 100).plus(roomVector), new Vector(100, 65, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
 //		triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(100,0,100).plus(roomVector), new Vector(0,100,100).plus(roomVector), Color.GRAY));
 //		triList.add(new Triangle(new Vector(0,100,100).plus(roomVector), new Vector(100,0,100).plus(roomVector), new Vector(100,100,100).plus(roomVector), Color.GRAY));
-//		planeList.add(new Plane(new Vector(30,30,100).plus(roomVector), new Vector(30,30+40*Math.cos(doorAngleU),100-40*Math.sin(doorAngleU)).plus(roomVector),
-//		new Vector(70,30+40*Math.cos(doorAngleU),100-40*Math.sin(doorAngleU)).plus(roomVector), new Vector(70,30,100).plus(roomVector), doorColorArray[4]));
 		triList.add(new Triangle(new Vector(30,30,100).plus(roomVector), new Vector(30,30+40*Math.cos(doorAngleU),100-40*Math.sin(doorAngleU)).plus(roomVector), 
 				new Vector(70,30+40*Math.cos(doorAngleU),100-40*Math.sin(doorAngleU)).plus(roomVector), doorColorArray[4]));
 		triList.add(new Triangle(new Vector(30,30,100).plus(roomVector), new Vector(70,30,100).plus(roomVector), 
@@ -571,10 +568,10 @@ public class ChamberView extends JPanel {
 		//north
 		triList.add(new Triangle(new Vector(0, 100, 0).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(0, 100, 100).plus(roomVector), new Vector(35, 100, 100).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(65, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(65, 100, 0).plus(roomVector), new Vector(65, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 100, 55).plus(roomVector), new Vector(100, 100, 55).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 100, 55).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(69, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(69, 100, 0).plus(roomVector), new Vector(69, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 100, 59).plus(roomVector), new Vector(100, 100, 59).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 100, 59).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,100,0).plus(roomVector), new Vector(100,100,0).plus(roomVector), new Vector(0,100,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,100,100).plus(roomVector), new Vector(100,100,0).plus(roomVector), new Vector(100,100,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(70-40*Math.cos(doorAngleN),100+40*Math.sin(doorAngleN),0).plus(roomVector), 
@@ -583,12 +580,12 @@ public class ChamberView extends JPanel {
 				new Vector(70-40*Math.cos(doorAngleN),100+40*Math.sin(doorAngleN),60).plus(roomVector), new Vector(70,100,60).plus(roomVector), doorColorArray[0]));		
 		
 		//south
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(35, 0, 100).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(31, 0, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(31, 0, 100).plus(roomVector), new Vector(31, 0, 0).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(65, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(100, 0, 55).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 59).plus(roomVector), new Vector(100, 0, 59).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 59).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(0,0,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,0,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(30,0,0).plus(roomVector), new Vector(30+40*Math.cos(doorAngleS),-40*Math.sin(doorAngleS),0).plus(roomVector), 
@@ -597,12 +594,12 @@ public class ChamberView extends JPanel {
 				new Vector(30+40*Math.cos(doorAngleS),-40*Math.sin(doorAngleS),60).plus(roomVector), doorColorArray[2]));
 		
 		//west
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 35, 100).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 31, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 31, 100).plus(roomVector), new Vector(0, 31, 0).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 65, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 100, 55).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 59).plus(roomVector), new Vector(0, 100, 59).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 59).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(0,100,0).plus(roomVector), new Vector(0,0,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(0,100,0).plus(roomVector), new Vector(0,100,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(-40*Math.sin(doorAngleW),70-40*Math.cos(doorAngleW),0).plus(roomVector), 
@@ -613,10 +610,10 @@ public class ChamberView extends JPanel {
 		//east
 		triList.add(new Triangle(new Vector(100, 0, 0).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(100, 0, 100).plus(roomVector), new Vector(100, 35, 100).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 65, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 65, 0).plus(roomVector), new Vector(100, 65, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 0, 55).plus(roomVector), new Vector(100, 100, 55).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 0, 55).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 69, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 69, 0).plus(roomVector), new Vector(100, 69, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 0, 59).plus(roomVector), new Vector(100, 100, 59).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 0, 59).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(100,100,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,100,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(100,100,100).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,0,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(100,30,0).plus(roomVector), new Vector(100+40*Math.sin(doorAngleE),30+40*Math.cos(doorAngleE),0).plus(roomVector), 
@@ -629,10 +626,8 @@ public class ChamberView extends JPanel {
 		//planeList = new ArrayList<Plane>();
 		triList = new ArrayList<Triangle>();
 		
-		if (nextRoom != null) {
+		if (nextRoom != null)
 			setUpNextRoom();
-		}
-
 		if (nextRoom != null && animationTimer > 60) {
 			setUpCurrentRoom();
 			setUpNextRoom();
@@ -651,9 +646,6 @@ public class ChamberView extends JPanel {
 		Vector a_0 = new Vector(Math.cos(phi)*Math.sin(theta), Math.cos(phi)*Math.cos(theta), Math.sin(phi));
 		Vector b_0 = new Vector(Math.sin(theta+Math.PI/2), Math.cos(theta+Math.PI/2), 0);
 		Vector c_0 = a_0.cross(b_0.clone()).scale(1/a_0.magnitude());
-		//		System.out.println("a_0: " + a_0);
-		//		System.out.println("b_0: " + b_0);
-		//		System.out.println("c_0: " + c_0);
 		
 		//Fix all of the triangles that may lie 
 		for (int counter = 0; counter < triList.size(); counter++) {
@@ -722,9 +714,6 @@ public class ChamberView extends JPanel {
 			for (int i = 0; i < 3; i++) {
 				Vector p_0 = verts[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(verts[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
 				double d = ((verts[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				if (d == -1*a_0.magnitude()) {
-//					d = -1*a_0.magnitude()+0.01;
-//				}
 				x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
 				y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
 			}
@@ -732,119 +721,5 @@ public class ChamberView extends JPanel {
 			g.setColor(tri.getColor());
 			g.fillPolygon(x, y, 3);
 		}
-		
-//		for (Plane plane : planeList) {
-//			g.setColor(plane.getColor());
-//			//			System.out.println("Color: " + plane.getColor().toString());
-//			Vector[] wallCoords = {plane.getLBCorner().clone(), plane.getRBCorner().clone(), 
-//					plane.getRTCorner().clone(), plane.getLTCorner().clone()};
-//
-//
-//			//If all points on the plane are behind the screen, nothing should be drawn			
-//			int numGoodPoints = 0;
-//			for (Vector pos : wallCoords)
-//				if (((pos.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0)
-//					numGoodPoints++;
-//			if (numGoodPoints == 0)
-//				continue;
-//
-//			//If only one point is good, draw a triangle;
-//			if (numGoodPoints == 1) {
-//				int goodIndex = 0;
-//				for (int i = 0; i < 4; i++)
-//					if (((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0) {
-//						goodIndex = i;
-//						break;
-//					}
-//				Vector pos1 = wallCoords[goodIndex];
-//				Vector pos2, pos3;
-//				if (goodIndex > 0)
-//					pos2 = wallCoords[goodIndex-1];
-//				else
-//					pos2 = wallCoords[3];
-//				if (goodIndex < 3)
-//					pos3 = wallCoords[goodIndex+1];
-//				else
-//					pos3 = wallCoords[0];
-//
-//				//A slightly altered version of the normal algorithm to project the points
-//				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				//				double d_3 = ((pos3.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_3 = ((pos3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				Vector[] alteredWallCoords = new Vector[3];
-//				alteredWallCoords[0] = pos1;
-//				alteredWallCoords[1] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
-//				alteredWallCoords[2] = pos3.plus(pos1.minus(pos3).scale((Math.abs(d_3)+0.1)/(Math.abs(d_3)+Math.abs(d_1))));
-//				wallCoords = alteredWallCoords;
-//				int[] x = new int[3];
-//				int[] y = new int[3];
-//				for (int i = 0; i < 3; i++) {
-//					Vector p_0 = wallCoords[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(wallCoords[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
-//					double d = ((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//					//System.out.println("d: " + d);
-//					if (d == -1*a_0.magnitude()) {
-//						d = -1*a_0.magnitude()+0.01;
-//					}
-//					x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
-//					y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
-//				}
-//				g.fillPolygon(x, y, 3);
-//				continue;
-//			}
-//
-//			//For pairs of connected points where one is behind the camera,
-//			//cut it off so that the line segment is entirely in front of the camera
-//			Vector[] alteredWallCoords = wallCoords.clone();
-//			for (int i = 0; i < 4; i++) {
-//				Vector pos1 = wallCoords[i];
-//				Vector pos2;
-//				if (i < 3)
-//					pos2 = wallCoords[i+1];
-//				else
-//					pos2 = wallCoords[0];
-//
-//				//				double d_1 = ((pos1.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				//				double d_2 = ((pos2.minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_1 = ((pos1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				double d_2 = ((pos2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				if (d_1 < 0 && !(d_2 < 0)) {
-//					alteredWallCoords[i] = pos1.plus(pos2.minus(pos1).scale((Math.abs(d_1)+0.1)/(Math.abs(d_1)+Math.abs(d_2))));
-//					//System.out.println("d_1: " + pos1 + " to " + alteredWallCoords[i] + " " + i);
-//				} else if (d_2 < 0 && !(d_1 < 0)) {
-//					if (i < 3) {
-//						alteredWallCoords[i+1] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
-//						//System.out.println("d_2: " + pos2 + " to " + alteredWallCoords[i+1] + " " + (i+1));
-//					} else {
-//						alteredWallCoords[0] = pos2.plus(pos1.minus(pos2).scale((Math.abs(d_2)+0.1)/(Math.abs(d_2)+Math.abs(d_1))));
-//						//System.out.println("d_2: " + pos2 + " to " + alteredWallCoords[0] + " 0");
-//					}
-//				}
-//			}
-//			wallCoords = alteredWallCoords;
-//
-//
-//			//Find the intersection of the line from the camera to each point using similar triangles,
-//			//then project that onto the planar axes to get the screen coordinates
-//			int[] x = new int[4];
-//			int[] y = new int[4];
-//			for (int i = 0; i < 4; i++) {
-//				Vector p_0 = wallCoords[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(wallCoords[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
-//				double d = ((wallCoords[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
-//				//System.out.println("d: " + d);
-//				if (d == -1*a_0.magnitude()) {
-//					d = -1*a_0.magnitude()+0.01;
-//				}
-//				x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
-//				y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
-//			}
-//
-//
-//			//			for (int i = 0; i < 4; i++)
-//			//				System.out.println(wallCoords[i] + " to (" + x[i] + ", " + y[i] + ") ");
-//			g.fillPolygon(x, y, 4);
-//		}
 	}
 }
