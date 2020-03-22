@@ -620,6 +620,16 @@ public class ChamberView extends JPanel {
 				new Vector(100+40*Math.sin(doorAngleE),30+40*Math.cos(doorAngleE),60).plus(roomVector), doorColorArray[1]));
 		triList.add(new Triangle(new Vector(100,30,0).plus(roomVector), new Vector(100,30,60).plus(roomVector), 
 				new Vector(100+40*Math.sin(doorAngleE),30+40*Math.cos(doorAngleE),60).plus(roomVector), doorColorArray[1]));
+
+		triList.add(new Triangle(new Vector(1,99,0).plus(roomVector), new Vector(2,99,0).plus(roomVector), new Vector(-1,101,101).plus(roomVector), Color.BLACK));
+		triList.add(new Triangle(new Vector(-1,101,101).plus(roomVector), new Vector(2,99,0).plus(roomVector), new Vector(0,101,101).plus(roomVector), Color.BLACK));
+		triList.add(new Triangle(new Vector(99,99,0).plus(roomVector), new Vector(100,99,0).plus(roomVector), new Vector(101,101,101).plus(roomVector), Color.BLACK));
+		triList.add(new Triangle(new Vector(101,101,101).plus(roomVector), new Vector(100,99,0).plus(roomVector), new Vector(102,101,102).plus(roomVector), Color.BLACK));
+		triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,0,101).plus(roomVector), Color.BLACK));
+		triList.add(new Triangle(new Vector(0,0,101).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,1,101).plus(roomVector), Color.BLACK));
+		triList.add(new Triangle(new Vector(100,0,0).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,0,101).plus(roomVector), Color.BLACK));
+		triList.add(new Triangle(new Vector(100,0,101).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,1,101).plus(roomVector), Color.BLACK));
+		
 	}
 
 	private void setUpRooms () {
