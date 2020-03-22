@@ -414,83 +414,110 @@ public class ChamberView extends JPanel {
 
 
 	private void setUpNextRoom () {
-		Color nextRoomColor = nextRoom.getColor();
+		Color roomColor = nextRoom.getColor();
 		Vector roomVector = new Vector(100*nextRoomPos.getX(), 100*nextRoomPos.getY(), 100*nextRoomPos.getZ());
 
 		for (int i = 0; i < 6; i++)
 			if (nextRoom.getDoor(i))
 				nextRoomDoorColorArray[i] = Color.BLACK;
 			else if (0 <= i && i <= 3)
-				nextRoomDoorColorArray[i] = nextRoomColor;
+				nextRoomDoorColorArray[i] = roomColor;
 			else
 				nextRoomDoorColorArray[i] = Color.GRAY;
-
-		if (animationType != 4 || animationTimer > 20) {
-			for (int i=0;i<96;i+=5)
-				for (int j=0;j<96;j+=5)
-					if (!nextRoom.getDoor(Room.down)||i<21||i>69||j<21||j>69)
-						planeList.add(new Plane(new Vector(j,i,0).plus(roomVector), new Vector(j+10,i,0).plus(roomVector), new Vector(j+10,i+10,0).plus(roomVector), new Vector(j,i+10,0).plus(roomVector), Color.GRAY));
-			for (int i = 30; i < 61; i += 5)
-				for (int j = 30; j < 61; j += 5)
-					planeList.add(new Plane(new Vector(i,j,0).plus(roomVector), new Vector(i,j+10,0).plus(roomVector), 
-							new Vector(i+10,j+10,0).plus(roomVector), new Vector(i+10,j,0).plus(roomVector), nextRoomDoorColorArray[5]));
+		
+		if (animationType != 4 || animationTimer > 20) { //down
+			triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(65, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(100, 65, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+//			triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(0,100,0).plus(roomVector), Color.GRAY));
+//			triList.add(new Triangle(new Vector(0,100,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,100,0).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(30,30,0).plus(roomVector), new Vector(30,30+40*Math.cos(0),-40*Math.sin(0)).plus(roomVector), 
+					new Vector(70,30+40*Math.cos(0),-40*Math.sin(0)).plus(roomVector), nextRoomDoorColorArray[5]));
+			triList.add(new Triangle(new Vector(30,30,0).plus(roomVector), new Vector(70,30,0).plus(roomVector), 
+					new Vector(70,30+40*Math.cos(0),-40*Math.sin(0)).plus(roomVector), nextRoomDoorColorArray[5]));
 		}
-		if (animationType != 5 || animationTimer > 20) {
-			for (int i=0;i<96;i+=5)
-				for (int j=0;j<96;j+=5)
-					if (!nextRoom.getDoor(Room.up)||i<21||i>69||j<21||j>69)
-						planeList.add(new Plane(new Vector(j,i,100).plus(roomVector), new Vector(j+10,i,100).plus(roomVector), new Vector(j+10,i+10,100).plus(roomVector), new Vector(j,i+10,100).plus(roomVector), Color.GRAY));
-			for (int i = 30; i < 61; i += 5)
-				for (int j = 30; j < 61; j += 5)
-					planeList.add(new Plane(new Vector(i,j,100).plus(roomVector), new Vector(i,j+10,100).plus(roomVector), 
-							new Vector(i+10,j+10,100).plus(roomVector), new Vector(i+10,j,100).plus(roomVector), nextRoomDoorColorArray[4]));
+				
+		if (animationType != 5 || animationTimer > 20) { //up
+			triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(35, 100, 100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(35, 0, 100).plus(roomVector), new Vector(35, 100, 100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(65, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(65, 0, 100).plus(roomVector), new Vector(65, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 35, 100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 35, 100).plus(roomVector), new Vector(100, 35, 100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 65, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(0, 65, 100).plus(roomVector), new Vector(100, 65, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+//			triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(100,0,100).plus(roomVector), new Vector(0,100,100).plus(roomVector), Color.GRAY));
+//			triList.add(new Triangle(new Vector(0,100,100).plus(roomVector), new Vector(100,0,100).plus(roomVector), new Vector(100,100,100).plus(roomVector), Color.GRAY));
+			triList.add(new Triangle(new Vector(30,30,100).plus(roomVector), new Vector(30,30+40*Math.cos(0),100-40*Math.sin(0)).plus(roomVector), 
+					new Vector(70,30+40*Math.cos(0),100-40*Math.sin(0)).plus(roomVector), nextRoomDoorColorArray[4]));
+			triList.add(new Triangle(new Vector(30,30,100).plus(roomVector), new Vector(70,30,100).plus(roomVector), 
+					new Vector(70,30+40*Math.cos(0),100-40*Math.sin(0)).plus(roomVector), nextRoomDoorColorArray[4]));
 		}
-		if (playerDirection != Room.south || animationType == 4 || animationType == 5) {
-			for (int i=0;i<96;i+=5)
-				for (int j=0;j<96;j+=5)
-					if (!nextRoom.getDoor(Room.north)||i>59||j<21||j>69)
-						planeList.add(new Plane(new Vector(j,100,i).plus(roomVector), new Vector(j+10,100,i).plus(roomVector), new Vector(j+10,100,i+10).plus(roomVector), new Vector(j,100,i+10).plus(roomVector), nextRoomColor));
-			for (int i = 30; i < 61; i += 5)
-				for (int j = 0; j < 51; j += 5)
-					planeList.add(new Plane(new Vector(i,100,j).plus(roomVector), new Vector(i+10,100,j).plus(roomVector), 
-							new Vector(i+10, 100, j+10).plus(roomVector), new Vector(i,100,j+10).plus(roomVector), nextRoomDoorColorArray[0]));
+		
+		if (playerDirection != Room.south || animationType == 4 || animationType == 5) { //north
+			triList.add(new Triangle(new Vector(0, 100, 0).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 100, 100).plus(roomVector), new Vector(35, 100, 100).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(65, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(65, 100, 0).plus(roomVector), new Vector(65, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 100, 55).plus(roomVector), new Vector(100, 100, 55).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 100, 55).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(0,100,0).plus(roomVector), new Vector(100,100,0).plus(roomVector), new Vector(0,100,100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(0,100,100).plus(roomVector), new Vector(100,100,0).plus(roomVector), new Vector(100,100,100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(70-40*Math.cos(0),100+40*Math.sin(0),0).plus(roomVector), 
+					new Vector(70,100,0).plus(roomVector), new Vector(70,100,60).plus(roomVector), nextRoomDoorColorArray[0]));
+			triList.add(new Triangle(new Vector(70-40*Math.cos(0),100+40*Math.sin(0),0).plus(roomVector), 
+					new Vector(70-40*Math.cos(0),100+40*Math.sin(0),60).plus(roomVector), new Vector(70,100,60).plus(roomVector), nextRoomDoorColorArray[0]));	
 		}
-		if (playerDirection != Room.north || animationType == 4 || animationType == 5) {
-			for (int i=0;i<96;i+=5)
-				for (int j=0;j<96;j+=5)
-					if (!nextRoom.getDoor(Room.south)||i>59||j<21||j>69)
-						planeList.add(new Plane(new Vector(j,0,i).plus(roomVector), new Vector(j+10,0,i).plus(roomVector), new Vector(j+10,0,i+10).plus(roomVector), new Vector(j,0,i+10).plus(roomVector), nextRoomColor));
-			for (int i = 30; i < 61; i += 5)
-				for (int j = 0; j < 51; j += 5)
-					planeList.add(new Plane(new Vector(i,0,j).plus(roomVector), new Vector(i+10,0,j).plus(roomVector), 
-							new Vector(i+10, 0, j+10).plus(roomVector), new Vector(i,0,j+10).plus(roomVector), nextRoomDoorColorArray[2]));
+		
+		if (playerDirection != Room.north || animationType == 4 || animationType == 5) { //south
+			triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(35, 0, 100).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(65, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(100, 0, 55).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(0,0,100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,0,100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(30,0,0).plus(roomVector), new Vector(30+40*Math.cos(0),-40*Math.sin(0),0).plus(roomVector), 
+					new Vector(30+40*Math.cos(0),-40*Math.sin(0),60).plus(roomVector), nextRoomDoorColorArray[2]));
+			triList.add(new Triangle(new Vector(30,0,0).plus(roomVector), new Vector(30,0,60).plus(roomVector), 
+					new Vector(30+40*Math.cos(0),-40*Math.sin(0),60).plus(roomVector), nextRoomDoorColorArray[2]));
 		}
-		if (playerDirection != Room.west || animationType == 4 || animationType == 5) {
-			for (int i=0;i<96;i+=5)
-				for (int j=0;j<96;j+=5)
-					if (!nextRoom.getDoor(Room.east)||i>59||j<21||j>69)
-						planeList.add(new Plane(new Vector(100,j,i).plus(roomVector), new Vector(100,j+10,i).plus(roomVector), new Vector(100,j+10,i+10).plus(roomVector), new Vector(100,j,i+10).plus(roomVector), nextRoomColor));
-			for (int i = 30; i < 61; i += 5)
-				for (int j = 0; j < 51; j += 5)
-					planeList.add(new Plane(new Vector(100,i,0).plus(roomVector), new Vector(100,i+10,j).plus(roomVector), 
-							new Vector(100,i+10, j+10).plus(roomVector), new Vector(100,i,j+10).plus(roomVector), nextRoomDoorColorArray[1]));
+		
+		if (playerDirection != Room.east || animationType == 4 || animationType == 5) { //west
+			triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 35, 100).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 65, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 100, 55).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(0,100,0).plus(roomVector), new Vector(0,0,100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(0,100,0).plus(roomVector), new Vector(0,100,100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(-40*Math.sin(0),70-40*Math.cos(0),0).plus(roomVector), 
+					new Vector(0,70,0).plus(roomVector), new Vector(0,70,60).plus(roomVector), nextRoomDoorColorArray[3]));
+			triList.add(new Triangle(new Vector(-40*Math.sin(0),70-40*Math.cos(0),0).plus(roomVector), 
+					new Vector(-40*Math.sin(0),70-40*Math.cos(0),60).plus(roomVector), new Vector(0,70,60).plus(roomVector), nextRoomDoorColorArray[3]));
 		}
-		if (playerDirection != Room.east || animationType == 4 || animationType == 5) {
-			for (int i=0;i<96;i+=5)
-				for (int j=0;j<96;j+=5)
-					if (!nextRoom.getDoor(Room.west)||i>59||j<21||j>69)
-						planeList.add(new Plane(new Vector(0,j,i).plus(roomVector), new Vector(0,j+10,i).plus(roomVector), new Vector(0,j+10,i+10).plus(roomVector), new Vector(0,j,i+10).plus(roomVector), nextRoomColor));
-			for (int i = 30; i < 61; i += 5)
-				for (int j = 0; j < 51; j += 5)
-					planeList.add(new Plane(new Vector(0,i,0).plus(roomVector), new Vector(0,i+10,j).plus(roomVector), 
-							new Vector(0,i+10, j+10).plus(roomVector), new Vector(0,i,j+10).plus(roomVector), nextRoomDoorColorArray[3]));
+		
+		if (playerDirection != Room.west || animationType == 4 || animationType == 5) { //east
+			triList.add(new Triangle(new Vector(100, 0, 0).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(100, 0, 100).plus(roomVector), new Vector(100, 35, 100).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(100, 65, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(100, 65, 0).plus(roomVector), new Vector(100, 65, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(100, 0, 55).plus(roomVector), new Vector(100, 100, 55).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(100, 0, 55).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(100,100,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,100,100).plus(roomVector), roomColor));
+//			triList.add(new Triangle(new Vector(100,100,100).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,0,100).plus(roomVector), roomColor));
+			triList.add(new Triangle(new Vector(100,30,0).plus(roomVector), new Vector(100+40*Math.sin(0),30+40*Math.cos(0),0).plus(roomVector), 
+					new Vector(100+40*Math.sin(0),30+40*Math.cos(0),60).plus(roomVector), nextRoomDoorColorArray[1]));
+			triList.add(new Triangle(new Vector(100,30,0).plus(roomVector), new Vector(100,30,60).plus(roomVector), 
+					new Vector(100+40*Math.sin(0),30+40*Math.cos(0),60).plus(roomVector), nextRoomDoorColorArray[1]));
 		}
-
-
-		planeList.add(new Plane(new Vector(1,99,0).plus(roomVector), new Vector(2,99,0).plus(roomVector), new Vector(1,101,107).plus(roomVector), new Vector(0,101,107).plus(roomVector), Color.BLACK));
-		planeList.add(new Plane(new Vector(99,99,0).plus(roomVector), new Vector(100,99,0).plus(roomVector), new Vector(102,101,107).plus(roomVector), new Vector(101,101,107).plus(roomVector), Color.BLACK));
-		planeList.add(new Plane(new Vector(0,0,0).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,1,105).plus(roomVector), new Vector(0,0,105).plus(roomVector), Color.BLACK));
-		planeList.add(new Plane(new Vector(99,0,0).plus(roomVector), new Vector(99,1,0).plus(roomVector), new Vector(99,1,105).plus(roomVector), new Vector(99,0,105).plus(roomVector), Color.BLACK));
 	}
 
 
@@ -508,14 +535,14 @@ public class ChamberView extends JPanel {
 			doorColorArray[i] = Color.GRAY;
 		
 		//down
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(30, 100, 0).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(30, 0, 0).plus(roomVector), new Vector(30, 100, 0).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(70, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(70, 0, 0).plus(roomVector), new Vector(70, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 30, 0).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 30, 0).plus(roomVector), new Vector(100, 30, 0).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 70, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 70, 0).plus(roomVector), new Vector(100, 70, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(65, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(100, 65, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), Color.GRAY));
 //		triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(0,100,0).plus(roomVector), Color.GRAY));
 //		triList.add(new Triangle(new Vector(0,100,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,100,0).plus(roomVector), Color.GRAY));
 		triList.add(new Triangle(new Vector(30,30,0).plus(roomVector), new Vector(30,30+40*Math.cos(doorAngleD),-40*Math.sin(doorAngleD)).plus(roomVector), 
@@ -524,14 +551,14 @@ public class ChamberView extends JPanel {
 				new Vector(70,30+40*Math.cos(doorAngleD),-40*Math.sin(doorAngleD)).plus(roomVector), doorColorArray[5]));
 		
 		//up
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(30, 100, 100).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(30, 0, 100).plus(roomVector), new Vector(30, 100, 100).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(70, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(70, 0, 100).plus(roomVector), new Vector(70, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 30, 100).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 30, 100).plus(roomVector), new Vector(100, 30, 100).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 70, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
-		triList.add(new Triangle(new Vector(0, 70, 100).plus(roomVector), new Vector(100, 70, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(35, 100, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(35, 0, 100).plus(roomVector), new Vector(35, 100, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(65, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(65, 0, 100).plus(roomVector), new Vector(65, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 35, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 35, 100).plus(roomVector), new Vector(100, 35, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 65, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
+		triList.add(new Triangle(new Vector(0, 65, 100).plus(roomVector), new Vector(100, 65, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), Color.GRAY));
 //		triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(100,0,100).plus(roomVector), new Vector(0,100,100).plus(roomVector), Color.GRAY));
 //		triList.add(new Triangle(new Vector(0,100,100).plus(roomVector), new Vector(100,0,100).plus(roomVector), new Vector(100,100,100).plus(roomVector), Color.GRAY));
 //		planeList.add(new Plane(new Vector(30,30,100).plus(roomVector), new Vector(30,30+40*Math.cos(doorAngleU),100-40*Math.sin(doorAngleU)).plus(roomVector),
@@ -542,12 +569,12 @@ public class ChamberView extends JPanel {
 				new Vector(70,30+40*Math.cos(doorAngleU),100-40*Math.sin(doorAngleU)).plus(roomVector), doorColorArray[4]));
 		
 		//north
-		triList.add(new Triangle(new Vector(0, 100, 0).plus(roomVector), new Vector(30, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 100, 100).plus(roomVector), new Vector(30, 100, 100).plus(roomVector), new Vector(30, 100, 0).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(70, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(70, 100, 0).plus(roomVector), new Vector(70, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 100, 60).plus(roomVector), new Vector(100, 100, 60).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 100, 60).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 100, 0).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 100, 100).plus(roomVector), new Vector(35, 100, 100).plus(roomVector), new Vector(35, 100, 0).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(65, 100, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(65, 100, 0).plus(roomVector), new Vector(65, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 100, 55).plus(roomVector), new Vector(100, 100, 55).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 100, 55).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,100,0).plus(roomVector), new Vector(100,100,0).plus(roomVector), new Vector(0,100,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,100,100).plus(roomVector), new Vector(100,100,0).plus(roomVector), new Vector(100,100,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(70-40*Math.cos(doorAngleN),100+40*Math.sin(doorAngleN),0).plus(roomVector), 
@@ -556,12 +583,12 @@ public class ChamberView extends JPanel {
 				new Vector(70-40*Math.cos(doorAngleN),100+40*Math.sin(doorAngleN),60).plus(roomVector), new Vector(70,100,60).plus(roomVector), doorColorArray[0]));		
 		
 		//south
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(30, 0, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(30, 0, 100).plus(roomVector), new Vector(30, 0, 0).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(70, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(70, 0, 0).plus(roomVector), new Vector(70, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 60).plus(roomVector), new Vector(100, 0, 60).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 60).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(35, 0, 100).plus(roomVector), new Vector(35, 0, 0).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(100, 0, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(65, 0, 0).plus(roomVector), new Vector(65, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(100, 0, 55).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(0,0,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,0,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(30,0,0).plus(roomVector), new Vector(30+40*Math.cos(doorAngleS),-40*Math.sin(doorAngleS),0).plus(roomVector), 
@@ -570,12 +597,12 @@ public class ChamberView extends JPanel {
 				new Vector(30+40*Math.cos(doorAngleS),-40*Math.sin(doorAngleS),60).plus(roomVector), doorColorArray[2]));
 		
 		//west
-		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 30, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 30, 100).plus(roomVector), new Vector(0, 30, 0).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 70, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 70, 0).plus(roomVector), new Vector(0, 70, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 60).plus(roomVector), new Vector(0, 100, 60).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(0, 0, 60).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 0).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 100).plus(roomVector), new Vector(0, 35, 100).plus(roomVector), new Vector(0, 35, 0).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 100, 0).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 65, 0).plus(roomVector), new Vector(0, 65, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 100, 55).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(0, 0, 55).plus(roomVector), new Vector(0, 0, 100).plus(roomVector), new Vector(0, 100, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(0,100,0).plus(roomVector), new Vector(0,0,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(0,0,100).plus(roomVector), new Vector(0,100,0).plus(roomVector), new Vector(0,100,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(-40*Math.sin(doorAngleW),70-40*Math.cos(doorAngleW),0).plus(roomVector), 
@@ -584,12 +611,12 @@ public class ChamberView extends JPanel {
 				new Vector(-40*Math.sin(doorAngleW),70-40*Math.cos(doorAngleW),60).plus(roomVector), new Vector(0,70,60).plus(roomVector), doorColorArray[3]));
 		
 		//east
-		triList.add(new Triangle(new Vector(100, 0, 0).plus(roomVector), new Vector(100, 30, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 0, 100).plus(roomVector), new Vector(100, 30, 100).plus(roomVector), new Vector(100, 30, 0).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 70, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 70, 0).plus(roomVector), new Vector(100, 70, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 0, 60).plus(roomVector), new Vector(100, 100, 60).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
-		triList.add(new Triangle(new Vector(100, 0, 60).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 0, 0).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 0, 100).plus(roomVector), new Vector(100, 35, 100).plus(roomVector), new Vector(100, 35, 0).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 65, 0).plus(roomVector), new Vector(100, 100, 0).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 65, 0).plus(roomVector), new Vector(100, 65, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 0, 55).plus(roomVector), new Vector(100, 100, 55).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
+		triList.add(new Triangle(new Vector(100, 0, 55).plus(roomVector), new Vector(100, 0, 100).plus(roomVector), new Vector(100, 100, 100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(100,100,0).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,100,100).plus(roomVector), roomColor));
 //		triList.add(new Triangle(new Vector(100,100,100).plus(roomVector), new Vector(100,0,0).plus(roomVector), new Vector(100,0,100).plus(roomVector), roomColor));
 		triList.add(new Triangle(new Vector(100,30,0).plus(roomVector), new Vector(100+40*Math.sin(doorAngleE),30+40*Math.cos(doorAngleE),0).plus(roomVector), 
@@ -638,21 +665,22 @@ public class ChamberView extends JPanel {
 			double d_1 = Math.abs(((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
 			double d_2 = Math.abs(((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
 			double d_3 = Math.abs(((vert3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
+			System.out.println("D: " + d_1 + " " + d_2 + " " + d_3);
 			
 			int numGoodVerts = 0;
 			for (Vector pos : verts)
-				if (((pos.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0)
+				if (((pos.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0.01)
 					numGoodVerts++;
 			if (numGoodVerts == 0) {
 				triList.remove(counter);
 				counter--;
 			} else if (numGoodVerts == 2) {
-				if (((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() <= 0) { //vert 1 bad 
+				if (((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() < 0.01) { //vert 1 bad 
 					Vector extraVec1 = vert2.plus( vert1.minus(vert2).scale(d_2/(d_1+d_2) - 0.01) );
 					Vector extraVec2 = vert3.plus( vert1.minus(vert3).scale(d_3/(d_1+d_3) - 0.01) );
 					triList.add(counter, new Triangle(vert2, extraVec1, extraVec2, color));
 					triList.add(counter, new Triangle(vert2, vert3, extraVec2, color));
-				} else if (((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() <= 0) { //vert 2 bad
+				} else if (((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() < 0.01) { //vert 2 bad
 					Vector extraVec1 = vert1.plus( vert2.minus(vert1).scale(d_1/(d_2+d_1) - 0.01) );
 					Vector extraVec2 = vert3.plus( vert2.minus(vert3).scale(d_3/(d_2+d_3) - 0.01) );
 					triList.add(counter, new Triangle(vert1, extraVec1, extraVec2, color));
@@ -666,12 +694,12 @@ public class ChamberView extends JPanel {
 				triList.remove(counter+2);
 				counter++;
 			} else if (numGoodVerts == 1) {
-				if (((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0) { //vert 1 good
+				if (((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0.01) { //vert 1 good
 					Vector vec2Prime = vert1.plus( vert2.minus(vert1).scale(d_1/(d_2+d_1) - 0.01) );
 					Vector vec3Prime = vert1.plus( vert3.minus(vert1).scale(d_1/(d_3+d_1) - 0.01) );
 					triList.remove(counter);
 					triList.add(counter, new Triangle(vert1, vec2Prime, vec3Prime, color));
-				} else if (((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0) { //vert 2 good
+				} else if (((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0.01) { //vert 2 good
 					Vector vec1Prime = vert2.plus( vert1.minus(vert2).scale(d_2/(d_1+d_2) - 0.01) );
 					Vector vec3Prime = vert2.plus( vert3.minus(vert2).scale(d_2/(d_3+d_2) - 0.01) );
 					triList.remove(counter);
