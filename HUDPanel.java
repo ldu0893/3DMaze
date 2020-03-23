@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class HUDPanel extends JPanel {
+public class HUDPanel extends JPanel implements ActionListener {
 	private static String iconPath = "Icons/";
 	private JButton[] buttons;
 	private Game game;
@@ -20,10 +20,13 @@ public class HUDPanel extends JPanel {
 	private JButton toggleMenu;
 	private MovementListener movementListener;
 	private MapListener mapListener;
-	private MenuListener menuListener;
+	//private MenuListener menuListener;
 	private ChamberLayers chamberView;
 	private int rows;
 	private int cols;
+	private Component[][] panelHolder;
+	private JButton menuMap, instructions, quit;
+	public HUDPanel hudPanel = this;
 
 	public HUDPanel(Game game, Maze maze, ChamberLayers chamberView) {
 		this.game = game;
@@ -43,6 +46,7 @@ public class HUDPanel extends JPanel {
 		this.setFocusable(true);
 		rows = 600 / 50;
 		cols = 800 / 50;
+		panelHolder = new Component[rows][cols];
 		this.setLayout(new GridLayout(rows, cols, 0, 0));
 		this.setSize(800, 600);
 		this.setOpaque(false);
@@ -51,7 +55,7 @@ public class HUDPanel extends JPanel {
 	private void setupEventListeners() {
 		movementListener = new MovementListener(game.getPlayer());
 		mapListener = new MapListener(game);
-		menuListener = new MenuListener();
+		//menuListener = new MenuListener();
 		this.addKeyListener(movementListener);
 		this.addKeyListener(mapListener);
 	}
@@ -68,56 +72,80 @@ public class HUDPanel extends JPanel {
 		}
 		menuOn = false;
 		toggleMenu = new JButton("Menu");
-		toggleMenu.addActionListener(menuListener);
+		toggleMenu.addActionListener(new ActionListener () {
+			public void actionPerformed (ActionEvent event) {
+				menuOn = !menuOn;
+				//TODO When you press menu, the components don't appear, even though this section is run
+				if (menuOn) {
+					panelHolder[1][cols-1] = menuMap;
+					panelHolder[2][cols-1] = instructions;
+					panelHolder[3][cols-1] = quit;
+					System.out.println("hello");
+				} else {
+					panelHolder[1][cols-1] = new JLabel("");
+					panelHolder[2][cols-1] = new JLabel("");
+					panelHolder[3][cols-1] = new JLabel("");
+				}
+				hudPanel.revalidate();
+				hudPanel.repaint();
+				chamberView.revalidate();
+				chamberView.repaint();
+				game.getFrame().revalidate();
+				game.getFrame().repaint();
+			}
+		});
 		toggleMenu.setMargin(new Insets(0, 0, 0, 0));
 		map = new JButton("Map");
 		map.addActionListener(mapListener);
 		map.setMargin(new Insets(0, 0, 0, 0));
+		
+		menuMap = new JButton("Map");
+		menuMap.setActionCommand("map");
+		menuMap.addActionListener(this);
+		menuMap.setMargin(new Insets(0, 0, 0, 0));
+		instructions = new JButton("Instructions");
+		instructions.setActionCommand("instructions");
+		instructions.addActionListener(this);
+		instructions.setMargin(new Insets(0, 0, 0, 0));
+		quit = new JButton("Quit Game");
+		quit.setActionCommand("quit");
+		quit.addActionListener(this);
+		quit.setMargin(new Insets(0, 0, 0, 0));
 	}
-
-	private void addButtons() {
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				JLabel temp = new JLabel("");
-				temp.setOpaque(false);
-				temp.setEnabled(false);
-				if (i < rows - 3) {
-					if (i == 0) {
-						if (j == (cols - 2)) {
-							this.add(map);
-						} else if (j == (cols - 1)) {
-							this.add(toggleMenu);
-						} else {
-							this.add(temp);
-						}
-					} else {
-						this.add(temp);
-					}
-				} else {
-					if (i == rows - 3) {
-						if (j == 1) {
-							this.add(buttons[0]);
-						} else {
-							this.add(temp);
-						}
-					} else if (i == rows - 2) {
-						if (0 <= j && j <= 2) {
-							this.add(buttons[j + 1]);
-						} else {
-							this.add(temp);
-						}
-					} else if (i == rows - 1) {
-						if (j == 1) {
-							this.add(buttons[4]);
-						} else {
-							this.add(temp);
-						}
-					} else {
-						this.add(temp);
-					}
-				}
-			}
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("map")) {
+			game.goToMapView();
+		} else if (e.getActionCommand().equals("instructions")) {
+			game.toggleInstructions();
+		} else if (e.getActionCommand().equals("quit")) {
+			game.goToIntroScreen();
 		}
+	}
+	
+	private void addButtons() {
+		//{ "up", "left", "forward", "right", "down" }
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++) {
+				if (i == 0 && j == cols-2) {
+					panelHolder[i][j] = map;
+				} else if (i == 0 && j == cols-1) {
+					panelHolder[i][j] = toggleMenu;
+				} else if (i == rows-3 && j == 1) {
+					panelHolder[i][j] = buttons[0];
+				} else if (i == rows-2 && j == 0) {
+					panelHolder[i][j] = buttons[1];
+				} else if (i == rows-2 && j == 1) {
+					panelHolder[i][j] = buttons[2];
+				} else if (i == rows-2 && j == 2) {
+					panelHolder[i][j] = buttons[3];
+				} else if (i == rows-1 && j == 1) {
+					panelHolder[i][j] = buttons[4];
+				} else {
+					panelHolder[i][j] = new JLabel("");
+				}
+				this.add(panelHolder[i][j]);
+			}
 		enableComponents(getRoom(maze, player), player.getOrientation());
 		for (Component comp : this.getComponents()) {
 			comp.setFocusable(false);
@@ -266,9 +294,9 @@ public class HUDPanel extends JPanel {
 		// End empty methods
 	}
 
-	private class MenuListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
-			menuOn = !menuOn;
-		}
-	}
+//	private class MenuListener implements ActionListener {
+//		public void actionPerformed(ActionEvent arg0) {
+//			menuOn = !menuOn;
+//		}
+//	}
 }

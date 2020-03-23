@@ -714,7 +714,7 @@ public class ChamberView extends JPanel {
 				Vector p_0 = verts[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(verts[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
 				double d = ((verts[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
-				y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
+				y[i] = (int) (5.7*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 285;
 			}
 			//System.out.println("(" + (x[0]-400) + ", " + (y[0]-300) + ") (" + (x[1]-400) + ", " + (y[1]-300) + ") (" + (x[2]-400) + ", " + (y[2]-300) + ")");
 			g.setColor(tri.getColor());
