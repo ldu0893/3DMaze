@@ -95,7 +95,7 @@ public class Game {
 		}
 		int[] positions = { size - 1, size - 1, size - 1 };
 		maze = new Maze(difficulty);
-		player = new Player(positions, 2, size, size, size);
+		player = new Player(positions, 0, size, size, size);
 		chamberLayers = new ChamberLayers(this, maze);
 		//chamberView = new ChamberView(this, maze, null);
 		//mapView = new MapView(this, maze);

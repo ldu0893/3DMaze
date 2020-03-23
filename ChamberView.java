@@ -21,106 +21,106 @@ public class ChamberView extends JPanel {
 	private boolean pressed=false, menuOn=false, timerrun=true;
 	private int phicount, speed;
 	private ChamberLayers chamberLayers;
-	private MovementListener movementListener;
+//	private MovementListener movementListener;
 
-	private class MovementListener implements ActionListener, KeyListener, MouseListener {
-		private static final boolean left=true;
-		private static final boolean right=false;
-		private static final int forward=0;
-		private static final int down=1;
-		private static final int up=2;
-		private Player player;
-
-		public MovementListener() {}
-
-		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("up")) {
-				moveUp();
-			} else if (e.getActionCommand().equals("left")) {
-				turnLeft();
-			} else if (e.getActionCommand().equals("forward")) {
-				moveForward();
-			} else if (e.getActionCommand().equals("right")) {
-				turnRight();
-			} else if (e.getActionCommand().equals("down")) {
-				moveDown();
-			} else if (e.getActionCommand().equals("Menu")) {
-				menuOn=!menuOn;
-			}
-		}
-		public void keyTyped (KeyEvent event) {}
-		public void keyPressed (KeyEvent event) {
-			if (event.getKeyCode() == KeyEvent.VK_W) {
-				phicount++;
-				phi = phicount*Math.PI/40;
-				//phi += Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_S) {
-				phicount--;
-				phi = phicount*Math.PI/40;
-				//phi -= Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_A) {
-				theta -= Math.PI/(2*40);
-				//phi -= Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_D) {
-				theta += Math.PI/(2*40);
-				//phi -= Math.PI/2/30;
-			}
-		}
-		public void keyReleased (KeyEvent event) {
-			if (event.getKeyCode() == KeyEvent.VK_TAB) {
-				game.goToMapView();
-			}
-			if (event.getKeyCode() == KeyEvent.VK_1) { speed+=5; System.out.println(speed);}
-			if (event.getKeyCode() == KeyEvent.VK_2) { speed-=5; System.out.println(speed);}
-			if (event.getKeyCode() == KeyEvent.VK_4) { timerrun=!timerrun; if (!timerrun) timerOne();}
-			if (event.getKeyCode() == KeyEvent.VK_3) { timerOne();}
-
-
-			if (event.getKeyCode() == KeyEvent.VK_UP)
-				moveUp();
-			else if (event.getKeyCode() == KeyEvent.VK_DOWN)
-				moveDown();
-			else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
-				turnRight();
-			else if (event.getKeyCode() == KeyEvent.VK_LEFT)
-				turnLeft();
-			else if (event.getKeyCode() == KeyEvent.VK_SPACE)
-				moveForward();
-			else if (event.getKeyCode() == KeyEvent.VK_O) {
-				doorAngleN += Math.PI/2 /10;
-			} else if (event.getKeyCode() == KeyEvent.VK_L) {
-				doorAngleS += Math.PI/2 /10;
-			} else if (event.getKeyCode() == KeyEvent.VK_P) {
-				doorAngleE += Math.PI/2 /10;
-			} else if (event.getKeyCode() == KeyEvent.VK_I) {
-				doorAngleW += Math.PI/2 /10;
-			}
-			if (timerrun)
-				timer();
-		}
-
-		public void move(int direction) {
-			player.moveForward();
-			int[] position=player.getPosition();
-			if (position[0]==0&&position[1]==0&&position[2]==0) {
-				//game.win();
-			}
-		}
-
-		public void rotate(boolean leftOrRight) {
-			if (leftOrRight) {
-				player.turnLeft();
-			} else {
-				player.turnRight();
-			}
-		}
-
-		public void mouseClicked(MouseEvent arg0) {}
-		public void mouseEntered(MouseEvent arg0) {}
-		public void mouseExited(MouseEvent arg0) {}
-		public void mousePressed(MouseEvent arg0) {}
-		public void mouseReleased(MouseEvent arg0) {}
-	}
+//	private class MovementListener implements ActionListener, KeyListener, MouseListener {
+//		private static final boolean left=true;
+//		private static final boolean right=false;
+//		private static final int forward=0;
+//		private static final int down=1;
+//		private static final int up=2;
+//		private Player player;
+//
+//		public MovementListener() {}
+//
+//		public void actionPerformed(ActionEvent e) {
+//			if (e.getActionCommand().equals("up")) {
+//				moveUp();
+//			} else if (e.getActionCommand().equals("left")) {
+//				turnLeft();
+//			} else if (e.getActionCommand().equals("forward")) {
+//				moveForward();
+//			} else if (e.getActionCommand().equals("right")) {
+//				turnRight();
+//			} else if (e.getActionCommand().equals("down")) {
+//				moveDown();
+//			} else if (e.getActionCommand().equals("Menu")) {
+//				menuOn=!menuOn;
+//			}
+//		}
+//		public void keyTyped (KeyEvent event) {}
+//		public void keyPressed (KeyEvent event) {
+//			if (event.getKeyCode() == KeyEvent.VK_W) {
+//				phicount++;
+//				phi = phicount*Math.PI/40;
+//				//phi += Math.PI/2/30;
+//			} else if (event.getKeyCode() == KeyEvent.VK_S) {
+//				phicount--;
+//				phi = phicount*Math.PI/40;
+//				//phi -= Math.PI/2/30;
+//			} else if (event.getKeyCode() == KeyEvent.VK_A) {
+//				theta -= Math.PI/(2*40);
+//				//phi -= Math.PI/2/30;
+//			} else if (event.getKeyCode() == KeyEvent.VK_D) {
+//				theta += Math.PI/(2*40);
+//				//phi -= Math.PI/2/30;
+//			}
+//		}
+//		public void keyReleased (KeyEvent event) {
+//			if (event.getKeyCode() == KeyEvent.VK_TAB) {
+//				game.goToMapView();
+//			}
+//			if (event.getKeyCode() == KeyEvent.VK_1) { speed+=5; System.out.println(speed);}
+//			if (event.getKeyCode() == KeyEvent.VK_2) { speed-=5; System.out.println(speed);}
+//			if (event.getKeyCode() == KeyEvent.VK_4) { timerrun=!timerrun; if (!timerrun) timerOne();}
+//			if (event.getKeyCode() == KeyEvent.VK_3) { timerOne();}
+//
+//
+//			if (event.getKeyCode() == KeyEvent.VK_UP)
+//				moveUp();
+//			else if (event.getKeyCode() == KeyEvent.VK_DOWN)
+//				moveDown();
+//			else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
+//				turnRight();
+//			else if (event.getKeyCode() == KeyEvent.VK_LEFT)
+//				turnLeft();
+//			else if (event.getKeyCode() == KeyEvent.VK_SPACE)
+//				moveForward();
+//			else if (event.getKeyCode() == KeyEvent.VK_O) {
+//				doorAngleN += Math.PI/2 /10;
+//			} else if (event.getKeyCode() == KeyEvent.VK_L) {
+//				doorAngleS += Math.PI/2 /10;
+//			} else if (event.getKeyCode() == KeyEvent.VK_P) {
+//				doorAngleE += Math.PI/2 /10;
+//			} else if (event.getKeyCode() == KeyEvent.VK_I) {
+//				doorAngleW += Math.PI/2 /10;
+//			}
+//			if (timerrun)
+//				timer();
+//		}
+//
+//		public void move(int direction) {
+//			player.moveForward();
+//			int[] position=player.getPosition();
+//			if (position[0]==0&&position[1]==0&&position[2]==0) {
+//				//game.win();
+//			}
+//		}
+//
+//		public void rotate(boolean leftOrRight) {
+//			if (leftOrRight) {
+//				player.turnLeft();
+//			} else {
+//				player.turnRight();
+//			}
+//		}
+//
+//		public void mouseClicked(MouseEvent arg0) {}
+//		public void mouseEntered(MouseEvent arg0) {}
+//		public void mouseExited(MouseEvent arg0) {}
+//		public void mousePressed(MouseEvent arg0) {}
+//		public void mouseReleased(MouseEvent arg0) {}
+//	}
 
 	public ChamberView (Game game, Maze maze, ChamberLayers chamberLayers) {
 		this.chamberLayers = chamberLayers;
@@ -144,100 +144,101 @@ public class ChamberView extends JPanel {
 
 		this.setFocusable(true);
 		ChamberView panel = this;
-		movementListener=new MovementListener();
-		game.getFrame().addKeyListener(movementListener);
+		timer();
+//		movementListener=new MovementListener();
+//		game.getFrame().addKeyListener(movementListener);
 	}
 
-	private void timerOne() {
-		timer.cancel();
-		timer = new java.util.Timer();
-		timer.schedule(new TimerTask () {
-			public void run () {
-				setUpRooms();
-				if (animationTimer == 40 && (animationType != 4 && animationType != 5)) {
-					animationTimer = -1;
-					pressed=false;
-					if (animationType == 3) {
-						if (playerDirection == 0)
-							playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
-						else if (playerDirection == 1)
-							playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
-						else if (playerDirection == 2)
-							playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
-						else
-							playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
-					}
-					animationType = 0;
-					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
-					nextRoom = null;
-				} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
-					animationTimer = -1;
-					pressed=false;
-					if (animationType == 4) {
-						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
-					} else if (animationType == 5) {
-						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
-					}
-					animationType = 0;
-					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
-					nextRoom = null;
-				}
-				if (animationTimer == -1) {
-//					theta = playerDirection*Math.PI/2;
-//					phicount = 0;
-//					phi = 0;
-				}else if (animationType == 1) {
-					animationTimer++;
-					theta += Math.PI/(2*40);
-				} else if (animationType == 2) {
-					animationTimer++;
-					theta -= Math.PI/(2*40);
-				} else if (animationType == 3) {
-					animationTimer++;
-					cameraPos = cameraPos.plus(screenPlaneRelPos.scale(100/screenPlaneRelPos.magnitude()/40));
-					if (playerDirection == 0)
-						doorAngleN = Math.min(animationTimer, 20)*Math.PI/2/20;
-					else if (playerDirection == 1)
-						doorAngleE = Math.min(animationTimer, 20)*Math.PI/2/20;
-					else if (playerDirection == 2)
-						doorAngleS = Math.min(animationTimer, 20)*Math.PI/2/20;
-					else
-						doorAngleW = Math.min(animationTimer, 20)*Math.PI/2/20;
-				} else if (animationType == 4) {
-					if (animationTimer < 20) {
-						phicount++;
-						phi = phicount*Math.PI/40;
-					} else if (animationTimer < 60) {
-						cameraPos = cameraPos.plus(new Vector(0,0,(double) 100/40));
-					} else {
-						phicount--;
-						phi = phicount*Math.PI/40;
-					}
-					if (animationTimer < 40) {
-						doorAngleU += Math.PI /40;
-					}
-					animationTimer++;
-				} else if (animationType == 5) {
-					if (animationTimer < 20) {
-						phicount--;
-						phi = phicount*Math.PI/40;
-					} else if (animationTimer < 60) {
-						cameraPos = cameraPos.plus(new Vector(0,0,(double) -100/40));
-					} else {
-						phicount++;
-						phi = phicount*Math.PI/40;
-					}
-					if (animationTimer < 40) {
-						doorAngleD += Math.PI /40;
-					}
-					animationTimer++;
-				}
-				System.out.println("cameraPos: " + cameraPos);
-				screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
-				ChamberView.this.repaint();
-			}
-		}, 0);
-	}
+//	private void timerOne() {
+//		timer.cancel();
+//		timer = new java.util.Timer();
+//		timer.schedule(new TimerTask () {
+//			public void run () {
+//				setUpRooms();
+//				if (animationTimer == 40 && (animationType != 4 && animationType != 5)) {
+//					animationTimer = -1;
+//					pressed=false;
+//					if (animationType == 3) {
+//						if (playerDirection == 0)
+//							playerPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
+//						else if (playerDirection == 1)
+//							playerPos = new Position(playerPos.getX()+1, playerPos.getY(), playerPos.getZ());
+//						else if (playerDirection == 2)
+//							playerPos = new Position(playerPos.getX(), playerPos.getY()-1, playerPos.getZ());
+//						else
+//							playerPos = new Position(playerPos.getX()-1, playerPos.getY(), playerPos.getZ());
+//					}
+//					animationType = 0;
+//					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+//					nextRoom = null;
+//				} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
+//					animationTimer = -1;
+//					pressed=false;
+//					if (animationType == 4) {
+//						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1);
+//					} else if (animationType == 5) {
+//						playerPos = new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()-1);
+//					}
+//					animationType = 0;
+//					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+//					nextRoom = null;
+//				}
+//				if (animationTimer == -1) {
+////					theta = playerDirection*Math.PI/2;
+////					phicount = 0;
+////					phi = 0;
+//				}else if (animationType == 1) {
+//					animationTimer++;
+//					theta += Math.PI/(2*40);
+//				} else if (animationType == 2) {
+//					animationTimer++;
+//					theta -= Math.PI/(2*40);
+//				} else if (animationType == 3) {
+//					animationTimer++;
+//					cameraPos = cameraPos.plus(screenPlaneRelPos.scale(100/screenPlaneRelPos.magnitude()/40));
+//					if (playerDirection == 0)
+//						doorAngleN = Math.min(animationTimer, 20)*Math.PI/2/20;
+//					else if (playerDirection == 1)
+//						doorAngleE = Math.min(animationTimer, 20)*Math.PI/2/20;
+//					else if (playerDirection == 2)
+//						doorAngleS = Math.min(animationTimer, 20)*Math.PI/2/20;
+//					else
+//						doorAngleW = Math.min(animationTimer, 20)*Math.PI/2/20;
+//				} else if (animationType == 4) {
+//					if (animationTimer < 20) {
+//						phicount++;
+//						phi = phicount*Math.PI/40;
+//					} else if (animationTimer < 60) {
+//						cameraPos = cameraPos.plus(new Vector(0,0,(double) 100/40));
+//					} else {
+//						phicount--;
+//						phi = phicount*Math.PI/40;
+//					}
+//					if (animationTimer < 40) {
+//						doorAngleU += Math.PI /40;
+//					}
+//					animationTimer++;
+//				} else if (animationType == 5) {
+//					if (animationTimer < 20) {
+//						phicount--;
+//						phi = phicount*Math.PI/40;
+//					} else if (animationTimer < 60) {
+//						cameraPos = cameraPos.plus(new Vector(0,0,(double) -100/40));
+//					} else {
+//						phicount++;
+//						phi = phicount*Math.PI/40;
+//					}
+//					if (animationTimer < 40) {
+//						doorAngleD += Math.PI /40;
+//					}
+//					animationTimer++;
+//				}
+//				System.out.println("cameraPos: " + cameraPos);
+//				screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
+//				ChamberView.this.repaint();
+//			}
+//		}, 0);
+//	}
 
 	public void moveForward() {
 		if (!pressed) {
@@ -342,6 +343,8 @@ public class ChamberView extends JPanel {
 					animationType = 0;
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
 					nextRoom = null;
+					chamberLayers.setAnimation(0);
+					chamberLayers.getHUDPanel().enableComponents();
 				} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
 					animationTimer = -1;
 					pressed=false;
@@ -353,6 +356,8 @@ public class ChamberView extends JPanel {
 					animationType = 0;
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
 					nextRoom = null;
+					chamberLayers.setAnimation(0);
+					chamberLayers.getHUDPanel().enableComponents();
 				}
 				if (animationTimer == -1) {
 //					theta = playerDirection*Math.PI/2;

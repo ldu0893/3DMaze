@@ -21,18 +21,18 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private MovementListener movementListener;
 	private MapListener mapListener;
 	//private MenuListener menuListener;
-	private ChamberLayers chamberView;
+	private ChamberLayers chamberLayers;
 	private int rows;
 	private int cols;
 	private JPanel menuPanel, dPadPanel;
 	private JButton menuMap, instructions, quit;
 	public HUDPanel hudPanel = this;
 
-	public HUDPanel(Game game, Maze maze, ChamberLayers chamberView) {
+	public HUDPanel(Game game, Maze maze, ChamberLayers chamberLayers) {
 		this.game = game;
 		player = game.getPlayer();
 		this.maze = maze;
-		this.chamberView = chamberView;
+		this.chamberLayers = chamberLayers;
 		player = game.getPlayer();
 		setProperties();
 		setupEventListeners();
@@ -55,7 +55,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 		movementListener = new MovementListener(game.getPlayer());
 		mapListener = new MapListener(game);
 		//menuListener = new MenuListener();
-		this.addKeyListener(movementListener);
+		game.getFrame().addKeyListener(movementListener);
 		this.addKeyListener(mapListener);
 	}
 
@@ -115,8 +115,8 @@ public class HUDPanel extends JPanel implements ActionListener {
 				}
 				hudPanel.revalidate();
 				hudPanel.repaint();
-				chamberView.revalidate();
-				chamberView.repaint();
+				chamberLayers.revalidate();
+				chamberLayers.repaint();
 				game.getFrame().revalidate();
 				game.getFrame().repaint();
 			}
@@ -206,19 +206,29 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	private void disableComponents() {
-		for (Component comp : this.getComponents()) {
+	public void disableComponents() {
+		for (Component comp : menuPanel.getComponents()) {
+			comp.setEnabled(false);
+		}
+		for (Component comp : dPadPanel.getComponents()) {
 			comp.setEnabled(false);
 		}
 	}
 
-	private void enableComponents(Room room, int orientation) {
-		for (Component comp : this.getComponents()) {
+	public void enableComponents(Room room, int orientation) {
+		for (Component comp : menuPanel.getComponents()) {
+			comp.setEnabled(true);
+		}
+		for (Component comp : dPadPanel.getComponents()) {
 			comp.setEnabled(true);
 		}
 		buttons[0].setEnabled(canMove(room, up, orientation));
 		buttons[4].setEnabled(canMove(room, down, orientation));
 		buttons[2].setEnabled(canMove(room, forward, orientation));
+	}
+	
+	public void enableComponents () {
+		enableComponents(getRoom(maze, player), player.getOrientation());
 	}
 
 	public static boolean canMove(Room room, int movementDirection, int playerOrientation) {
@@ -247,12 +257,12 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 
 		public void animationFinished() {
-			chamberView.setAnimation(0);
+			chamberLayers.setAnimation(0);
 			enableComponents(getRoom(maze, player), player.getOrientation());
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			if (chamberView.getAnimation() == 0) {
+			if (chamberLayers.getAnimation() == 0) {
 				if (e.getActionCommand().equals(commands[2])) {
 					move(forward);
 				} else if (e.getActionCommand().equals(commands[0])) {
@@ -268,7 +278,8 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 
 		public void keyReleased(KeyEvent e) {
-			if (chamberView.getAnimation() == 0) {
+			System.out.println("hi");
+			if (chamberLayers.getAnimation() == 0) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					move(forward);
 				} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP) {
@@ -284,7 +295,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 
 		public void move(int direction) {
-			chamberView.setAnimation(direction);
+			chamberLayers.setAnimation(direction);
 			disableComponents();
 			double score = (double) maze.shortestPath() / (double) player.getMoves();
 			if (!canMove(getRoom(maze, player), direction, player.getOrientation())) {
@@ -296,20 +307,25 @@ public class HUDPanel extends JPanel implements ActionListener {
 					game.win(score);
 				}
 				player.moveForward();
+				chamberLayers.getChamberView().moveForward();
 			} else if (direction == down) {
 				if (getRoom(maze, player).leadsOutside(Room.down)) {
 					game.win(score);
 				}
 				player.moveDown();
+				chamberLayers.getChamberView().moveDown();
 			} else if (direction == up) {
 				if (getRoom(maze, player).leadsOutside(Room.up)) {
 					game.win(score);
 				}
 				player.moveUp();
+				chamberLayers.getChamberView().moveUp();
 			} else if (direction == left) {
 				player.turnLeft();
+				chamberLayers.getChamberView().turnLeft();
 			} else if (direction == right) {
 				player.turnRight();
+				chamberLayers.getChamberView().turnRight();
 			}
 		}
 
