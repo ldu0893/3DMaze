@@ -60,23 +60,28 @@ public class Game {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(introScreen);
 		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 	
 	public void goToChamberView() {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(chamberView);
 		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 
 	public void goToMapView() {
 		gameFrame.removeAll();
 		gameFrame.add(mapView);
+		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 
 	public void goToDifficultySelect() {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(difficultyScreen);
 		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 
 	public void runGame(int difficulty) {
@@ -103,7 +108,7 @@ public class Game {
 	public void toggleInstructions() {
 		if (backFromInstructions != null) {
 			gameFrame.getContentPane().removeAll();
-			gameFrame.add((JPanel) backFromInstructions);
+			gameFrame.add(backFromInstructions);
 			gameFrame.revalidate();
 			backFromInstructions.repaint();
 			backFromInstructions = null;
