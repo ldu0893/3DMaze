@@ -77,11 +77,19 @@ public class HUDPanel extends JPanel implements ActionListener {
 				menuOn = !menuOn;
 				if (menuOn) {
 					panelHolder[1][cols-1].removeAll();
-					panelHolder[1][cols-1].add(menuMap, BorderLayout.CENTER);
+					//panelHolder[1][cols-1].setLayout(null);
+					panelHolder[1][cols-1].setLayout(new FlowLayout());
+					panelHolder[1][cols-1].add(menuMap);
+					
 					panelHolder[2][cols-1].removeAll();
-					panelHolder[2][cols-1].add(instructions, BorderLayout.CENTER);
+					//panelHolder[2][cols-1].setLayout(null);
+					panelHolder[2][cols-1].setLayout(new FlowLayout());
+					panelHolder[2][cols-1].add(instructions);
+					
 					panelHolder[3][cols-1].removeAll();
-					panelHolder[3][cols-1].add(quit, BorderLayout.CENTER);
+					//panelHolder[3][cols-1].setLayout(null);
+					panelHolder[3][cols-1].setLayout(new FlowLayout());
+					panelHolder[3][cols-1].add(quit);
 				} else {
 					panelHolder[1][cols-1].removeAll();
 					panelHolder[1][cols-1].add(new JLabel(""), BorderLayout.CENTER);
