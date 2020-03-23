@@ -38,7 +38,7 @@ public class Game {
 
 	public Game() {
 		gameFrame = new JFrame();
-		gameFrame.setMinimumSize(new Dimension(800,600));
+		gameFrame.setMinimumSize(new Dimension(800,630));
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
 		gameFrame.setFocusable(true);

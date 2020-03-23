@@ -24,7 +24,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private ChamberLayers chamberView;
 	private int rows;
 	private int cols;
-	private JPanel[][] panelHolder;
+	private JPanel menuPanel, dPadPanel;
 	private JButton menuMap, instructions, quit;
 	public HUDPanel hudPanel = this;
 
@@ -44,10 +44,9 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private void setProperties() {
 		this.setFocusTraversalKeysEnabled(false);
 		this.setFocusable(true);
-		rows = 600 / 50;
-		cols = 800 / 50;
-		panelHolder = new JPanel[rows][cols];
-		this.setLayout(new GridLayout(rows, cols, 0, 0));
+		//rows = 600 / 50;
+		//cols = 800 / 50;
+		this.setLayout(new GridLayout(4, 5, 0, 0));
 		this.setSize(800, 600);
 		this.setOpaque(false);
 	}
@@ -75,28 +74,44 @@ public class HUDPanel extends JPanel implements ActionListener {
 		toggleMenu.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent event) {
 				menuOn = !menuOn;
+				menuPanel.removeAll();
+				GridBagConstraints c = new GridBagConstraints ();
+				c.fill = GridBagConstraints.BOTH;
+				c.weightx = 1;
+				c.weighty = 1;
+				c.gridx = 0;
+				c.gridy = 0;
+				menuPanel.add(map, c);
+				c.gridx = 1;
+				c.gridy = 0;
+				menuPanel.add(toggleMenu, c);
+				
 				if (menuOn) {
-					panelHolder[1][cols-1].removeAll();
-					//panelHolder[1][cols-1].setLayout(null);
-					panelHolder[1][cols-1].setLayout(new FlowLayout());
-					panelHolder[1][cols-1].add(menuMap);
-					
-					panelHolder[2][cols-1].removeAll();
-					//panelHolder[2][cols-1].setLayout(null);
-					panelHolder[2][cols-1].setLayout(new FlowLayout());
-					panelHolder[2][cols-1].add(instructions);
-					
-					panelHolder[3][cols-1].removeAll();
-					//panelHolder[3][cols-1].setLayout(null);
-					panelHolder[3][cols-1].setLayout(new FlowLayout());
-					panelHolder[3][cols-1].add(quit);
-				} else {
-					panelHolder[1][cols-1].removeAll();
-					panelHolder[1][cols-1].add(new JLabel(""), BorderLayout.CENTER);
-					panelHolder[2][cols-1].removeAll();
-					panelHolder[2][cols-1].add(new JLabel(""), BorderLayout.CENTER);
-					panelHolder[3][cols-1].removeAll();
-					panelHolder[3][cols-1].add(new JLabel(""), BorderLayout.CENTER);
+					c.gridx = 0;
+					c.gridy = 1;
+					c.gridwidth = 2;
+					menuPanel.add(menuMap, c);
+					c.gridx = 0;
+					c.gridy = 2;
+					c.gridwidth = 2;
+					menuPanel.add(instructions, c);
+					c.gridx = 0;
+					c.gridy = 3;
+					c.gridwidth = 2;
+					menuPanel.add(quit, c);
+				} else {					
+					c.gridx = 0;
+					c.gridy = 1;
+					c.gridwidth = 2;
+					menuPanel.add(new JLabel(), c);
+					c.gridx = 0;
+					c.gridy = 2;
+					c.gridwidth = 2;
+					menuPanel.add(new JLabel(), c);
+					c.gridx = 0;
+					c.gridy = 3;
+					c.gridwidth = 2;
+					menuPanel.add(new JLabel(), c);
 				}
 				hudPanel.revalidate();
 				hudPanel.repaint();
@@ -136,31 +151,55 @@ public class HUDPanel extends JPanel implements ActionListener {
 	}
 	
 	private void addButtons() {
-		//{ "up", "left", "forward", "right", "down" }
-		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < cols; j++) {
-				panelHolder[i][j] = new JPanel();
-				panelHolder[i][j].setOpaque(false);
-				panelHolder[i][j].setLayout(new BorderLayout());
-				if (i == 0 && j == cols-2) {
-					panelHolder[i][j].add(map, BorderLayout.CENTER);
-				} else if (i == 0 && j == cols-1) {
-					panelHolder[i][j].add(toggleMenu, BorderLayout.CENTER);
-				} else if (i == rows-4 && j == 1) {
-					panelHolder[i][j].add(buttons[0], BorderLayout.CENTER);
-				} else if (i == rows-3 && j == 0) {
-					panelHolder[i][j].add(buttons[1], BorderLayout.CENTER);
-				} else if (i == rows-3 && j == 1) {
-					panelHolder[i][j].add(buttons[2], BorderLayout.CENTER);
-				} else if (i == rows-3 && j == 2) {
-					panelHolder[i][j].add(buttons[3], BorderLayout.CENTER);
-				} else if (i == rows-2 && j == 1) {
-					panelHolder[i][j].add(buttons[4], BorderLayout.CENTER);
-				} else {
-					panelHolder[i][j].add(new JLabel(), BorderLayout.CENTER);
-				}
-				this.add(panelHolder[i][j]);
-			}
+		menuPanel = new JPanel();
+		menuPanel.setOpaque(false);
+		menuPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints ();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.weighty = 1;
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		menuPanel.add(map, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		menuPanel.add(toggleMenu, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		menuPanel.add(new JLabel(), c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		menuPanel.add(new JLabel(), c);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		menuPanel.add(new JLabel(), c);
+		
+		dPadPanel = new JPanel();
+		dPadPanel.setOpaque(false);
+		dPadPanel.setLayout(new GridLayout(3, 3, 0, 0));
+		dPadPanel.add(new JLabel());
+		dPadPanel.add(buttons[0]);
+		dPadPanel.add(new JLabel());
+		dPadPanel.add(buttons[1]);
+		dPadPanel.add(buttons[2]);
+		dPadPanel.add(buttons[3]);
+		dPadPanel.add(new JLabel());
+		dPadPanel.add(buttons[4]);
+		dPadPanel.add(new JLabel());
+		
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 5; j++)
+				if (i == 0 && j == 4)
+					this.add(menuPanel);
+				else if (i == 3 && j == 0)
+					this.add(dPadPanel);
+				else
+					this.add(new JLabel());
+		
 		enableComponents(getRoom(maze, player), player.getOrientation());
 		for (Component comp : this.getComponents()) {
 			comp.setFocusable(false);
