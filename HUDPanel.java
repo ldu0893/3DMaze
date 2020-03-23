@@ -24,7 +24,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private ChamberLayers chamberView;
 	private int rows;
 	private int cols;
-	private Component[][] panelHolder;
+	private JPanel[][] panelHolder;
 	private JButton menuMap, instructions, quit;
 	public HUDPanel hudPanel = this;
 
@@ -46,7 +46,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 		this.setFocusable(true);
 		rows = 600 / 50;
 		cols = 800 / 50;
-		panelHolder = new Component[rows][cols];
+		panelHolder = new JPanel[rows][cols];
 		this.setLayout(new GridLayout(rows, cols, 0, 0));
 		this.setSize(800, 600);
 		this.setOpaque(false);
@@ -75,16 +75,20 @@ public class HUDPanel extends JPanel implements ActionListener {
 		toggleMenu.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent event) {
 				menuOn = !menuOn;
-				//TODO When you press menu, the components don't appear, even though this section is run
 				if (menuOn) {
-					panelHolder[1][cols-1] = menuMap;
-					panelHolder[2][cols-1] = instructions;
-					panelHolder[3][cols-1] = quit;
-					System.out.println("hello");
+					panelHolder[1][cols-1].removeAll();
+					panelHolder[1][cols-1].add(menuMap, BorderLayout.CENTER);
+					panelHolder[2][cols-1].removeAll();
+					panelHolder[2][cols-1].add(instructions, BorderLayout.CENTER);
+					panelHolder[3][cols-1].removeAll();
+					panelHolder[3][cols-1].add(quit, BorderLayout.CENTER);
 				} else {
-					panelHolder[1][cols-1] = new JLabel("");
-					panelHolder[2][cols-1] = new JLabel("");
-					panelHolder[3][cols-1] = new JLabel("");
+					panelHolder[1][cols-1].removeAll();
+					panelHolder[1][cols-1].add(new JLabel(""), BorderLayout.CENTER);
+					panelHolder[2][cols-1].removeAll();
+					panelHolder[2][cols-1].add(new JLabel(""), BorderLayout.CENTER);
+					panelHolder[3][cols-1].removeAll();
+					panelHolder[3][cols-1].add(new JLabel(""), BorderLayout.CENTER);
 				}
 				hudPanel.revalidate();
 				hudPanel.repaint();
@@ -127,22 +131,25 @@ public class HUDPanel extends JPanel implements ActionListener {
 		//{ "up", "left", "forward", "right", "down" }
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < cols; j++) {
+				panelHolder[i][j] = new JPanel();
+				panelHolder[i][j].setOpaque(false);
+				panelHolder[i][j].setLayout(new BorderLayout());
 				if (i == 0 && j == cols-2) {
-					panelHolder[i][j] = map;
+					panelHolder[i][j].add(map, BorderLayout.CENTER);
 				} else if (i == 0 && j == cols-1) {
-					panelHolder[i][j] = toggleMenu;
+					panelHolder[i][j].add(toggleMenu, BorderLayout.CENTER);
+				} else if (i == rows-4 && j == 1) {
+					panelHolder[i][j].add(buttons[0], BorderLayout.CENTER);
+				} else if (i == rows-3 && j == 0) {
+					panelHolder[i][j].add(buttons[1], BorderLayout.CENTER);
 				} else if (i == rows-3 && j == 1) {
-					panelHolder[i][j] = buttons[0];
-				} else if (i == rows-2 && j == 0) {
-					panelHolder[i][j] = buttons[1];
+					panelHolder[i][j].add(buttons[2], BorderLayout.CENTER);
+				} else if (i == rows-3 && j == 2) {
+					panelHolder[i][j].add(buttons[3], BorderLayout.CENTER);
 				} else if (i == rows-2 && j == 1) {
-					panelHolder[i][j] = buttons[2];
-				} else if (i == rows-2 && j == 2) {
-					panelHolder[i][j] = buttons[3];
-				} else if (i == rows-1 && j == 1) {
-					panelHolder[i][j] = buttons[4];
+					panelHolder[i][j].add(buttons[4], BorderLayout.CENTER);
 				} else {
-					panelHolder[i][j] = new JLabel("");
+					panelHolder[i][j].add(new JLabel(), BorderLayout.CENTER);
 				}
 				this.add(panelHolder[i][j]);
 			}
