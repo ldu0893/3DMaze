@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
 import javax.swing.*;
 
 public class ChamberView extends JPanel {
@@ -65,7 +64,7 @@ public class ChamberView extends JPanel {
 			} else if (event.getKeyCode() == KeyEvent.VK_D) {
 				theta += Math.PI/(2*40);
 				//phi -= Math.PI/2/30;
-			} 
+			}
 		}
 		public void keyReleased (KeyEvent event) {
 			if (event.getKeyCode() == KeyEvent.VK_TAB) {
@@ -640,7 +639,7 @@ public class ChamberView extends JPanel {
 
 	public void paintComponent (Graphics g) {
 		super.paintComponent(g);
-		System.out.println("----------");
+		//System.out.println("----------");
 
 		//Calculates the coordinate system of the screen-plane
 		Vector a_0 = new Vector(Math.cos(phi)*Math.sin(theta), Math.cos(phi)*Math.cos(theta), Math.sin(phi));
@@ -657,7 +656,7 @@ public class ChamberView extends JPanel {
 			double d_1 = Math.abs(((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
 			double d_2 = Math.abs(((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
 			double d_3 = Math.abs(((vert3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
-			System.out.println("D: " + d_1 + " " + d_2 + " " + d_3);
+			//System.out.println("D: " + d_1 + " " + d_2 + " " + d_3);
 			
 			int numGoodVerts = 0;
 			for (Vector pos : verts)
@@ -707,7 +706,7 @@ public class ChamberView extends JPanel {
 		
 		//Draws all of the triangles
 		for (Triangle tri : triList) {
-			System.out.println(tri);
+			//System.out.println(tri);
 			Vector[] verts = tri.getVerts();
 			int[] x = new int[3];
 			int[] y = new int[3];
@@ -717,7 +716,7 @@ public class ChamberView extends JPanel {
 				x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
 				y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
 			}
-			System.out.println("(" + (x[0]-400) + ", " + (y[0]-300) + ") (" + (x[1]-400) + ", " + (y[1]-300) + ") (" + (x[2]-400) + ", " + (y[2]-300) + ")");
+			//System.out.println("(" + (x[0]-400) + ", " + (y[0]-300) + ") (" + (x[1]-400) + ", " + (y[1]-300) + ") (" + (x[2]-400) + ", " + (y[2]-300) + ")");
 			g.setColor(tri.getColor());
 			g.fillPolygon(x, y, 3);
 		}
