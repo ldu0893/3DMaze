@@ -21,6 +21,7 @@ public class Game {
 	private IntroScreen introScreen;
 	private DifficultyScreen difficultyScreen;
 	private ChamberView chamberView;
+	private ChamberLayers chamberLayers;
 	private MapView mapView;
 	private Instructions instructionScreen;
 	private Component backFromInstructions = null;;
@@ -37,7 +38,7 @@ public class Game {
 
 	public Game() {
 		gameFrame = new JFrame();
-		gameFrame.setMinimumSize(new Dimension(800,600));
+		gameFrame.setMinimumSize(new Dimension(800,630));
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setResizable(false);
 		gameFrame.setFocusable(true);
@@ -59,23 +60,28 @@ public class Game {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(introScreen);
 		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 	
 	public void goToChamberView() {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(chamberView);
 		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 
 	public void goToMapView() {
 		gameFrame.removeAll();
 		gameFrame.add(mapView);
+		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 
 	public void goToDifficultySelect() {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(difficultyScreen);
 		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 
 	public void runGame(int difficulty) {
@@ -89,19 +95,20 @@ public class Game {
 		}
 		int[] positions = { size - 1, size - 1, size - 1 };
 		maze = new Maze(difficulty);
-		
-		chamberView = new ChamberView(this, maze, null);
+		player = new Player(positions, 0, size, size, size);
+		chamberLayers = new ChamberLayers(this, maze);
+		//chamberView = new ChamberView(this, maze, null);
 		//mapView = new MapView(this, maze);
-		player = new Player(positions, 2, size, size, size);
 		gameFrame.getContentPane().removeAll();
-		gameFrame.add(chamberView);
+		gameFrame.add(chamberLayers);
+		//gameFrame.add(chamberView);
 		gameFrame.revalidate();
 	}
 
 	public void toggleInstructions() {
 		if (backFromInstructions != null) {
 			gameFrame.getContentPane().removeAll();
-			gameFrame.add((JPanel) backFromInstructions);
+			gameFrame.add(backFromInstructions);
 			gameFrame.revalidate();
 			backFromInstructions.repaint();
 			backFromInstructions = null;
