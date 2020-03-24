@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 
 import javax.swing.*;
 
@@ -70,7 +71,8 @@ public class HUDPanel extends JPanel implements ActionListener {
 			buttons[i].setBorderPainted(false);
 		}
 		menuOn = false;
-		toggleMenu = new JButton("Menu");
+		ImageIcon menuIcon = new ImageIcon(iconPath + "Hamburger.png");	
+		toggleMenu = new JButton(menuIcon);
 		toggleMenu.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent event) {
 				menuOn = !menuOn;
@@ -122,9 +124,14 @@ public class HUDPanel extends JPanel implements ActionListener {
 			}
 		});
 		toggleMenu.setMargin(new Insets(0, 0, 0, 0));
-		map = new JButton("Map");
+		toggleMenu.setContentAreaFilled(false);
+		toggleMenu.setBorderPainted(false);
+		ImageIcon mapIcon = new ImageIcon(iconPath + "Scroll.png");		
+		map = new JButton(mapIcon);
 		map.addActionListener(mapListener);
 		map.setMargin(new Insets(0, 0, 0, 0));
+		map.setContentAreaFilled(false);
+		map.setBorderPainted(false);
 		
 		menuMap = new JButton("Map");
 		menuMap.setActionCommand("map");

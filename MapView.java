@@ -212,10 +212,10 @@ public class MapView extends JPanel {
 			
 		}
 		g.setColor(Color.black);
-		Font KeyFont = new Font ("Times New Roman", 20, 35);
+		Font KeyFont = new Font ("Times New Roman", 20, 25);
 		g.setFont(KeyFont);
-		g.drawString("KEY:", 26*frame.getWidth()/30, 9*frame.getHeight()/15);
-		Font WordFont = new Font ("Serif Bold", 20, 20);
+		g.drawString("KEY:", 26*frame.getWidth()/30, 8*frame.getHeight()/15);
+		Font WordFont = new Font ("Serif Bold", 20, 15);
 		g.setFont(WordFont);
 		g.drawString("Door Up", 26*frame.getWidth()/30, 14*frame.getHeight()/20);
 		g.drawString("Door Down", 26*frame.getWidth()/30, 16*frame.getHeight()/20);
