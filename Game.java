@@ -20,7 +20,7 @@ public class Game {
 	private Maze maze;
 	private IntroScreen introScreen;
 	private DifficultyScreen difficultyScreen;
-	private ChamberView chamberView;
+	//private ChamberView chamberView;
 	private ChamberLayers chamberLayers;
 	private MapView mapView;
 	private Instructions instructionScreen;
@@ -65,13 +65,14 @@ public class Game {
 	
 	public void goToChamberView() {
 		gameFrame.getContentPane().removeAll();
-		gameFrame.add(chamberView);
+		gameFrame.add(chamberLayers);
 		gameFrame.revalidate();
 		gameFrame.repaint();
 	}
 
 	public void goToMapView() {
-		gameFrame.removeAll();
+		gameFrame.getContentPane().removeAll();
+		mapView = new MapView(this, maze);
 		gameFrame.add(mapView);
 		gameFrame.revalidate();
 		gameFrame.repaint();
