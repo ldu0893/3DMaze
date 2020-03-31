@@ -41,6 +41,14 @@ public class PrimsAlgorithm {
 				addFrontier(visited, frontier, newRoom);
 			}
 			//System.out.println(maze.length);
+			
+//			double random = 3*Math.random();
+//			if (random < 1) {
+//				maze[0][0][0].setDoor(Room.south, true);
+//				//TODO finish
+//			}
+				
+			
 			return maze;
 		}
 		

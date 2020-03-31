@@ -18,10 +18,10 @@ public class KruskalsAlgorithm {
 					}
 				}
 			}
-			this.generate();
+			this.generateMaze();
 		}
 
-		public Room[][][] generate() {
+		public Room[][][] generateMaze() {
 			Random rand=new Random();
 			do {
 				int x=rand.nextInt(size);
