@@ -172,6 +172,102 @@ public class Maze {
 		}
 		return distance[0][0][0];
 	}
+	
+	public static int shortestPath(Room[][][] mazeArray) {
+		LinkedList<Position> q = new LinkedList<Position>();
+		boolean[][][] visited=new boolean[mazeArray.length][mazeArray.length][mazeArray.length];
+		int[][][] distance=new int[mazeArray.length][mazeArray.length][mazeArray.length];
+		for (int i = 0; i < distance.length; i++)
+			for (int j = 0; j < distance.length; j++)
+				for (int k = 0; k < distance.length; k++)
+					distance.clone()[i][j][k] = Integer.MAX_VALUE;
+		distance[mazeArray.length-1][mazeArray.length-1][mazeArray.length-1]=0;
+		visited[mazeArray.length-1][mazeArray.length-1][mazeArray.length-1]=true;
+		Position next = new Position(mazeArray.length-1, mazeArray.length-1, mazeArray.length-1);
+		q.add(next);
+		boolean found=false;
+		while (!found && q.size() > 0) {
+//			for (MazePos pos : q)
+//				System.out.print(pos);
+//			System.out.println();
+//			System.out.println("q size: " + q.size());
+			Position prev = q.poll();
+			int x = (int) prev.getX(), y = (int) prev.getY(), z = (int) prev.getZ();
+			Room room = mazeArray[(int) prev.getX()][(int) prev.getY()][(int) prev.getZ()];
+			boolean[] doors=new boolean[6];
+			for (int i=0;i<6;i++) {
+				doors[i]=room.getDoor(i);
+			}
+			//System.out.println(prev + ": " + distance[x][y][z]);
+			if (!(x == 0 && y == 0 && z == 0)) {
+				if (doors[0]) {
+					if (!visited[x][y+1][z]) {
+						visited[x][y+1][z]=true;
+						distance[x][y+1][z] = Math.min(distance[x][y][z]+1, distance[x][y+1][z]);
+						next = new Position(x, y+1, z);
+						q.add(next);
+					}
+					//System.out.print("N");
+				}
+				if (doors[1]) {
+					if (!visited[x+1][y][z]) {
+						visited[x+1][y][z]=true;
+						distance[x+1][y][z] = Math.min(distance[x][y][z]+1, distance[x+1][y][z]);
+						next = new Position(x+1, y, z);
+						q.add(next);
+					}
+					//System.out.print("E");
+				}
+				if (doors[2]) {
+					if (!visited[x][y-1][z]) {
+						visited[x][y-1][z]=true;
+						distance[x][y-1][z] = Math.min(distance[x][y][z]+1, distance[x][y-1][z]);
+						next = new Position(x, y-1, z);
+						q.add(next);
+						if (x==0&&y-1==0&&z==0) {
+							found=true;
+						}
+					}
+					//System.out.print("S");
+				}
+				if (doors[3]) {
+					if (!visited[x-1][y][z]) {
+						visited[x-1][y][z]=true;
+						distance[x-1][y][z] = Math.min(distance[x][y][z]+1, distance[x-1][y][z]);
+						next = new Position(x-1, y, z);
+						q.add(next);
+						if (x-1==0&&y==0&&z==0) {
+							found=true;
+						}
+					}
+					//System.out.print("W");
+				}
+				if (doors[4]) {
+					if (!visited[x][y][z+1]) {
+						visited[x][y][z+1]=true;
+						distance[x][y][z+1] = Math.min(distance[x][y][z]+1, distance[x][y][z+1]);
+						next = new Position(x, y, z+1);
+						q.add(next);
+					}
+					//System.out.print("U");
+				}
+				if (doors[5]) {
+					if (!visited[x][y][z-1]) {
+						visited[x][y][z-1]=true;
+						distance[x][y][z-1] = Math.min(distance[x][y][z]+1, distance[x][y][z-1]);
+						next = new Position(x, y, z-1);
+						q.add(next);
+						if (x==0&&y==0&&z-1==0) {
+							found=true;
+						}
+					}
+					//System.out.print("D");
+				}
+				//System.out.println();
+			}
+		}
+		return distance[0][0][0];
+	}
 
 	public Room getRoom (Position playerPos) {
 		return getRoom(playerPos.getX(), playerPos.getY(), playerPos.getZ());
@@ -238,7 +334,7 @@ public class Maze {
 	
 	
 	public static void main (String[] args) {
-		Maze maze = new Maze(2);
+		Maze maze = new Maze(0);
 		maze.printMaze();
 		System.out.println("Shortest Path: " + maze.shortestPath());
 	}
