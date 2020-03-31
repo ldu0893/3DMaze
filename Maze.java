@@ -1,5 +1,4 @@
 import java.util.*;
-
 // NOTE: starting at (n-1, n-1, n-1), ending at (0, 0, 0)
 // NOTE: x WE, y SN, z BT
 public class Maze {
@@ -16,9 +15,10 @@ public class Maze {
 	public Maze (int difficulty) {
 		this.difficulty = difficulty;
 		
-//		if (difficulty == 0) { // Hunt-and-Kill Algorithm
-//			
-//		} else 
+		if (difficulty == 0) { // Hunt-and-Kill Algorithm
+			mazeArray = (new HuntKill(4)).generateMaze();
+			size=4;
+		} else 
 		if (difficulty == 1) { // Prim's Algorithm
 			mazeArray = (new PrimsAlgorithm(5)).generateMaze();
 			size = 5;
@@ -36,10 +36,45 @@ public class Maze {
 					}
 			size = 5;
 		}
+		exit();
+	}
+	
+	public Maze (int difficulty, int size) {
+		this.difficulty = difficulty;
+		this.size=size;
+		if (difficulty == 0) { // Hunt-and-Kill Algorithm
+			mazeArray = (new HuntKill(size)).generateMaze();
+		} else 
+		if (difficulty == 1) { // Prim's Algorithm
+			mazeArray = (new PrimsAlgorithm(size)).generateMaze();
+		} else if (difficulty == 2) { // Kruskal's Algorithm
+			mazeArray = (new KruskalsAlgorithm(size)).generate();
+		} else {
+			mazeArray = new Room[5][5][5];
+			for (int i = 0; i < 5; i++)
+				for (int j = 0; j < 5; j++)
+					for (int k = 0; k < 5; k++) {
+						boolean[] doors = {true, true, true, true, true, true};
+						boolean[] outside = new boolean[6];
+						mazeArray[i][j][k] = new Room(doors, outside);
+					}
+			size = 5;
+		}
+		exit();
 	}
 	
 	public Maze(Room[][][] rooms) {
 		mazeArray = rooms;
+	}
+	
+	private void exit() {
+		Random rand=new Random();
+		int exit=rand.nextInt(2);
+		if (exit==0) {
+			mazeArray[0][0][0].setDoor(Room.west, true);
+		} else {
+			mazeArray[0][0][0].setDoor(Room.south, true);
+		}
 	}
 	
 	public int shortestPath() {
@@ -203,7 +238,7 @@ public class Maze {
 	
 	
 	public static void main (String[] args) {
-		Maze maze = new Maze(1);
+		Maze maze = new Maze(2);
 		maze.printMaze();
 		System.out.println("Shortest Path: " + maze.shortestPath());
 	}
