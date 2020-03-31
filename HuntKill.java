@@ -1,7 +1,7 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class HuntKill {
-	ArrayList<int[]> roomsVisited = new ArrayList<int[]>();
+	ArrayList<int[]> roomsVisited;
 	int numRooms;
 	Room[][][] rooms;
 	public static void main(String[] args) {
@@ -10,8 +10,9 @@ public class HuntKill {
 	}
 
 	public HuntKill(int roomNum) {
+		roomsVisited=new ArrayList<int[]>();
 		numRooms = roomNum;
-		
+
 	}
 
 	public Room[][][] generateMaze() {
@@ -25,6 +26,7 @@ public class HuntKill {
 		}
 		int[] firstRoom = { (int) (Math.random() * numRooms), (int) (Math.random() * numRooms),
 				(int) (Math.random() * numRooms) };
+		//System.out.println("firstRoom: "+firstRoom[0]+" "+firstRoom[1]+" "+firstRoom[2]);
 		roomsVisited.add(firstRoom);
 		boolean generationComplete = false;
 		while (!generationComplete) {
@@ -32,38 +34,45 @@ public class HuntKill {
 			while (!walkComplete) {
 				int[] currentWalk = walk();
 
-				if (currentWalk == null)
+				if (currentWalk == null) {
+					//System.out.println("Walk complete");
 					walkComplete = true;
+				}
 				else {
 					int[] walkCoord = { currentWalk[0], currentWalk[1], currentWalk[2] };
+					//System.out.println("walk: "+currentWalk[0]+" "+currentWalk[1]+" "+currentWalk[2]);
 					roomsVisited.add(walkCoord);
 				}
 			}
 			if (roomsVisited.size() < Math.pow(numRooms, 3)) {
-				System.out.println("hunt in process");
+				//System.out.println("hunt in process");
 				int[] currentHunt = hunt();
 				if (currentHunt == null) {
-					System.out.println("Maze generation complete.");
+					//System.out.println("Maze generation complete.");
 					generationComplete = true;
 				} else {
-					System.out.println("hunt: " + currentHunt[0] + " " + currentHunt[1] + " " + currentHunt[2]);
+					//System.out.println("hunt: " + currentHunt[0] + " " + currentHunt[1] + " " + currentHunt[2]);
 					roomsVisited.add(currentHunt);
 				}
 			} else {
-				System.out.println("Maze generation complete.");
+				//System.out.println("Maze generation complete.");
 				generationComplete = true;
 			}
 		}
-		System.out.println("All coords:");
+		//System.out.println("All coords:");
 		for (int i = 0; i < roomsVisited.size(); i++) {
-			System.out.println(
-					i + ": " + roomsVisited.get(i)[0] + " " + roomsVisited.get(i)[1] + " " + roomsVisited.get(i)[2]);
+			//System.out.println(
+					//i + ": " + roomsVisited.get(i)[0] + " " + roomsVisited.get(i)[1] + " " + roomsVisited.get(i)[2]);
 		}
-		System.out.println("Size: " + roomsVisited.size());
+		//System.out.println("Size: " + roomsVisited.size());
 
+		if (Maze.shortestPath(rooms)<12) {
+			roomsVisited=new ArrayList<int[]>();
+			return generateMaze();
+		}
 		return rooms;
 	}
-	
+
 	public int[] hunt() {
 		boolean tester = true;
 		int[] returnval = new int[3];
@@ -82,49 +91,56 @@ public class HuntKill {
 					if (tester) {
 						returnval = new int[] { i, j, l };
 						for (int k = 0; k < roomsVisited.size(); k++) {
-							if (roomsVisited.get(k)[0] == returnval[0] + 1 && (roomsVisited.get(k)[1] == returnval[1]
-									&& roomsVisited.get(k)[2] == returnval[2])) {
-								rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.east, true);
-								rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
-										.setDoor(Room.west,true);
-								return returnval;
+							ArrayList<Integer> directions = new ArrayList<Integer>();
+							for (int m = 0; m < 6; m++) {
+								directions.add(m);
 							}
-							if ((roomsVisited.get(k)[0] == returnval[0] - 1 && (roomsVisited.get(k)[1] == returnval[1]
-									&& roomsVisited.get(k)[2] == returnval[2]))) {
-								rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.west, true);
-								rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
-										.setDoor(Room.east,true);
-								return returnval;
+							directions=randomize(directions);
+							while (directions.size() > 0) {
+								if (directions.get(0)==0 && roomsVisited.get(k)[0] == returnval[0] + 1 && (roomsVisited.get(k)[1] == returnval[1]
+										&& roomsVisited.get(k)[2] == returnval[2])) {
+									rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.east, true);
+									rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
+											.setDoor(Room.west,true);
+									return returnval;
+								}
+								else if (directions.get(0)==1 && roomsVisited.get(k)[0] == returnval[0] - 1 && (roomsVisited.get(k)[1] == returnval[1]
+										&& roomsVisited.get(k)[2] == returnval[2])) {
+									rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.west, true);
+									rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
+											.setDoor(Room.east,true);
+									return returnval;
+								}
+								else if (directions.get(0)==2 && roomsVisited.get(k)[1] == returnval[1] + 1 && (roomsVisited.get(k)[0] == returnval[0]
+										&& roomsVisited.get(k)[2] == returnval[2])) {
+									rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.north, true);
+									rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
+											.setDoor(Room.south,true);
+									return returnval;
+								}
+								else if (directions.get(0)==3 && roomsVisited.get(k)[1] == returnval[1] - 1 && (roomsVisited.get(k)[0] == returnval[0]
+										&& roomsVisited.get(k)[2] == returnval[2])) {
+									rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.south, true);
+									rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
+											.setDoor(Room.north,true);
+									return returnval;
+								}
+								else if (directions.get(0)==4 && roomsVisited.get(k)[2] == returnval[2] + 1 && (roomsVisited.get(k)[1] == returnval[1]
+										&& roomsVisited.get(k)[0] == returnval[0])) {
+									rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.up, true);
+									rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
+											.setDoor(Room.down,true);
+									return returnval;
+								}
+								else if (directions.get(0)==5 && roomsVisited.get(k)[2] == returnval[2] - 1 && (roomsVisited.get(k)[1] == returnval[1]
+										&& roomsVisited.get(k)[0] == returnval[0])) {
+									rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.down, true);
+									rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
+											.setDoor(Room.up,true);
+									return returnval;
+								}
+								directions.remove(0);
 							}
-							if (roomsVisited.get(k)[1] == returnval[1] + 1 && (roomsVisited.get(k)[0] == returnval[0]
-									&& roomsVisited.get(k)[2] == returnval[2])) {
-								rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.north, true);
-								rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
-										.setDoor(Room.south,true);
-								return returnval;
-							}
-							if ((roomsVisited.get(k)[1] == returnval[1] - 1 && (roomsVisited.get(k)[0] == returnval[0]
-									&& roomsVisited.get(k)[2] == returnval[2]))) {
-								rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.south, true);
-								rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
-										.setDoor(Room.north,true);
-								return returnval;
-							}
-							if (roomsVisited.get(k)[2] == returnval[2] + 1 && (roomsVisited.get(k)[1] == returnval[1]
-									&& roomsVisited.get(k)[0] == returnval[0])) {
-								rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.down, true);
-								rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
-										.setDoor(Room.up,true);
-								return returnval;
-							}
-							if ((roomsVisited.get(k)[2] == returnval[2] - 1 && (roomsVisited.get(k)[1] == returnval[1]
-									&& roomsVisited.get(k)[0] == returnval[0]))) {
-								rooms[returnval[0]][returnval[1]][returnval[2]].setDoor(Room.up, true);
-								rooms[roomsVisited.get(k)[0]][roomsVisited.get(k)[1]][roomsVisited.get(k)[2]]
-										.setDoor(Room.down,true);
-								return returnval;
-							}
-
 						}
 					}
 				}
@@ -137,6 +153,7 @@ public class HuntKill {
 		for (int i = 0; i < 6; i++) {
 			directions.add(i);
 		}
+		directions=randomize(directions);
 		while (directions.size() > 0) {
 			int cellDirection = (int) (Math.random() * directions.size()) + 1;
 			if (directions.get(cellDirection - 1) == 0) {
@@ -178,30 +195,30 @@ public class HuntKill {
 								int[] returnCell = { roomsVisited.get(roomsVisited.size() - 1)[0],
 										roomsVisited.get(roomsVisited.size() - 1)[1] - 1,
 										roomsVisited.get(roomsVisited.size() - 1)[2] };
-								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.south, true);
+								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.north, true);
 								rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-										.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-												.setDoor(Room.north, true);
+								                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+								                                                    		.setDoor(Room.south, true);
 								return returnCell;
 							}
 						} else {
 							int[] returnCell = { roomsVisited.get(roomsVisited.size() - 1)[0],
 									roomsVisited.get(roomsVisited.size() - 1)[1] - 1,
 									roomsVisited.get(roomsVisited.size() - 1)[2] };
-							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.south, true);
+							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.north, true);
 							rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-									.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-											.setDoor(Room.north, true);
+							                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+							                                                    		.setDoor(Room.south, true);
 							return returnCell;
 						}
 					} else {
 						int[] returnCell = { roomsVisited.get(roomsVisited.size() - 1)[0],
 								roomsVisited.get(roomsVisited.size() - 1)[1] - 1,
 								roomsVisited.get(roomsVisited.size() - 1)[2] };
-						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.south, true);
+						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.north, true);
 						rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-								.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-										.setDoor(Room.north, true);
+						                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+						                                                    		.setDoor(Room.south, true);
 						return returnCell;
 					}
 				} else
@@ -247,8 +264,8 @@ public class HuntKill {
 										roomsVisited.get(roomsVisited.size() - 1)[2] };
 								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.west, true);
 								rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-										.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-												.setDoor(Room.east, true);
+								                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+								                                                    		.setDoor(Room.east, true);
 								return returnCell;
 							}
 						} else {
@@ -257,8 +274,8 @@ public class HuntKill {
 									roomsVisited.get(roomsVisited.size() - 1)[2] };
 							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.west, true);
 							rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-									.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-											.setDoor(Room.east, true);
+							                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+							                                                    		.setDoor(Room.east, true);
 							return returnCell;
 						}
 					} else {
@@ -267,8 +284,8 @@ public class HuntKill {
 								roomsVisited.get(roomsVisited.size() - 1)[2] };
 						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.west, true);
 						rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-								.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-										.setDoor(Room.east, true);
+						                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+						                                                    		.setDoor(Room.east, true);
 						return returnCell;
 					}
 				} else {
@@ -314,30 +331,30 @@ public class HuntKill {
 								int[] returnCell = { roomsVisited.get(roomsVisited.size() - 1)[0],
 										roomsVisited.get(roomsVisited.size() - 1)[1] + 1,
 										roomsVisited.get(roomsVisited.size() - 1)[2] };
-								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.north, true);
+								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.south, true);
 								rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-										.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-												.setDoor(Room.south, true);
+								                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+								                                                    		.setDoor(Room.north, true);
 								return returnCell;
 							}
 						} else {
 							int[] returnCell = { roomsVisited.get(roomsVisited.size() - 1)[0],
 									roomsVisited.get(roomsVisited.size() - 1)[1] + 1,
 									roomsVisited.get(roomsVisited.size() - 1)[2] };
-							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.north, true);
+							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.south, true);
 							rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-									.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-											.setDoor(Room.south, true);
+							                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+							                                                    		.setDoor(Room.north, true);
 							return returnCell;
 						}
 					} else {
 						int[] returnCell = { roomsVisited.get(roomsVisited.size() - 1)[0],
 								roomsVisited.get(roomsVisited.size() - 1)[1] + 1,
 								roomsVisited.get(roomsVisited.size() - 1)[2] };
-						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.north, true);
+						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.south, true);
 						rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-								.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-										.setDoor(Room.south, true);
+						                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+						                                                    		.setDoor(Room.north, true);
 						return returnCell;
 					}
 				} else {
@@ -385,8 +402,8 @@ public class HuntKill {
 										roomsVisited.get(roomsVisited.size() - 1)[2] };
 								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.east, true);
 								rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-										.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-												.setDoor(Room.west, true);
+								                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+								                                                    		.setDoor(Room.west, true);
 								return returnCell;
 							}
 						} else {
@@ -395,8 +412,8 @@ public class HuntKill {
 									roomsVisited.get(roomsVisited.size() - 1)[2] };
 							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.east, true);
 							rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-									.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-											.setDoor(Room.west, true);
+							                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+							                                                    		.setDoor(Room.west, true);
 							return returnCell;
 						}
 					} else {
@@ -405,8 +422,8 @@ public class HuntKill {
 								roomsVisited.get(roomsVisited.size() - 1)[2] };
 						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.east, true);
 						rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-								.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-										.setDoor(Room.west, true);
+						                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+						                                                    		.setDoor(Room.west, true);
 						return returnCell;
 					}
 				} else {
@@ -453,8 +470,8 @@ public class HuntKill {
 										roomsVisited.get(roomsVisited.size() - 1)[2] + 1 };
 								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.down, true);
 								rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-										.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-												.setDoor(Room.up, true);
+								                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+								                                                    		.setDoor(Room.up, true);
 								return returnCell;
 							}
 						} else {
@@ -463,8 +480,8 @@ public class HuntKill {
 									roomsVisited.get(roomsVisited.size() - 1)[2] + 1 };
 							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.down, true);
 							rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-									.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-											.setDoor(Room.up, true);
+							                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+							                                                    		.setDoor(Room.up, true);
 							return returnCell;
 						}
 					} else {
@@ -473,8 +490,8 @@ public class HuntKill {
 								roomsVisited.get(roomsVisited.size() - 1)[2] + 1 };
 						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.down, true);
 						rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-								.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-										.setDoor(Room.up, true);
+						                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+						                                                    		.setDoor(Room.up, true);
 						return returnCell;
 					}
 				} else {
@@ -521,8 +538,8 @@ public class HuntKill {
 										roomsVisited.get(roomsVisited.size() - 1)[2] - 1 };
 								rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.up, true);
 								rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-										.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-												.setDoor(Room.down, true);
+								                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+								                                                    		.setDoor(Room.down, true);
 								return returnCell;
 							}
 						} else {
@@ -531,8 +548,8 @@ public class HuntKill {
 									roomsVisited.get(roomsVisited.size() - 1)[2] - 1 };
 							rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.up, true);
 							rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-									.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-											.setDoor(Room.down, true);
+							                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+							                                                    		.setDoor(Room.down, true);
 							return returnCell;
 						}
 					} else {
@@ -541,8 +558,8 @@ public class HuntKill {
 								roomsVisited.get(roomsVisited.size() - 1)[2] - 1 };
 						rooms[returnCell[0]][returnCell[1]][returnCell[2]].setDoor(Room.up, true);
 						rooms[roomsVisited.get(roomsVisited.size() - 1)[0]][roomsVisited
-								.get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
-										.setDoor(Room.down, true);
+						                                                    .get(roomsVisited.size() - 1)[1]][roomsVisited.get(roomsVisited.size() - 1)[2]]
+						                                                    		.setDoor(Room.down, true);
 						return returnCell;
 					}
 				} else {
@@ -552,5 +569,15 @@ public class HuntKill {
 
 		}
 		return null;
+	}
+	private ArrayList<Integer> randomize(ArrayList<Integer> arr){
+		Random rand = new Random();
+		for (int i=0; i<arr.size(); i++) {
+			int randPos = rand.nextInt(arr.size());
+			int temp = arr.get(i);
+			arr.set(i,arr.get(randPos));
+			arr.set(randPos, temp);
+		}
+		return arr;
 	}
 }
