@@ -1,9 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-<<<<<<< HEAD
-import java.util.Random;
-=======
->>>>>>> master
 import javax.swing.*;
 
 public class ChamberLayers extends JLayeredPane {
@@ -26,15 +22,8 @@ public class ChamberLayers extends JLayeredPane {
 		this.add(chamberPanel, JLayeredPane.DEFAULT_LAYER);
 		this.add(HUDPanel, JLayeredPane.PALETTE_LAYER);		
 		this.requestFocusInWindow();
-		game.getFrame().addKeyListener(new KeyListener () {
-			public void keyPressed (KeyEvent event) {
-				if (event.getKeyCode() == KeyEvent.VK_K)
-					toggleMenu();
-			}
-			public void keyReleased (KeyEvent event) {}
-			public void keyTyped (KeyEvent event) {}
-		});
 	}
+	
 	public ChamberView getChamberView () {
 		return chamberPanel;
 	}
@@ -42,34 +31,15 @@ public class ChamberLayers extends JLayeredPane {
 	public HUDPanel getHUDPanel () {
 		return HUDPanel;
 	}
->>>>>>> master
 
 	public void setAnimation(int state) {
 		this.animation = state;
 	}
 
 	public int getAnimation() {
-		Random rand=new Random();
 		return animation;
 	}
 
-<<<<<<< HEAD
-	public void toggleMenu() {
-		System.out.println("Toggling Menu");
-		boolean menuOn = false;
-		for (Component comp : this.getComponents()) {
-			if (comp == menuPanel) {
-				menuOn = true;
-			}
-		}
-		if (!menuOn) {
-			this.add(menuPanel, JLayeredPane.MODAL_LAYER);
-		} else {
-			this.remove(menuPanel);
-		}
-	}
-=======
->>>>>>> master
 	public static void main(String[] args) {
 		ChamberLayers chamber = new ChamberLayers(new Game(), new Maze(1));
 

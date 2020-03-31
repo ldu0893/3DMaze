@@ -21,63 +21,7 @@ public class ChamberView extends JPanel {
 	private boolean pressed=false, menuOn=false, timerrun=true;
 	private int phicount, speed;
 	private ChamberLayers chamberLayers;
-<<<<<<< HEAD
-	private MovementListener movementListener;
-
-	private class MovementListener implements ActionListener, KeyListener, MouseListener {
-		private static final boolean left=true;
-		private static final boolean right=false;
-		private static final int forward=0;
-		private static final int down=1;
-		private static final int up=2;
-		private Player player;
-
-		public MovementListener() {}
-
-		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("up")) {
-				moveUp();
-			} else if (e.getActionCommand().equals("left")) {
-				turnLeft();
-			} else if (e.getActionCommand().equals("forward")) {
-				moveForward();
-			} else if (e.getActionCommand().equals("right")) {
-				turnRight();
-			} else if (e.getActionCommand().equals("down")) {
-				moveDown();
-			} else if (e.getActionCommand().equals("Menu")) {
-				menuOn=!menuOn;
-			}
-		}
-		public void keyTyped (KeyEvent event) {}
-		public void keyPressed (KeyEvent event) {
-			if (event.getKeyCode() == KeyEvent.VK_W) {
-				phicount++;
-				phi = phicount*Math.PI/40;
-				//phi += Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_S) {
-				phicount--;
-				phi = phicount*Math.PI/40;
-				//phi -= Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_A) {
-				theta -= Math.PI/(2*40);
-				//phi -= Math.PI/2/30;
-			} else if (event.getKeyCode() == KeyEvent.VK_D) {
-				theta += Math.PI/(2*40);
-				//phi -= Math.PI/2/30;
-			}
-		}
-		public void keyReleased (KeyEvent event) {
-			if (event.getKeyCode() == KeyEvent.VK_TAB) {
-				game.goToMapView();
-			}
-			if (event.getKeyCode() == KeyEvent.VK_1) { speed+=5; System.out.println(speed);}
-			if (event.getKeyCode() == KeyEvent.VK_2) { speed-=5; System.out.println(speed);}
-			if (event.getKeyCode() == KeyEvent.VK_4) { timerrun=!timerrun; if (!timerrun) timerOne();}
-			if (event.getKeyCode() == KeyEvent.VK_3) { timerOne();}
-=======
 //	private MovementListener movementListener;
->>>>>>> master
 
 //	private class MovementListener implements ActionListener, KeyListener, MouseListener {
 //		private static final boolean left=true;
