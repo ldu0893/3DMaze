@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 
 import javax.swing.*;
 
@@ -21,6 +22,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private MovementListener movementListener;
 	private MapListener mapListener;
 	//private MenuListener menuListener;
+<<<<<<< HEAD
 	private ChamberLayers chamberView;
 	private int rows;
 	private int cols;
@@ -29,10 +31,20 @@ public class HUDPanel extends JPanel implements ActionListener {
 	public HUDPanel hudPanel = this;
 
 	public HUDPanel(Game game, Maze maze, ChamberLayers chamberView) {
+=======
+	private ChamberLayers chamberLayers;
+	private int rows;
+	private int cols;
+	private JPanel menuPanel, dPadPanel;
+	private JButton menuMap, instructions, quit;
+	public HUDPanel hudPanel = this;
+
+	public HUDPanel(Game game, Maze maze, ChamberLayers chamberLayers) {
+>>>>>>> master
 		this.game = game;
 		player = game.getPlayer();
 		this.maze = maze;
-		this.chamberView = chamberView;
+		this.chamberLayers = chamberLayers;
 		player = game.getPlayer();
 		setProperties();
 		setupEventListeners();
@@ -44,10 +56,16 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private void setProperties() {
 		this.setFocusTraversalKeysEnabled(false);
 		this.setFocusable(true);
+<<<<<<< HEAD
 		rows = 600 / 50;
 		cols = 800 / 50;
 		panelHolder = new Component[rows][cols];
 		this.setLayout(new GridLayout(rows, cols, 0, 0));
+=======
+		//rows = 600 / 50;
+		//cols = 800 / 50;
+		this.setLayout(new GridLayout(4, 5, 0, 0));
+>>>>>>> master
 		this.setSize(800, 600);
 		this.setOpaque(false);
 	}
@@ -56,7 +74,11 @@ public class HUDPanel extends JPanel implements ActionListener {
 		movementListener = new MovementListener(game.getPlayer());
 		mapListener = new MapListener(game);
 		//menuListener = new MenuListener();
+<<<<<<< HEAD
 		this.addKeyListener(movementListener);
+=======
+		game.getFrame().addKeyListener(movementListener);
+>>>>>>> master
 		this.addKeyListener(mapListener);
 	}
 
@@ -71,6 +93,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 			buttons[i].setBorderPainted(false);
 		}
 		menuOn = false;
+<<<<<<< HEAD
 		toggleMenu = new JButton("Menu");
 		toggleMenu.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent event) {
@@ -91,14 +114,72 @@ public class HUDPanel extends JPanel implements ActionListener {
 				chamberView.toggleMenu();
 				chamberView.revalidate();
 				chamberView.repaint();
+=======
+		ImageIcon menuIcon = new ImageIcon(iconPath + "Hamburger.png");	
+		toggleMenu = new JButton(menuIcon);
+		toggleMenu.addActionListener(new ActionListener () {
+			public void actionPerformed (ActionEvent event) {
+				menuOn = !menuOn;
+				menuPanel.removeAll();
+				GridBagConstraints c = new GridBagConstraints ();
+				c.fill = GridBagConstraints.BOTH;
+				c.weightx = 1;
+				c.weighty = 1;
+				c.gridx = 0;
+				c.gridy = 0;
+				menuPanel.add(map, c);
+				c.gridx = 1;
+				c.gridy = 0;
+				menuPanel.add(toggleMenu, c);
+				
+				if (menuOn) {
+					c.gridx = 0;
+					c.gridy = 1;
+					c.gridwidth = 2;
+					menuPanel.add(menuMap, c);
+					c.gridx = 0;
+					c.gridy = 2;
+					c.gridwidth = 2;
+					menuPanel.add(instructions, c);
+					c.gridx = 0;
+					c.gridy = 3;
+					c.gridwidth = 2;
+					menuPanel.add(quit, c);
+				} else {					
+					c.gridx = 0;
+					c.gridy = 1;
+					c.gridwidth = 2;
+					menuPanel.add(new JLabel(), c);
+					c.gridx = 0;
+					c.gridy = 2;
+					c.gridwidth = 2;
+					menuPanel.add(new JLabel(), c);
+					c.gridx = 0;
+					c.gridy = 3;
+					c.gridwidth = 2;
+					menuPanel.add(new JLabel(), c);
+				}
+				hudPanel.revalidate();
+				hudPanel.repaint();
+				chamberLayers.revalidate();
+				chamberLayers.repaint();
+>>>>>>> master
 				game.getFrame().revalidate();
 				game.getFrame().repaint();
 			}
 		});
 		toggleMenu.setMargin(new Insets(0, 0, 0, 0));
-		map = new JButton("Map");
+		toggleMenu.setContentAreaFilled(false);
+		toggleMenu.setBorderPainted(false);
+		ImageIcon mapIcon = new ImageIcon(iconPath + "Scroll.png");		
+		map = new JButton(mapIcon);
 		map.addActionListener(mapListener);
 		map.setMargin(new Insets(0, 0, 0, 0));
+<<<<<<< HEAD
+=======
+		map.setContentAreaFilled(false);
+		map.setBorderPainted(false);
+>>>>>>> master
 		
 		menuMap = new JButton("Map");
 		menuMap.setActionCommand("map");
@@ -112,6 +193,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 		quit.setActionCommand("quit");
 		quit.addActionListener(this);
 		quit.setMargin(new Insets(0, 0, 0, 0));
+<<<<<<< HEAD
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -147,26 +229,113 @@ public class HUDPanel extends JPanel implements ActionListener {
 				}
 				this.add(panelHolder[i][j]);
 			}
+=======
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("map")) {
+			game.goToMapView();
+		} else if (e.getActionCommand().equals("instructions")) {
+			game.toggleInstructions();
+		} else if (e.getActionCommand().equals("quit")) {
+			game.goToIntroScreen();
+		}
+	}
+	
+	private void addButtons() {
+		menuPanel = new JPanel();
+		menuPanel.setOpaque(false);
+		menuPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints ();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.weighty = 1;
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		menuPanel.add(map, c);
+		c.gridx = 1;
+		c.gridy = 0;
+		menuPanel.add(toggleMenu, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		menuPanel.add(new JLabel(), c);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		menuPanel.add(new JLabel(), c);
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		menuPanel.add(new JLabel(), c);
+		
+		dPadPanel = new JPanel();
+		dPadPanel.setOpaque(false);
+		dPadPanel.setLayout(new GridLayout(3, 3, 0, 0));
+		dPadPanel.add(new JLabel());
+		dPadPanel.add(buttons[0]);
+		dPadPanel.add(new JLabel());
+		dPadPanel.add(buttons[1]);
+		dPadPanel.add(buttons[2]);
+		dPadPanel.add(buttons[3]);
+		dPadPanel.add(new JLabel());
+		dPadPanel.add(buttons[4]);
+		dPadPanel.add(new JLabel());
+		
+		for (int i = 0; i < 4; i++)
+			for (int j = 0; j < 5; j++)
+				if (i == 0 && j == 4)
+					this.add(menuPanel);
+				else if (i == 3 && j == 0)
+					this.add(dPadPanel);
+				else
+					this.add(new JLabel());
+		
+>>>>>>> master
 		enableComponents(getRoom(maze, player), player.getOrientation());
 		for (Component comp : this.getComponents()) {
 			comp.setFocusable(false);
 		}
 	}
 
+<<<<<<< HEAD
 	private void disableComponents() {
 		for (Component comp : this.getComponents()) {
+=======
+	public void disableComponents() {
+		for (Component comp : menuPanel.getComponents()) {
+			comp.setEnabled(false);
+		}
+		for (Component comp : dPadPanel.getComponents()) {
+>>>>>>> master
 			comp.setEnabled(false);
 		}
 	}
 
+<<<<<<< HEAD
 	private void enableComponents(Room room, int orientation) {
 		for (Component comp : this.getComponents()) {
+=======
+	public void enableComponents(Room room, int orientation) {
+		for (Component comp : menuPanel.getComponents()) {
+			comp.setEnabled(true);
+		}
+		for (Component comp : dPadPanel.getComponents()) {
+>>>>>>> master
 			comp.setEnabled(true);
 		}
 		buttons[0].setEnabled(canMove(room, up, orientation));
 		buttons[4].setEnabled(canMove(room, down, orientation));
 		buttons[2].setEnabled(canMove(room, forward, orientation));
 	}
+<<<<<<< HEAD
+=======
+	
+	public void enableComponents () {
+		enableComponents(getRoom(maze, player), player.getOrientation());
+	}
+>>>>>>> master
 
 	public static boolean canMove(Room room, int movementDirection, int playerOrientation) {
 		if (movementDirection == left || movementDirection == right) {
@@ -194,12 +363,12 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 
 		public void animationFinished() {
-			chamberView.setAnimation(0);
+			chamberLayers.setAnimation(0);
 			enableComponents(getRoom(maze, player), player.getOrientation());
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			if (chamberView.getAnimation() == 0) {
+			if (chamberLayers.getAnimation() == 0) {
 				if (e.getActionCommand().equals(commands[2])) {
 					move(forward);
 				} else if (e.getActionCommand().equals(commands[0])) {
@@ -215,7 +384,8 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 
 		public void keyReleased(KeyEvent e) {
-			if (chamberView.getAnimation() == 0) {
+			System.out.println("hi");
+			if (chamberLayers.getAnimation() == 0) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					move(forward);
 				} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP) {
@@ -231,7 +401,11 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 
 		public void move(int direction) {
+<<<<<<< HEAD
 			chamberView.setAnimation(direction);
+=======
+			chamberLayers.setAnimation(direction);
+>>>>>>> master
 			disableComponents();
 			double score = (double) maze.shortestPath() / (double) player.getMoves();
 			if (!canMove(getRoom(maze, player), direction, player.getOrientation())) {
@@ -243,20 +417,36 @@ public class HUDPanel extends JPanel implements ActionListener {
 					game.win(score);
 				}
 				player.moveForward();
+<<<<<<< HEAD
+=======
+				chamberLayers.getChamberView().moveForward();
+>>>>>>> master
 			} else if (direction == down) {
 				if (getRoom(maze, player).leadsOutside(Room.down)) {
 					game.win(score);
 				}
 				player.moveDown();
+<<<<<<< HEAD
+=======
+				chamberLayers.getChamberView().moveDown();
+>>>>>>> master
 			} else if (direction == up) {
 				if (getRoom(maze, player).leadsOutside(Room.up)) {
 					game.win(score);
 				}
 				player.moveUp();
+<<<<<<< HEAD
 			} else if (direction == left) {
 				player.turnLeft();
+=======
+				chamberLayers.getChamberView().moveUp();
+			} else if (direction == left) {
+				player.turnLeft();
+				chamberLayers.getChamberView().turnLeft();
+>>>>>>> master
 			} else if (direction == right) {
 				player.turnRight();
+				chamberLayers.getChamberView().turnRight();
 			}
 		}
 

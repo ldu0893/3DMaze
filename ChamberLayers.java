@@ -1,7 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
+<<<<<<< HEAD
 import java.util.Random;
 
+=======
+>>>>>>> master
 import javax.swing.*;
 
 public class ChamberLayers extends JLayeredPane {
@@ -12,9 +15,8 @@ public class ChamberLayers extends JLayeredPane {
 	public static final int down = 5;
 	public static final int right = 1;
 	public static final int left = 2;
-	private JPanel chamberPanel;
-	private JPanel HUDPanel;
-	private JPanel menuPanel;
+	private ChamberView chamberPanel;
+	private HUDPanel HUDPanel;
 	public ChamberLayers(Game game, Maze maze) {
 		animation = 0;
 		this.setSize(800, 600);
@@ -22,8 +24,6 @@ public class ChamberLayers extends JLayeredPane {
 		chamberPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 		HUDPanel = new HUDPanel(game, maze, this);
 		HUDPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
-		menuPanel = new DropdownMenu(game);
-		menuPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 		this.add(chamberPanel, JLayeredPane.DEFAULT_LAYER);
 		this.add(HUDPanel, JLayeredPane.PALETTE_LAYER);		
 		this.requestFocusInWindow();
@@ -36,6 +36,17 @@ public class ChamberLayers extends JLayeredPane {
 			public void keyTyped (KeyEvent event) {}
 		});
 	}
+<<<<<<< HEAD
+=======
+	
+	public ChamberView getChamberView () {
+		return chamberPanel;
+	}
+	
+	public HUDPanel getHUDPanel () {
+		return HUDPanel;
+	}
+>>>>>>> master
 
 	public void setAnimation(int state) {
 		this.animation = state;
@@ -46,6 +57,7 @@ public class ChamberLayers extends JLayeredPane {
 		return animation;
 	}
 
+<<<<<<< HEAD
 	public void toggleMenu() {
 		System.out.println("Toggling Menu");
 		boolean menuOn = false;
@@ -61,6 +73,8 @@ public class ChamberLayers extends JLayeredPane {
 		}
 	}
 
+=======
+>>>>>>> master
 	public static void main(String[] args) {
 		ChamberLayers chamber = new ChamberLayers(new Game(), new Maze(1));
 
