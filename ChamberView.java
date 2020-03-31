@@ -10,7 +10,6 @@ public class ChamberView extends JPanel {
 	private int playerDirection; // N0, E1, S2, W3
 	private Vector cameraPos, screenPlaneRelPos;
 	private Room currentRoom, nextRoom;
-	private ArrayList<Plane> planeList;
 	private ArrayList<Triangle> triList;
 	private double theta, phi;
 	private java.util.Timer timer = new java.util.Timer();
