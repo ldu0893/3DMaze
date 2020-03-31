@@ -75,7 +75,6 @@ public class ChamberView extends JPanel {
 			if (event.getKeyCode() == KeyEvent.VK_2) { speed-=5; System.out.println(speed);}
 			if (event.getKeyCode() == KeyEvent.VK_4) { timerrun=!timerrun; if (!timerrun) timerOne();}
 			if (event.getKeyCode() == KeyEvent.VK_3) { timerOne();}
-
 =======
 //	private MovementListener movementListener;
 >>>>>>> master

@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 <<<<<<< HEAD
 import java.util.Random;
-
 =======
 >>>>>>> master
 import javax.swing.*;
@@ -36,9 +35,6 @@ public class ChamberLayers extends JLayeredPane {
 			public void keyTyped (KeyEvent event) {}
 		});
 	}
-<<<<<<< HEAD
-=======
-	
 	public ChamberView getChamberView () {
 		return chamberPanel;
 	}
@@ -72,7 +68,6 @@ public class ChamberLayers extends JLayeredPane {
 			this.remove(menuPanel);
 		}
 	}
-
 =======
 >>>>>>> master
 	public static void main(String[] args) {

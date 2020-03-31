@@ -23,6 +23,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private MapListener mapListener;
 	//private MenuListener menuListener;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ChamberLayers chamberView;
 	private int rows;
 	private int cols;
@@ -35,11 +36,19 @@ public class HUDPanel extends JPanel implements ActionListener {
 	private ChamberLayers chamberLayers;
 	private int rows;
 	private int cols;
+=======
+	private ChamberLayers chamberLayers;
+	private int rows;
+	private int cols;
+>>>>>>> master
 	private JPanel menuPanel, dPadPanel;
 	private JButton menuMap, instructions, quit;
 	public HUDPanel hudPanel = this;
 
 	public HUDPanel(Game game, Maze maze, ChamberLayers chamberLayers) {
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 		this.game = game;
 		player = game.getPlayer();
@@ -57,10 +66,16 @@ public class HUDPanel extends JPanel implements ActionListener {
 		this.setFocusTraversalKeysEnabled(false);
 		this.setFocusable(true);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		rows = 600 / 50;
 		cols = 800 / 50;
 		panelHolder = new Component[rows][cols];
 		this.setLayout(new GridLayout(rows, cols, 0, 0));
+=======
+		//rows = 600 / 50;
+		//cols = 800 / 50;
+		this.setLayout(new GridLayout(4, 5, 0, 0));
+>>>>>>> master
 =======
 		//rows = 600 / 50;
 		//cols = 800 / 50;
@@ -75,7 +90,11 @@ public class HUDPanel extends JPanel implements ActionListener {
 		mapListener = new MapListener(game);
 		//menuListener = new MenuListener();
 <<<<<<< HEAD
+<<<<<<< HEAD
 		this.addKeyListener(movementListener);
+=======
+		game.getFrame().addKeyListener(movementListener);
+>>>>>>> master
 =======
 		game.getFrame().addKeyListener(movementListener);
 >>>>>>> master
@@ -93,6 +112,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 			buttons[i].setBorderPainted(false);
 		}
 		menuOn = false;
+<<<<<<< HEAD
 <<<<<<< HEAD
 		toggleMenu = new JButton("Menu");
 		toggleMenu.addActionListener(new ActionListener () {
@@ -115,6 +135,8 @@ public class HUDPanel extends JPanel implements ActionListener {
 				chamberView.revalidate();
 				chamberView.repaint();
 =======
+=======
+>>>>>>> master
 		ImageIcon menuIcon = new ImageIcon(iconPath + "Hamburger.png");	
 		toggleMenu = new JButton(menuIcon);
 		toggleMenu.addActionListener(new ActionListener () {
@@ -163,6 +185,9 @@ public class HUDPanel extends JPanel implements ActionListener {
 				hudPanel.repaint();
 				chamberLayers.revalidate();
 				chamberLayers.repaint();
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 				game.getFrame().revalidate();
 				game.getFrame().repaint();
@@ -176,6 +201,11 @@ public class HUDPanel extends JPanel implements ActionListener {
 		map.addActionListener(mapListener);
 		map.setMargin(new Insets(0, 0, 0, 0));
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		map.setContentAreaFilled(false);
+		map.setBorderPainted(false);
+>>>>>>> master
 =======
 		map.setContentAreaFilled(false);
 		map.setBorderPainted(false);
@@ -193,6 +223,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 		quit.setActionCommand("quit");
 		quit.addActionListener(this);
 		quit.setMargin(new Insets(0, 0, 0, 0));
+<<<<<<< HEAD
 <<<<<<< HEAD
 	}
 	
@@ -232,6 +263,10 @@ public class HUDPanel extends JPanel implements ActionListener {
 =======
 	}
 	
+=======
+	}
+	
+>>>>>>> master
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("map")) {
 			game.goToMapView();
@@ -292,6 +327,9 @@ public class HUDPanel extends JPanel implements ActionListener {
 				else
 					this.add(new JLabel());
 		
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 		enableComponents(getRoom(maze, player), player.getOrientation());
 		for (Component comp : this.getComponents()) {
@@ -300,28 +338,40 @@ public class HUDPanel extends JPanel implements ActionListener {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private void disableComponents() {
 		for (Component comp : this.getComponents()) {
 =======
+=======
+>>>>>>> master
 	public void disableComponents() {
 		for (Component comp : menuPanel.getComponents()) {
 			comp.setEnabled(false);
 		}
 		for (Component comp : dPadPanel.getComponents()) {
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 			comp.setEnabled(false);
 		}
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private void enableComponents(Room room, int orientation) {
 		for (Component comp : this.getComponents()) {
 =======
+=======
+>>>>>>> master
 	public void enableComponents(Room room, int orientation) {
 		for (Component comp : menuPanel.getComponents()) {
 			comp.setEnabled(true);
 		}
 		for (Component comp : dPadPanel.getComponents()) {
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 			comp.setEnabled(true);
 		}
@@ -330,11 +380,17 @@ public class HUDPanel extends JPanel implements ActionListener {
 		buttons[2].setEnabled(canMove(room, forward, orientation));
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> master
 	
 	public void enableComponents () {
 		enableComponents(getRoom(maze, player), player.getOrientation());
 	}
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 
 	public static boolean canMove(Room room, int movementDirection, int playerOrientation) {
@@ -402,7 +458,11 @@ public class HUDPanel extends JPanel implements ActionListener {
 
 		public void move(int direction) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			chamberView.setAnimation(direction);
+=======
+			chamberLayers.setAnimation(direction);
+>>>>>>> master
 =======
 			chamberLayers.setAnimation(direction);
 >>>>>>> master
@@ -418,6 +478,10 @@ public class HUDPanel extends JPanel implements ActionListener {
 				}
 				player.moveForward();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				chamberLayers.getChamberView().moveForward();
+>>>>>>> master
 =======
 				chamberLayers.getChamberView().moveForward();
 >>>>>>> master
@@ -427,6 +491,10 @@ public class HUDPanel extends JPanel implements ActionListener {
 				}
 				player.moveDown();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+				chamberLayers.getChamberView().moveDown();
+>>>>>>> master
 =======
 				chamberLayers.getChamberView().moveDown();
 >>>>>>> master
@@ -436,13 +504,19 @@ public class HUDPanel extends JPanel implements ActionListener {
 				}
 				player.moveUp();
 <<<<<<< HEAD
+<<<<<<< HEAD
 			} else if (direction == left) {
 				player.turnLeft();
 =======
+=======
+>>>>>>> master
 				chamberLayers.getChamberView().moveUp();
 			} else if (direction == left) {
 				player.turnLeft();
 				chamberLayers.getChamberView().turnLeft();
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 			} else if (direction == right) {
 				player.turnRight();

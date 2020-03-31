@@ -25,6 +25,9 @@ public class Maze {
 //			
 //		} else 
 		if (difficulty == 1) { // Prim's Algorithm
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 			mazeArray = (new PrimsAlgorithm(5)).generateMaze();
 			size = 5;
