@@ -54,12 +54,6 @@ public class KruskalsAlgorithm {
 					mazerooms[x][y][z+1].setDoor(Room.down, true);
 				}
 			} while (!done());
-			int exit=rand.nextInt(2);
-			if (exit==0) {
-				mazerooms[0][0][0].setDoor(Room.west, true);
-			} else {
-				mazerooms[0][0][0].setDoor(Room.south, true);
-			}
 			return mazerooms;
 		}
 

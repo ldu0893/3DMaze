@@ -3,13 +3,13 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class HUDPanel extends JPanel{
+public class HUDPanel extends JPanel implements ActionListener {
 	private static String iconPath = "Icons/";
 	private JButton[] buttons;
 	private Game game;
 	private Maze maze;
 	private Player player;
-	private static String[] commands = {"up", "left", "forward", "right", "down"};
+	private static String[] commands = { "up", "left", "forward", "right", "down" };
 	public static final int forward = 1;
 	public static final int up = 2;
 	public static final int down = 3;
@@ -20,12 +20,17 @@ public class HUDPanel extends JPanel{
 	private JButton toggleMenu;
 	private MovementListener movementListener;
 	private MapListener mapListener;
-	private MenuListener menuListener;
+	//private MenuListener menuListener;
 	private ChamberLayers chamberView;
 	private int rows;
 	private int cols;
-	public HUDPanel(Game game, Maze maze, ChamberLayers chamberView){
+	private Component[][] panelHolder;
+	private JButton menuMap, instructions, quit;
+	public HUDPanel hudPanel = this;
+
+	public HUDPanel(Game game, Maze maze, ChamberLayers chamberView) {
 		this.game = game;
+		player = game.getPlayer();
 		this.maze = maze;
 		this.chamberView = chamberView;
 		player = game.getPlayer();
@@ -35,26 +40,29 @@ public class HUDPanel extends JPanel{
 		addButtons();
 		this.requestFocusInWindow();
 	}
-	@SuppressWarnings("static-access")
+
 	private void setProperties() {
 		this.setFocusTraversalKeysEnabled(false);
 		this.setFocusable(true);
-		rows = 600/50;
-		cols = 800/50;
+		rows = 600 / 50;
+		cols = 800 / 50;
+		panelHolder = new Component[rows][cols];
 		this.setLayout(new GridLayout(rows, cols, 0, 0));
 		this.setSize(800, 600);
 		this.setOpaque(false);
 	}
+
 	private void setupEventListeners() {
 		movementListener = new MovementListener(game.getPlayer());
 		mapListener = new MapListener(game);
-		menuListener = new MenuListener();
+		//menuListener = new MenuListener();
 		this.addKeyListener(movementListener);
 		this.addKeyListener(mapListener);
 	}
+
 	private void setupButtons() {
 		buttons = new JButton[5];
-		for(int i=0; i<buttons.length; i++) {
+		for (int i = 0; i < buttons.length; i++) {
 			ImageIcon icon = new ImageIcon(iconPath + commands[i] + "Arrow.png");
 			buttons[i] = new JButton(icon);
 			buttons[i].setActionCommand(commands[i]);
@@ -64,101 +72,132 @@ public class HUDPanel extends JPanel{
 		}
 		menuOn = false;
 		toggleMenu = new JButton("Menu");
-		toggleMenu.addActionListener(menuListener);
+		toggleMenu.addActionListener(new ActionListener () {
+			public void actionPerformed (ActionEvent event) {
+				menuOn = !menuOn;
+				//TODO When you press menu, the components don't appear, even though this section is run
+				if (menuOn) {
+					panelHolder[1][cols-1] = menuMap;
+					panelHolder[2][cols-1] = instructions;
+					panelHolder[3][cols-1] = quit;
+					System.out.println("hello");
+				} else {
+					panelHolder[1][cols-1] = new JLabel("");
+					panelHolder[2][cols-1] = new JLabel("");
+					panelHolder[3][cols-1] = new JLabel("");
+				}
+				hudPanel.revalidate();
+				hudPanel.repaint();
+				chamberView.toggleMenu();
+				chamberView.revalidate();
+				chamberView.repaint();
+				game.getFrame().revalidate();
+				game.getFrame().repaint();
+			}
+		});
 		toggleMenu.setMargin(new Insets(0, 0, 0, 0));
 		map = new JButton("Map");
 		map.addActionListener(mapListener);
 		map.setMargin(new Insets(0, 0, 0, 0));
+		
+		menuMap = new JButton("Map");
+		menuMap.setActionCommand("map");
+		menuMap.addActionListener(this);
+		menuMap.setMargin(new Insets(0, 0, 0, 0));
+		instructions = new JButton("Instructions");
+		instructions.setActionCommand("instructions");
+		instructions.addActionListener(this);
+		instructions.setMargin(new Insets(0, 0, 0, 0));
+		quit = new JButton("Quit Game");
+		quit.setActionCommand("quit");
+		quit.addActionListener(this);
+		quit.setMargin(new Insets(0, 0, 0, 0));
 	}
-	private void addButtons() {
-		for(int i=0; i<rows; i++) {
-			for(int j=0; j<cols; j++) {
-				JLabel temp = new JLabel("");
-				temp.setOpaque(false);
-				temp.setEnabled(false);
-				if(i<rows-3) {
-					if(i == 0) {
-						if(j == (cols - 2)) {
-							this.add(map);
-						}else if(j == (cols - 1)) {
-							this.add(toggleMenu);
-						}else {
-							this.add(temp);
-						}
-					}else {
-						this.add(temp);
-					}
-				}else {
-					if(i == rows-3) {
-						if(j == 1) {
-							this.add(buttons[0]);
-						}else {
-							this.add(temp);
-						}
-					}else if(i == rows - 2) {
-						if(0 <= j && j <= 2) {
-							this.add(buttons[j+1]);
-						}else {
-							this.add(temp);
-						}
-					}else if(i == rows - 1) {
-						if(j == 1) {
-							this.add(buttons[4]);
-						}else {
-							this.add(temp);
-						}
-					}else {
-						this.add(temp);
-					}
-				}
-			}
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("map")) {
+			game.goToMapView();
+		} else if (e.getActionCommand().equals("instructions")) {
+			game.toggleInstructions();
+		} else if (e.getActionCommand().equals("quit")) {
+			game.goToIntroScreen();
 		}
+	}
+	
+	private void addButtons() {
+		//{ "up", "left", "forward", "right", "down" }
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++) {
+				if (i == 0 && j == cols-2) {
+					panelHolder[i][j] = map;
+				} else if (i == 0 && j == cols-1) {
+					panelHolder[i][j] = toggleMenu;
+				} else if (i == rows-3 && j == 1) {
+					panelHolder[i][j] = buttons[0];
+				} else if (i == rows-2 && j == 0) {
+					panelHolder[i][j] = buttons[1];
+				} else if (i == rows-2 && j == 1) {
+					panelHolder[i][j] = buttons[2];
+				} else if (i == rows-2 && j == 2) {
+					panelHolder[i][j] = buttons[3];
+				} else if (i == rows-1 && j == 1) {
+					panelHolder[i][j] = buttons[4];
+				} else {
+					panelHolder[i][j] = new JLabel("");
+				}
+				this.add(panelHolder[i][j]);
+			}
 		enableComponents(getRoom(maze, player), player.getOrientation());
-		for(Component comp: this.getComponents()) {
+		for (Component comp : this.getComponents()) {
 			comp.setFocusable(false);
 		}
 	}
-	
+
 	private void disableComponents() {
-		for(Component comp: this.getComponents()) {
+		for (Component comp : this.getComponents()) {
 			comp.setEnabled(false);
 		}
 	}
-	
+
 	private void enableComponents(Room room, int orientation) {
-		for(Component comp: this.getComponents()) {
+		for (Component comp : this.getComponents()) {
 			comp.setEnabled(true);
 		}
 		buttons[0].setEnabled(canMove(room, up, orientation));
 		buttons[4].setEnabled(canMove(room, down, orientation));
 		buttons[2].setEnabled(canMove(room, forward, orientation));
 	}
+
 	public static boolean canMove(Room room, int movementDirection, int playerOrientation) {
-		if(movementDirection == left || 
-				movementDirection == right) {
+		if (movementDirection == left || movementDirection == right) {
 			return true;
-		}else if(movementDirection == up) {
+		} else if (movementDirection == up) {
 			return room.getDoor(Room.up);
-		}else if(movementDirection == down) {
+		} else if (movementDirection == down) {
 			return room.getDoor(Room.down);
-		}else if(movementDirection == forward) {
+		} else if (movementDirection == forward) {
 			return room.getDoor(playerOrientation);
 		}
 		return false;
 	}
+
 	public static Room getRoom(Maze maze, Player player) {
 		int[] pos = player.getPosition();
 		return maze.getRoom(pos[0], pos[1], pos[2]);
 	}
-	private class MovementListener implements ActionListener, KeyListener{
+
+	private class MovementListener implements ActionListener, KeyListener {
 		private Player player;
+
 		public MovementListener(Player p) {
 			this.player = p;
 		}
+
 		public void animationFinished() {
 			chamberView.setAnimation(0);
 			enableComponents(getRoom(maze, player), player.getOrientation());
 		}
+
 		public void actionPerformed(ActionEvent e) {
 			if (chamberView.getAnimation() == 0) {
 				if (e.getActionCommand().equals(commands[2])) {
@@ -174,6 +213,7 @@ public class HUDPanel extends JPanel{
 				}
 			}
 		}
+
 		public void keyReleased(KeyEvent e) {
 			if (chamberView.getAnimation() == 0) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -189,66 +229,75 @@ public class HUDPanel extends JPanel{
 				}
 			}
 		}
-		public void move(int direction) { 
+
+		public void move(int direction) {
 			chamberView.setAnimation(direction);
 			disableComponents();
-			double score = (double)maze.shortestPath()/(double)player.getMoves();
-			if(!canMove(getRoom(maze, player), direction, player.getOrientation())) {
+			double score = (double) maze.shortestPath() / (double) player.getMoves();
+			if (!canMove(getRoom(maze, player), direction, player.getOrientation())) {
 				animationFinished();
 				return;
 			}
-			if(direction == forward) {
-				if(getRoom(maze, player).leadsOutside(player.getOrientation())) {
+			if (direction == forward) {
+				if (getRoom(maze, player).leadsOutside(player.getOrientation())) {
 					game.win(score);
 				}
 				player.moveForward();
-			}else if(direction == down) {
-				if(getRoom(maze, player).leadsOutside(Room.down)) {
+			} else if (direction == down) {
+				if (getRoom(maze, player).leadsOutside(Room.down)) {
 					game.win(score);
 				}
 				player.moveDown();
-			}else if(direction == up) {
-				if(getRoom(maze, player).leadsOutside(Room.up)) {
+			} else if (direction == up) {
+				if (getRoom(maze, player).leadsOutside(Room.up)) {
 					game.win(score);
 				}
 				player.moveUp();
-			}else if(direction == left) {
+			} else if (direction == left) {
 				player.turnLeft();
-			}else if(direction == right) {
+			} else if (direction == right) {
 				player.turnRight();
 			}
 		}
-		//Beginning of empty methods
+
+		// Beginning of empty methods
 		public void keyPressed(KeyEvent e) {
 		}
+
 		public void keyTyped(KeyEvent e) {
 		}
-		//End of empty methods
+		// End of empty methods
 	}
-	private class MapListener implements ActionListener, KeyListener{
+
+	private class MapListener implements ActionListener, KeyListener {
 		private Game game;
-		MapListener(Game game){
+
+		MapListener(Game game) {
 			this.game = game;
 		}
+
 		public void actionPerformed(ActionEvent event) {
 			game.goToMapView();
 		}
-		
+
 		public void keyReleased(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_TAB) {
+			if (e.getKeyCode() == KeyEvent.VK_TAB) {
 				game.goToMapView();
 			}
 		}
-		//Begin empty methods
+
+		// Begin empty methods
 		public void keyPressed(KeyEvent e) {
 		}
-		public void keyTyped(KeyEvent e) {	
+
+		public void keyTyped(KeyEvent e) {
 		}
-		//End empty methods
+		// End empty methods
 	}
-	private class MenuListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
-			menuOn = !menuOn;
-		}
-	}
+
+//	private class MenuListener implements ActionListener {
+//		public void actionPerformed(ActionEvent arg0) {
+//			menuOn = !menuOn;
+//		}
+//	}
 }

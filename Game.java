@@ -21,6 +21,7 @@ public class Game {
 	private IntroScreen introScreen;
 	private DifficultyScreen difficultyScreen;
 	private ChamberView chamberView;
+	private ChamberLayers chamberLayers;
 	private MapView mapView;
 	private Instructions instructionScreen;
 	private Component backFromInstructions = null;;
@@ -89,12 +90,13 @@ public class Game {
 		}
 		int[] positions = { size - 1, size - 1, size - 1 };
 		maze = new Maze(difficulty);
-		
-		chamberView = new ChamberView(this, maze, null);
-		//mapView = new MapView(this, maze);
 		player = new Player(positions, 2, size, size, size);
+		chamberLayers = new ChamberLayers(this, maze);
+		//chamberView = new ChamberView(this, maze, null);
+		//mapView = new MapView(this, maze);
 		gameFrame.getContentPane().removeAll();
-		gameFrame.add(chamberView);
+		gameFrame.add(chamberLayers);
+		//gameFrame.add(chamberView);
 		gameFrame.revalidate();
 	}
 

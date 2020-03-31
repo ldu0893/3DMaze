@@ -16,15 +16,14 @@ public class Maze {
 	public Maze (int difficulty) {
 		this.difficulty = difficulty;
 		
-//		if (difficulty == 0) { // Hunt-and-Kill Algorithm
-//			
-//		} else 
-		if (difficulty == 1) { // Prim's Algorithm
-			mazeArray = (new PrimsAlgorithm(3)).generateMaze();
-			size = 3;
+		if (difficulty == 0) { // Hunt-and-Kill Algorithm
+			
+		} else if (difficulty == 1) { // Prim's Algorithm
+			mazeArray = (new PrimsAlgorithm(5)).generateMaze();
+			size = 5;
 		} else if (difficulty == 2) { // Kruskal's Algorithm
-			mazeArray = (new KruskalsAlgorithm(3)).generate();
-			size = 3;
+			mazeArray = (new KruskalsAlgorithm(6)).generate();
+			size = 6;
 		} else {
 			mazeArray = new Room[5][5][5];
 			for (int i = 0; i < 5; i++)

@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
 import javax.swing.*;
 
 public class ChamberView extends JPanel {
@@ -65,7 +64,7 @@ public class ChamberView extends JPanel {
 			} else if (event.getKeyCode() == KeyEvent.VK_D) {
 				theta += Math.PI/(2*40);
 				//phi -= Math.PI/2/30;
-			} 
+			}
 		}
 		public void keyReleased (KeyEvent event) {
 			if (event.getKeyCode() == KeyEvent.VK_TAB) {
@@ -620,16 +619,6 @@ public class ChamberView extends JPanel {
 				new Vector(100+40*Math.sin(doorAngleE),30+40*Math.cos(doorAngleE),60).plus(roomVector), doorColorArray[1]));
 		triList.add(new Triangle(new Vector(100,30,0).plus(roomVector), new Vector(100,30,60).plus(roomVector), 
 				new Vector(100+40*Math.sin(doorAngleE),30+40*Math.cos(doorAngleE),60).plus(roomVector), doorColorArray[1]));
-
-		triList.add(new Triangle(new Vector(1,99,0).plus(roomVector), new Vector(2,99,0).plus(roomVector), new Vector(-1,101,101).plus(roomVector), Color.BLACK));
-		triList.add(new Triangle(new Vector(-1,101,101).plus(roomVector), new Vector(2,99,0).plus(roomVector), new Vector(0,101,101).plus(roomVector), Color.BLACK));
-		triList.add(new Triangle(new Vector(99,99,0).plus(roomVector), new Vector(100,99,0).plus(roomVector), new Vector(101,101,101).plus(roomVector), Color.BLACK));
-		triList.add(new Triangle(new Vector(101,101,101).plus(roomVector), new Vector(100,99,0).plus(roomVector), new Vector(102,101,102).plus(roomVector), Color.BLACK));
-		triList.add(new Triangle(new Vector(0,0,0).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,0,101).plus(roomVector), Color.BLACK));
-		triList.add(new Triangle(new Vector(0,0,101).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,1,101).plus(roomVector), Color.BLACK));
-		triList.add(new Triangle(new Vector(100,0,0).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,0,101).plus(roomVector), Color.BLACK));
-		triList.add(new Triangle(new Vector(100,0,101).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,1,101).plus(roomVector), Color.BLACK));
-		
 	}
 
 	private void setUpRooms () {
@@ -650,7 +639,7 @@ public class ChamberView extends JPanel {
 
 	public void paintComponent (Graphics g) {
 		super.paintComponent(g);
-		System.out.println("----------");
+		//System.out.println("----------");
 
 		//Calculates the coordinate system of the screen-plane
 		Vector a_0 = new Vector(Math.cos(phi)*Math.sin(theta), Math.cos(phi)*Math.cos(theta), Math.sin(phi));
@@ -667,7 +656,7 @@ public class ChamberView extends JPanel {
 			double d_1 = Math.abs(((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
 			double d_2 = Math.abs(((vert2.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
 			double d_3 = Math.abs(((vert3.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude());
-			System.out.println("D: " + d_1 + " " + d_2 + " " + d_3);
+			//System.out.println("D: " + d_1 + " " + d_2 + " " + d_3);
 			
 			int numGoodVerts = 0;
 			for (Vector pos : verts)
@@ -717,7 +706,7 @@ public class ChamberView extends JPanel {
 		
 		//Draws all of the triangles
 		for (Triangle tri : triList) {
-			System.out.println(tri);
+			//System.out.println(tri);
 			Vector[] verts = tri.getVerts();
 			int[] x = new int[3];
 			int[] y = new int[3];
@@ -725,9 +714,9 @@ public class ChamberView extends JPanel {
 				Vector p_0 = verts[i].minus( screenPlaneRelPos.clone().scale( screenPlaneRelPos.dot(verts[i].minus(a_0))/Math.pow(screenPlaneRelPos.magnitude(),2) ) );
 				double d = ((verts[i].minus(cameraPos.plus(screenPlaneRelPos))).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude();
 				x[i] = (int) (8*((p_0.minus(cameraPos.plus(a_0))).dot(b_0))/b_0.magnitude() * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 400;
-				y[i] = (int) (6*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 300;
+				y[i] = (int) (5.7*((p_0.minus(cameraPos.plus(a_0))).dot(c_0)/c_0.magnitude()) * screenPlaneRelPos.magnitude() / (d + screenPlaneRelPos.magnitude())) + 285;
 			}
-			System.out.println("(" + (x[0]-400) + ", " + (y[0]-300) + ") (" + (x[1]-400) + ", " + (y[1]-300) + ") (" + (x[2]-400) + ", " + (y[2]-300) + ")");
+			//System.out.println("(" + (x[0]-400) + ", " + (y[0]-300) + ") (" + (x[1]-400) + ", " + (y[1]-300) + ") (" + (x[2]-400) + ", " + (y[2]-300) + ")");
 			g.setColor(tri.getColor());
 			g.fillPolygon(x, y, 3);
 		}
