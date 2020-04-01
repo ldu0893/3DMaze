@@ -31,11 +31,12 @@ public class Painting {
 			directionOffset = new Vector(98, 70, 30);
 		}
 		
-		BufferedImage bufferedImage = null;
+		ArrayList<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
 		try {
-			bufferedImage = ImageIO.read(new File("Paintings/Apple1.png"));		
+			bufferedImages.add(ImageIO.read(new File("Paintings/Apple1.png")));		
+			bufferedImages.add(ImageIO.read(new File("Paintings/pikachu.png")));		
 		} catch (Exception e) {}
-		
+		BufferedImage bufferedImage=bufferedImages.get(new Random().nextInt(bufferedImages.size()));
 		int A = bufferedImage.getWidth(), B = bufferedImage.getHeight(), W = 40, H = 40;
 		offset = offset.clone().plus(directionOffset);
 		for (int i = 0; i < A; i++)
