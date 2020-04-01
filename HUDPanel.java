@@ -32,7 +32,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 	private final BufferedImage mapWordBtn, instructionsBtn, quitBtn, menuBtn, mapBtn;
 	private int releasedX, releasedY;
-	private boolean mapOn;
+	private boolean mapOn, instructOn;
 
 	public HUDPanel(Game game, Maze maze, ChamberLayers chamberLayers) throws IOException {
 		mapWordBtn=ImageIO.read(new File(iconPath+"Map Button.png"));
@@ -43,7 +43,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 		menuOn=false;
 		mapOn=false;
-
+		instructOn=false;
+		
 		this.game = game;
 		player = game.getPlayer();
 		this.maze = maze;
@@ -66,14 +67,24 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	private void checkBtnClick() {
-		if (!mapOn&&releasedX>639&&releasedX<639+mapBtn.getWidth()&&releasedY>43&&releasedY<43+mapBtn.getHeight()) {
+		if (!mapOn&&!instructOn&&!menuOn&&releasedX>639&&releasedX<639+mapBtn.getWidth()&&releasedY>43&&releasedY<43+mapBtn.getHeight()) {
 			mapOn=true;
 			menuOn=false;
 			game.goToMapView();
-		}
-		if (!mapOn&&releasedX>719&&releasedX<719+menuBtn.getWidth()&&releasedY>45&&releasedY<45+menuBtn.getHeight()) {
+		} else if (!mapOn&&!instructOn&&releasedX>719&&releasedX<719+menuBtn.getWidth()&&releasedY>45&&releasedY<45+menuBtn.getHeight()) {
 			menuOn=!menuOn;
-		}
+		} else if (!mapOn&&!instructOn&&menuOn&&releasedX>640&&releasedX<640+mapWordBtn.getWidth()&&releasedY>130&&releasedY<130+mapWordBtn.getHeight()) {
+			mapOn=true;
+			menuOn=false;
+			game.goToMapView();
+		} else if (!mapOn&&!instructOn&&menuOn&&releasedX>640&&releasedX<640+instructionsBtn.getWidth()&&releasedY>190&&releasedY<190+instructionsBtn.getHeight()) {
+			instructOn=true;
+			menuOn=false;
+			game.toggleInstructions();
+		} else if (!mapOn&&!instructOn&&menuOn&&releasedX>640&&releasedX<640+quitBtn.getWidth()&&releasedY>250&&releasedY<250+quitBtn.getHeight()) {
+			menuOn=false;
+			game.goToIntroScreen();
+		}		
 	}
 
 	private void menuOff(Graphics2D g2d) {
@@ -95,6 +106,10 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	
 	public void changeMap(boolean map) {
 		mapOn=map;
+	}
+	
+	public void changeInstruct(boolean instruct) {
+		instructOn=instruct;
 	}
 	
 	public void mouseClicked(MouseEvent e) {

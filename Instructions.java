@@ -38,6 +38,7 @@ public class Instructions extends JPanel implements ActionListener{
 	}
 	public void actionPerformed (ActionEvent event) {
 		game.toggleInstructions();
+		game.chamberLayers.HUDPanel.changeInstruct(false);
 	}
 	public Instructions (Game game) {
 		int width = 800;
