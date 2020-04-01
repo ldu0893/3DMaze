@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*;
 
 public class ChamberLayers extends JLayeredPane {
@@ -11,8 +13,8 @@ public class ChamberLayers extends JLayeredPane {
 	public static final int right = 1;
 	public static final int left = 2;
 	private ChamberView chamberPanel;
-	private HUDPanel HUDPanel;
-	public ChamberLayers(Game game, Maze maze) {
+	public HUDPanel HUDPanel;
+	public ChamberLayers(Game game, Maze maze) throws IOException {
 		animation = 0;
 		this.setSize(800, 600);
 		chamberPanel = new ChamberView(game, maze, this);
@@ -40,7 +42,7 @@ public class ChamberLayers extends JLayeredPane {
 		return animation;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		ChamberLayers chamber = new ChamberLayers(new Game(), new Maze(1));
 
 		JFrame frame = new JFrame();

@@ -1,7 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-
+import java.awt.*;
 public class DropdownMenu extends JPanel implements ActionListener {
 	private JButton map;
 	private JButton instructions;
@@ -22,6 +22,10 @@ public class DropdownMenu extends JPanel implements ActionListener {
 		this.add(map);
 		this.add(instructions);
 		this.add(map);
+	}
+	
+	public void paintComponent(Graphics g) {
+		
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -133,6 +133,7 @@ public class MapView extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Chamber View")) {
 				game.goToChamberView();
+				game.chamberLayers.HUDPanel.changeMap(false);
 			}
 		}
 		public void keyReleased(KeyEvent e) {
@@ -264,6 +265,8 @@ public class MapView extends JPanel {
 			for (int j = 0; j<levelNum; j++) {
 				if(player.roomVisited(i,j,currentLvl)) {
 					Room room = maze.getRoom(i, j, currentLvl);
+					int temp=j;
+					j=levelNum-j-1;
 					g.setColor(room.getColor());
 					g.fillRect((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100, BoxWidth, BoxHeight);
 					g.setColor(Color.black);
@@ -299,9 +302,13 @@ public class MapView extends JPanel {
 						g.setColor(Color.red);
 						g.fillPolygon(new int[] {(i*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2, (i*BoxWidth)+((20*frame.getWidth()/100)+BoxWidth/2)-(BoxWidth/4), (i*BoxWidth)+((20*frame.getWidth()/100)+BoxWidth/2)+(BoxWidth/4)}, new int[] {((j+1)*BoxHeight)+20*frame.getHeight()/100, ((j+1)*BoxHeight)+(20*frame.getHeight()/100)-(BoxWidth/8), ((j+1)*BoxHeight)+(20*frame.getHeight()/100)-(BoxWidth/8)}, 3);
 					}
+					j=temp;
 				}else if(!player.roomVisited(i,j,currentLvl)){
+					int temp=j;
+					j=levelNum-j-1;
 					g.setColor(ground);
 					g.fillRect((i*BoxWidth)+202*frame.getWidth()/1000, (j*BoxHeight)+204*frame.getHeight()/1000, 95*BoxWidth/100, 95*BoxHeight/100);
+					j=temp;
 				}
 			}
 			
@@ -309,6 +316,7 @@ public class MapView extends JPanel {
 		
 		//Player current position
 		int[] currentPosition = player.getPosition();
+		currentPosition[1]=levelNum-currentPosition[1]-1;
 		int currentOrientation = player.getOrientation();
 		if(currentOrientation == 0) {
 			//north

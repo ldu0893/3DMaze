@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.io.*;
 
 public class Game {
 	private ArrayList<Double> minimumScores = new ArrayList();
@@ -21,7 +22,7 @@ public class Game {
 	private IntroScreen introScreen;
 	private DifficultyScreen difficultyScreen;
 	private ChamberView chamberView;
-	private ChamberLayers chamberLayers;
+	public ChamberLayers chamberLayers;
 	private MapView mapView;
 	private Instructions instructionScreen;
 	private Component backFromInstructions = null;;
@@ -31,7 +32,7 @@ public class Game {
 		return gameFrame;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Game game = new Game();
 		//game.runGame(1);
 	}
@@ -85,7 +86,7 @@ public class Game {
 		gameFrame.repaint();
 	}
 
-	public void runGame(int difficulty) {
+	public void runGame(int difficulty) throws IOException {
 		int size = 1;
 		if (difficulty == 0) {
 			size = 4;
