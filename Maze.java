@@ -37,6 +37,7 @@ public class Maze {
 			size = 5;
 		}
 		exit();
+		addPaintings();
 	}
 	
 	public Maze (int difficulty, int size) {
@@ -61,6 +62,24 @@ public class Maze {
 			size = 5;
 		}
 		exit();
+		addPaintings();
+	}
+
+	private void addPaintings () {
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				for (int k = 0; k < size; k++)
+					if (!(i==0 && j==0 && k==0)) {
+						double random = Math.random();
+						if (random < 1) {
+							System.out.println("hi there");
+							int randomDoor = (int) (4*Math.random());
+							if (!mazeArray[i][j][k].getDoor(randomDoor)) {
+								System.out.println("fun");
+								mazeArray[i][j][k].setPainting((new Painting()).specifyPainting(0, randomDoor, new Vector(100*i, 100*j, 100*k)));
+							}
+						}
+					}
 	}
 	
 	public Maze(Room[][][] rooms) {
@@ -72,8 +91,10 @@ public class Maze {
 		int exit=rand.nextInt(2);
 		if (exit==0) {
 			mazeArray[0][0][0].setDoor(Room.west, true);
+			mazeArray[0][0][0].setLeadsOutside(Room.west);
 		} else {
 			mazeArray[0][0][0].setDoor(Room.south, true);
+			mazeArray[0][0][0].setLeadsOutside(Room.south);
 		}
 	}
 	

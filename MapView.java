@@ -217,13 +217,13 @@ public class MapView extends JPanel {
 		g.drawString("KEY:", 26*frame.getWidth()/30, 8*frame.getHeight()/15);
 		Font WordFont = new Font ("Serif Bold", 20, 15);
 		g.setFont(WordFont);
-		g.drawString("Door Up", 26*frame.getWidth()/30, 14*frame.getHeight()/20);
-		g.drawString("Door Down", 26*frame.getWidth()/30, 16*frame.getHeight()/20);
-		g.drawString("You Are Here", 26*frame.getWidth()/30, 18*frame.getHeight()/20);
+		g.drawString("Door Up", 26*frame.getWidth()/30+18, 14*frame.getHeight()/20-30);
+		g.drawString("Door Down", 26*frame.getWidth()/30+10, 16*frame.getHeight()/20-15);
+		g.drawString("You Are Here", 26*frame.getWidth()/30, 18*frame.getHeight()/20-10);
 		g.setColor(green);
-		g.fillPolygon(new int[] {26*frame.getWidth()/30+15, (26*frame.getWidth()/30)+80, ((26*frame.getWidth()/30+15)+(26*frame.getWidth()/30)+80)/2}, new int[] {(14*frame.getHeight()/20)-30, (14*frame.getHeight()/20)-30, (14*frame.getHeight()/20)-60}, 3);
+		g.fillPolygon(new int[] {26*frame.getWidth()/30+15, (26*frame.getWidth()/30)+80, ((26*frame.getWidth()/30+15)+(26*frame.getWidth()/30)+80)/2}, new int[] {(14*frame.getHeight()/20)-50, (14*frame.getHeight()/20)-50, (14*frame.getHeight()/20)-80}, 3);
 		g.setColor(Color.red);
-		g.fillPolygon(new int[] {26*frame.getWidth()/30+15, (26*frame.getWidth()/30)+80, ((26*frame.getWidth()/30+15)+(26*frame.getWidth()/30)+80)/2}, new int[] {(16*frame.getHeight()/20)-60, (16*frame.getHeight()/20)-60, (16*frame.getHeight()/20)-30}, 3);
+		g.fillPolygon(new int[] {26*frame.getWidth()/30+15, (26*frame.getWidth()/30)+80, ((26*frame.getWidth()/30+15)+(26*frame.getWidth()/30)+80)/2}, new int[] {(16*frame.getHeight()/20)-75, (16*frame.getHeight()/20)-75, (16*frame.getHeight()/20)-45}, 3);
 		g.setColor(Color.blue);
 		g.fillPolygon(new int[] {26*frame.getWidth()/30+30, (26*frame.getWidth()/30)+60, ((26*frame.getWidth()/30+30)+(26*frame.getWidth()/30)+60)/2}, new int[] {(18*frame.getHeight()/20)-30, (18*frame.getHeight()/20)-30, (18*frame.getHeight()/20)-80}, 3);
 		g.setColor(ground);
