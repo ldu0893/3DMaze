@@ -12,8 +12,8 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class Game {
-	private ArrayList<Double> minimumScores = new ArrayList();
-	ArrayList<Double> topTen = new ArrayList();
+	private ArrayList<Double> minimumScores;
+	private ArrayList<Double> topTen;
 	private int screenWidth, screenHeight;
 	private JFrame gameFrame;
 	private Player player;
@@ -37,6 +37,10 @@ public class Game {
 	}
 
 	public Game() {
+		minimumScores = new ArrayList<Double>();
+		for (int i = 0; i < 10; i++)
+			minimumScores.add(0.0);
+		
 		gameFrame = new JFrame();
 		gameFrame.setMinimumSize(new Dimension(800,630));
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,7 +96,7 @@ public class Game {
 		} else if (difficulty == 1) {
 			size = 5;
 		} else if (difficulty == 2) {
-			size = 6;
+			size = 2;
 		}
 		int[] positions = { size - 1, size - 1, size - 1 };
 		maze = new Maze(difficulty);
@@ -129,16 +133,23 @@ public class Game {
 	public void submitScore(double score) {
 		minimumScores.add(score);
 		Collections.sort(minimumScores);
-		for (int i = 0; i < 10; i++) {
-			topTen = (ArrayList<Double>) minimumScores.subList(0, 9);
-		}
+//		for (int i = 0; i < 10; i++) {
+//			topTen = (ArrayList<Double>) minimumScores.subList(0, 9);
+//		}
 	}
 
 	public void win(double score) {
 		submitScore(score);
+		topTen = new ArrayList<Double>();
+		if (minimumScores.size() > 10)
+			for (int i = 0; i < 10; i++)
+				topTen.add(minimumScores.get(i));
+		else
+			topTen = minimumScores;
 		endScreen = new EndScreen(score, topTen, this);
-		gameFrame.removeAll();
+		gameFrame.getContentPane().removeAll();
 		gameFrame.add(endScreen);
+		gameFrame.revalidate();
 	}
 
 //	public void drawHeader(Graphics g) {

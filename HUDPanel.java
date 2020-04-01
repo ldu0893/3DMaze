@@ -69,10 +69,12 @@ public class HUDPanel extends JPanel implements ActionListener {
 			buttons[i].addActionListener(movementListener);
 			buttons[i].setContentAreaFilled(false);
 			buttons[i].setBorderPainted(false);
+			buttons[i].setFocusable(false);
 		}
 		menuOn = false;
 		ImageIcon menuIcon = new ImageIcon(iconPath + "Hamburger.png");	
 		toggleMenu = new JButton(menuIcon);
+		toggleMenu.setFocusable(false);
 		toggleMenu.addActionListener(new ActionListener () {
 			public void actionPerformed (ActionEvent event) {
 				menuOn = !menuOn;
@@ -132,19 +134,23 @@ public class HUDPanel extends JPanel implements ActionListener {
 		map.setMargin(new Insets(0, 0, 0, 0));
 		map.setContentAreaFilled(false);
 		map.setBorderPainted(false);
+		map.setFocusable(false);
 		
 		menuMap = new JButton("Map");
 		menuMap.setActionCommand("map");
 		menuMap.addActionListener(this);
 		menuMap.setMargin(new Insets(0, 0, 0, 0));
+		menuMap.setFocusable(false);
 		instructions = new JButton("Instructions");
 		instructions.setActionCommand("instructions");
 		instructions.addActionListener(this);
 		instructions.setMargin(new Insets(0, 0, 0, 0));
+		instructions.setFocusable(false);
 		quit = new JButton("Quit Game");
 		quit.setActionCommand("quit");
 		quit.addActionListener(this);
 		quit.setMargin(new Insets(0, 0, 0, 0));
+		quit.setFocusable(false);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -269,6 +275,7 @@ public class HUDPanel extends JPanel implements ActionListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("hello");
 			if (chamberLayers.getAnimation() == 0) {
 				if (e.getActionCommand().equals(commands[2])) {
 					move(forward);
@@ -312,21 +319,24 @@ public class HUDPanel extends JPanel implements ActionListener {
 			if (direction == forward) {
 				if (getRoom(maze, player).leadsOutside(player.getOrientation())) {
 					game.win(score);
-				}
+				} else {
 				player.moveForward();
 				chamberLayers.getChamberView().moveForward();
+				}
 			} else if (direction == down) {
 				if (getRoom(maze, player).leadsOutside(Room.down)) {
 					game.win(score);
-				}
+				} else {
 				player.moveDown();
 				chamberLayers.getChamberView().moveDown();
+				}
 			} else if (direction == up) {
 				if (getRoom(maze, player).leadsOutside(Room.up)) {
 					game.win(score);
-				}
+				} else {
 				player.moveUp();
 				chamberLayers.getChamberView().moveUp();
+				}
 			} else if (direction == left) {
 				player.turnLeft();
 				chamberLayers.getChamberView().turnLeft();
