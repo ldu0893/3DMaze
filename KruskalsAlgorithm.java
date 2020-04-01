@@ -42,10 +42,10 @@ public class KruskalsAlgorithm {
 				mazerooms[x][y][z+1].setDoor(Room.down, true);
 			}
 		} while (!done());
-//		if (Maze.shortestPath(mazerooms)<25) {
-//			reset();
-//			return generate();
-//		}
+		if (Maze.shortestPath(mazerooms)<25) {
+			reset();
+			return generate();
+		}
 		return mazerooms;
 	}
 

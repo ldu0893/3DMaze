@@ -1,4 +1,5 @@
 import java.awt.event.*;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*; 
 import java.awt.*;
@@ -73,14 +74,16 @@ public class DifficultyScreen extends JPanel implements ActionListener{
 	}
 	public void actionPerformed (ActionEvent event) {
 		String get = event.getActionCommand();
-		if (get.equals("E")) {
-			game.runGame(0);
-		}
-		if (get.equals("M")) {
-			game.runGame(1);
-		}
-		if (get.equals("H")) {
-			game.runGame(2);
-		}
+		try {
+			if (get.equals("E")) {
+				game.runGame(0);
+			}
+			if (get.equals("M")) {
+				game.runGame(1);
+			}
+			if (get.equals("H")) {
+				game.runGame(2);
+			}
+		}catch (IOException e) {}
 	}
 }

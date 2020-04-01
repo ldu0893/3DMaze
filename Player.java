@@ -5,6 +5,7 @@ public class Player {
 	private int moves;
 
 	Player(int[] pos, int orient, int xSize, int ySize, int zSize) {
+		System.out.println("bad");
 		position = pos;
 		orientation = orient;
 		moves = 0;
