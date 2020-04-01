@@ -149,6 +149,7 @@ public class MapView extends JPanel {
 
 		public void keyPressed(KeyEvent e) {
 			// empty; use keyReleased instead
+			System.out.println("Player position: " + player.getPosition()[0] + " " + player.getPosition()[1] + " " + player.getPosition()[2]);
 			repaint();
 		}
 	}

@@ -72,10 +72,8 @@ public class Maze {
 					if (!(i==0 && j==0 && k==0)) {
 						double random = Math.random();
 						if (random < 1) {
-							System.out.println("hi there");
 							int randomDoor = (int) (4*Math.random());
 							if (!mazeArray[i][j][k].getDoor(randomDoor)) {
-								System.out.println("fun");
 								mazeArray[i][j][k].setPainting((new Painting()).specifyPainting(0, randomDoor, new Vector(100*i, 100*j, 100*k)));
 							}
 						}
