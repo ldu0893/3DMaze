@@ -1,20 +1,21 @@
 public class Player {
-	private int[] position = new int[3];
+	private Position position;
 	private int orientation;
 	private boolean[][][] roomVisits;
 	private int moves;
 
-	Player(int[] pos, int orient, int xSize, int ySize, int zSize) {
-		System.out.println("bad");
+	Player(Position pos, int orient, int xSize, int ySize, int zSize) {
+		//System.out.println("bad");
 		position = pos;
 		orientation = orient;
 		moves = 0;
 		roomVisits = new boolean[xSize][ySize][zSize];
-		roomVisits[position[0]][position[0]][position[0]] = true;
+		roomVisits[position.getX()][position.getY()][position.getZ()] = true;
 		// 5,5,5 should be true
 	}
 
-	public int[] getPosition() {
+	public Position getPosition() {
+		System.out.println("Accessing player position");
 		return position;
 	}
 
@@ -44,27 +45,27 @@ public class Player {
 
 	public void moveForward() {
 		if (orientation == 0) {
-			position[1]++;
+			position.incrementY();
 		} else if (orientation == 1) {
-			position[0]++;
+			position.incrementX();
 		} else if (orientation == 2) {
-			position[1]--;
+			position.decrementY();
 		} else if (orientation == 3) {
-			position[0]--;
+			position.decrementX();
 		}
-		roomVisits[position[0]][position[1]][position[2]] = true;
+		roomVisits[position.getX()][position.getY()][position.getZ()] = true;
 		moves++;
 	}
 
 	public void moveUp() {
-		position[2]++;
-		roomVisits[position[0]][position[1]][position[2]] = true;
+		position.incrementZ();;
+		roomVisits[position.getX()][position.getY()][position.getZ()] = true;
 		moves++;
 	}
 
 	public void moveDown() {
-		position[2]--;
-		roomVisits[position[0]][position[1]][position[2]] = true;
+		position.incrementZ();;
+		roomVisits[position.getX()][position.getY()][position.getZ()] = true;
 		moves++;
 	}
 
