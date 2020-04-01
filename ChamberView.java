@@ -340,6 +340,11 @@ public class ChamberView extends JPanel {
 		triList.add(new Triangle(new Vector(0,0,101).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,1,101).plus(roomVector), Color.BLACK));
 		triList.add(new Triangle(new Vector(100,0,0).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,0,101).plus(roomVector), Color.BLACK));
 		triList.add(new Triangle(new Vector(100,0,101).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,1,101).plus(roomVector), Color.BLACK));
+		
+		if (nextRoom.getPainting() != null) {
+			System.out.println("there");
+			triList.addAll(nextRoom.getPainting().getTriangles());
+		}
 	}
 
 
@@ -455,6 +460,11 @@ public class ChamberView extends JPanel {
 		triList.add(new Triangle(new Vector(0,0,101).plus(roomVector), new Vector(0,1,0).plus(roomVector), new Vector(0,1,101).plus(roomVector), Color.BLACK));
 		triList.add(new Triangle(new Vector(100,0,0).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,0,101).plus(roomVector), Color.BLACK));
 		triList.add(new Triangle(new Vector(100,0,101).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,1,101).plus(roomVector), Color.BLACK));
+		
+		if (currentRoom.getPainting() != null) {
+			System.out.println("here");
+			triList.addAll(currentRoom.getPainting().getTriangles());
+		}
 	}
 
 	private void setUpRooms () {

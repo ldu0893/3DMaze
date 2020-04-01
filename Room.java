@@ -10,6 +10,7 @@ public class Room {
     private boolean[] doors = new boolean[6];
     private Color wallColor;
     private boolean[] outside = new boolean[6];
+    private Painting painting = null;
     private static HashMap<Color, Color> usedColors;
     public Room () {
         this(null, null);
@@ -54,5 +55,11 @@ public class Room {
     }
     public void setLeadsOutside (int orientation) {
     	outside[orientation] = true;
+    }
+    public void setPainting (Painting painting) {
+    	this.painting = painting;
+    }
+    public Painting getPainting () {
+    	return painting;
     }
 }

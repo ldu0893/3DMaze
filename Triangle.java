@@ -23,4 +23,13 @@ public class Triangle {
 		this.vert3 = vert3;
 		this.color = color;
 	}
+	public Triangle clone () {
+		return new Triangle(vert1.clone(), vert2.clone(), vert3.clone(), color);
+	}
+	public Triangle offset (Vector offset) {
+		vert1 = vert1.plus(offset);
+		vert2 = vert2.plus(offset);
+		vert3 = vert3.plus(offset);
+		return new Triangle(vert1.plus(offset), vert2.plus(offset), vert3.plus(offset), color);
+	}
 }
