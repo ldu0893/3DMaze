@@ -564,7 +564,7 @@ public class ChamberView extends JPanel {
 		triList.add(new Triangle(new Vector(100,0,101).plus(roomVector), new Vector(100,1,0).plus(roomVector), new Vector(100,1,101).plus(roomVector), Color.BLACK));
 		
 		if (currentRoom.getPainting() != null) {
-			System.out.println("here");
+			//System.out.println("here");
 			triList.addAll(currentRoom.getPainting().getTriangles());
 		}
 	}

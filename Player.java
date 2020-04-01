@@ -15,7 +15,6 @@ public class Player {
 	}
 
 	public int[] getPosition() {
-		System.out.println(position[1]);
 		return position;
 	}
 

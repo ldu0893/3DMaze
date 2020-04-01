@@ -97,7 +97,7 @@ public class Game {
 		} else if (difficulty == 1) {
 			size = 5;
 		} else if (difficulty == 2) {
-			size = 2;
+			size = 6;
 		}
 		int[] positions = { size - 1, size - 1, size - 1 };
 		maze = new Maze(difficulty);
