@@ -364,7 +364,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			if (chamberLayers.getAnimation() == 0) {
+			if (!mapOn&&!instructOn&&chamberLayers.getAnimation() == 0) {
 				if (e.getActionCommand().equals(commands[2])) {
 					move(forward);
 				} else if (e.getActionCommand().equals(commands[0])) {
@@ -380,8 +380,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		}
 
 		public void keyReleased(KeyEvent e) {
-			System.out.println("hi");
-			if (chamberLayers.getAnimation() == 0) {
+			if (!mapOn&&!instructOn&&chamberLayers.getAnimation() == 0) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					move(forward);
 				} else if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_KP_UP) {
