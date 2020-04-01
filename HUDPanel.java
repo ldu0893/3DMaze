@@ -319,21 +319,24 @@ public class HUDPanel extends JPanel implements ActionListener {
 			if (direction == forward) {
 				if (getRoom(maze, player).leadsOutside(player.getOrientation())) {
 					game.win(score);
-				}
+				} else {
 				player.moveForward();
 				chamberLayers.getChamberView().moveForward();
+				}
 			} else if (direction == down) {
 				if (getRoom(maze, player).leadsOutside(Room.down)) {
 					game.win(score);
-				}
+				} else {
 				player.moveDown();
 				chamberLayers.getChamberView().moveDown();
+				}
 			} else if (direction == up) {
 				if (getRoom(maze, player).leadsOutside(Room.up)) {
 					game.win(score);
-				}
+				} else {
 				player.moveUp();
 				chamberLayers.getChamberView().moveUp();
+				}
 			} else if (direction == left) {
 				player.turnLeft();
 				chamberLayers.getChamberView().turnLeft();

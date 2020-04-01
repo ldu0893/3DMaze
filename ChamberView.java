@@ -51,13 +51,6 @@ public class ChamberView extends JPanel {
 			pressed=true;
 			boolean shouldMove = false;
 			
-			if (playerPos.getX() == 0 && playerPos.getY() == 0 && playerPos.getZ() == 0) {
-				if ((playerDirection == 2 && maze.getRoom(0, 0, 0).getDoor(Room.south)) || (playerDirection == 3 && maze.getRoom(0, 0, 0).getDoor(Room.west))) {
-					nextRoom = null;
-					shouldMove = true;
-				}
-			}
-			
 			if (playerDirection == 0 && new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ()).isValid(maze.getSize()) && 
 					maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.north)) {
 				nextRoomPos = new Position(playerPos.getX(), playerPos.getY()+1, playerPos.getZ());
@@ -236,7 +229,10 @@ public class ChamberView extends JPanel {
 
 		for (int i = 0; i < 6; i++)
 			if (nextRoom.getDoor(i))
-				nextRoomDoorColorArray[i] = Color.BLACK;
+				if (nextRoom.leadsOutside(i))
+					nextRoomDoorColorArray[i] = Color.DARK_GRAY;
+				else
+					nextRoomDoorColorArray[i] = Color.BLACK;
 			else if (0 <= i && i <= 3)
 				nextRoomDoorColorArray[i] = roomColor;
 			else
@@ -354,7 +350,10 @@ public class ChamberView extends JPanel {
 		
 		for (int i = 0; i < 6; i++)
 		if (currentRoom.getDoor(i))
-			doorColorArray[i] = Color.BLACK;
+			if (currentRoom.leadsOutside(i))
+				doorColorArray[i] = Color.DARK_GRAY;
+			else
+				doorColorArray[i] = Color.BLACK;
 		else if (0 <= i && i <= 3)
 			doorColorArray[i] = roomColor;
 		else

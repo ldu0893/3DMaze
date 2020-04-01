@@ -52,4 +52,7 @@ public class Room {
     public boolean leadsOutside(int orientation) {
         return doors[orientation] && outside[orientation];
     }
+    public void setLeadsOutside (int orientation) {
+    	outside[orientation] = true;
+    }
 }

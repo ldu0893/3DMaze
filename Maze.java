@@ -23,8 +23,8 @@ public class Maze {
 			mazeArray = (new PrimsAlgorithm(5)).generateMaze();
 			size = 5;
 		} else if (difficulty == 2) { // Kruskal's Algorithm
-			mazeArray = (new KruskalsAlgorithm(3)).generate();
-			size = 3;
+			mazeArray = (new KruskalsAlgorithm(2)).generate();
+			size = 2;
 		} else {
 			mazeArray = new Room[5][5][5];
 			for (int i = 0; i < 5; i++)
@@ -72,8 +72,10 @@ public class Maze {
 		int exit=rand.nextInt(2);
 		if (exit==0) {
 			mazeArray[0][0][0].setDoor(Room.west, true);
+			mazeArray[0][0][0].setLeadsOutside(Room.west);
 		} else {
 			mazeArray[0][0][0].setDoor(Room.south, true);
+			mazeArray[0][0][0].setLeadsOutside(Room.south);
 		}
 	}
 	
