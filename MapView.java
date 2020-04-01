@@ -109,7 +109,7 @@ public class MapView extends JPanel {
 		Down.setBorderPainted(false);
 		Up.setBounds(8*frame.getWidth()/100, (4*frame.getHeight()/10)+((32*frame.getHeight()/100)-(4*frame.getHeight()/10))/2, frame.getWidth()/36, frame.getHeight()/11);
 		Down.setBounds(8*frame.getWidth()/100, (3*frame.getHeight()/5)-frame.getHeight()/17, frame.getWidth()/36, frame.getHeight()/11);
-		currentLvl = player.getPosition()[2];
+		currentLvl = player.getPosition().getZ();
 	}
 
 	class menuListener implements ActionListener {
@@ -149,7 +149,7 @@ public class MapView extends JPanel {
 
 		public void keyPressed(KeyEvent e) {
 			// empty; use keyReleased instead
-			System.out.println("Player position: " + player.getPosition()[0] + " " + player.getPosition()[1] + " " + player.getPosition()[2]);
+			System.out.println("Player position: " + player.getPosition().getX() + " " + player.getPosition().getY() + " " + player.getPosition().getZ());
 			repaint();
 		}
 	}
@@ -241,8 +241,8 @@ public class MapView extends JPanel {
 			
 	//Map components
 		Color currentColor;
-		if (player.roomVisited(player.getPosition()[0], player.getPosition()[1], currentLvl))
-			currentColor = maze.getRoom(player.getPosition()[0], player.getPosition()[1], currentLvl).getColor();
+		if (player.roomVisited(player.getPosition().getX(), player.getPosition().getY(), currentLvl))
+			currentColor = maze.getRoom(player.getPosition().getX(), player.getPosition().getY(), currentLvl).getColor();
 		else
 			currentColor = Color.LIGHT_GRAY;
 		g.setColor(Color.black);
@@ -321,7 +321,7 @@ public class MapView extends JPanel {
 		}
 		
 		//Player current position
-		int[] currentPosition = player.getPosition();
+		int[] currentPosition = player.getPosition().toArray();
 		currentPosition[1]=levelNum-currentPosition[1]-1;
 		int currentOrientation = player.getOrientation();
 		if(currentOrientation == 0) {
@@ -363,8 +363,8 @@ public class MapView extends JPanel {
 		g.setColor(Color.WHITE);
 		Font f = new Font("Arial", Font.BOLD, 20);
 		g.setFont(f);
-		g.drawString("Level: " + player.getPosition()[2] + "     Row: " + player.getPosition()[0] + "     Column: "
-				+ player.getPosition()[1], (int) (.05 * 600), (int) (.05 * 800));
+		g.drawString("Level: " + player.getPosition().getZ() + "     Row: " + player.getPosition().getX() + "     Column: "
+				+ player.getPosition().getY(), (int) (.05 * 600), (int) (.05 * 800));
 		g.drawString("Moves Made: " + player.getMoves(), (int) (.05 * 600), (int) (.08 * 800));
 		g.drawString("Facing: " + player.getOrientation(), (int) (.05 * 600), (int) (.11 * 800));
 	}

@@ -353,8 +353,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	public static Room getRoom(Maze maze, Player player) {
-		int[] pos = player.getPosition();
-		return maze.getRoom(pos[0], pos[1], pos[2]);
+		Position pos = player.getPosition();
+		return maze.getRoom(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	private class MovementListener implements ActionListener, KeyListener {
