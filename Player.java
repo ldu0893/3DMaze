@@ -58,13 +58,13 @@ public class Player {
 	}
 
 	public void moveUp() {
-		position.incrementZ();;
+		position.incrementZ();
 		roomVisits[position.getX()][position.getY()][position.getZ()] = true;
 		moves++;
 	}
 
 	public void moveDown() {
-		position.incrementZ();;
+		position.decrementZ();
 		roomVisits[position.getX()][position.getY()][position.getZ()] = true;
 		moves++;
 	}

@@ -138,7 +138,9 @@ public class MapView extends JPanel {
 		}
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_TAB) {
+				System.out.println("feourydfihbioufh89weoiybhdjk");
 				game.goToChamberView();
+				game.chamberLayers.HUDPanel.changeMap(false);
 			}
 		}
 		
