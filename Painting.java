@@ -15,7 +15,7 @@ public class Painting {
 	}
 	
 	
-	public Painting specifyPainting (int type, int direction, Vector offset) {
+	public Painting specifyPainting (int direction, Vector offset) {
 		Vector aHat, bHat = new Vector(0, 0, 1), directionOffset;
 		if (direction == 0) { //north
 			aHat = new Vector(1, 0, 0);
