@@ -5,6 +5,17 @@ import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
 
+/*
+ * Image Citations:
+ * Apple: https://www.newgrounds.com/art/view/thexxxreaper/pixel-apple
+ * Cherry: http://pixelartmaker.com/art/3546fa4607cc7a7
+ * Dancing Banana: https://www.pixilart.com/art/dancing-banana-5c91295bb26c62d
+ * Charmander: https://www.pixilart.com/art/charmander-pixel-art-dd047f6882301fa
+ * Pikachu: http://pixelartmaker.com/art/b6d428941bb2adf
+ * Mario: https://www.hiclipart.com/free-transparent-background-png-clipart-dxhui
+ * Sonic: https://www.kindpng.com/imgv/TbJhwih_sonic-mania-resprite-sonic-the-hedgehog-2-pixel/
+ */
+
 public class Painting {
 	private ArrayList<Triangle> triangles;
 	public ArrayList<Triangle> getTriangles () {

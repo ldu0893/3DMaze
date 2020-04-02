@@ -651,7 +651,8 @@ public class ChamberView extends JPanel {
 		}
 		
 		//Draws all of the triangles
-		for (Triangle tri : triList) {
+		for (int j = 0; j < triList.size(); j++) {
+			Triangle tri = triList.get(j);
 			//System.out.println(tri);
 			Vector[] verts = tri.getVerts();
 			int[] x = new int[3];
