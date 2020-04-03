@@ -18,7 +18,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	public static final int right = 4;
 	public static final int left = 5;
 	private boolean menuOn;
-	private MovementListener movementListener;
+	public MovementListener movementListener;
 	private ChamberLayers chamberLayers;
 	private JPanel dPadPanel;
 	public HUDPanel hudPanel = this;
@@ -232,7 +232,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		return maze.getRoom(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	private class MovementListener implements ActionListener, KeyListener {
+	public class MovementListener implements ActionListener, KeyListener {
 		private Player player;
 
 		public MovementListener(Player p) {

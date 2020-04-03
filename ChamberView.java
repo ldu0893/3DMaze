@@ -152,6 +152,7 @@ public class ChamberView extends JPanel {
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
 					nextRoom = null;
 					chamberLayers.setAnimation(0);
+					chamberLayers.HUDPanel.movementListener.animationFinished();
 				} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
 					animationTimer = -1;
 					pressed=false;
@@ -164,6 +165,7 @@ public class ChamberView extends JPanel {
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
 					nextRoom = null;
 					chamberLayers.setAnimation(0);
+					chamberLayers.HUDPanel.movementListener.animationFinished();
 				}
 				if (animationTimer == -1) {
 //					theta = playerDirection*Math.PI/2;
