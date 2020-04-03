@@ -54,8 +54,9 @@ public class MapView extends JPanel {
 		ReturnChamber = new JButton("Chamber View");
 		ReturnChamber.addActionListener(cl);
 		frame.addKeyListener(cl);
-		//frame.setFocusable(true);
-		//frame.setFocusTraversalKeysEnabled(false);
+		frame.setFocusable(true);
+		//frame.requestFocusInWindow();
+		frame.setFocusTraversalKeysEnabled(false);
 
 		ReturnChamber.setBorder(BorderFactory.createBevelBorder(0, ground, Color.black, Color.white, ground));
 		ReturnChamber.setBackground(Color.white);
@@ -138,7 +139,6 @@ public class MapView extends JPanel {
 		}
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_TAB) {
-				System.out.println("feourydfihbioufh89weoiybhdjk");
 				game.goToChamberView();
 				game.chamberLayers.HUDPanel.changeMap(false);
 			}

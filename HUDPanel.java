@@ -47,7 +47,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		setupEventListeners();
 		setupButtons();
 		addButtons();
-		this.requestFocusInWindow();
+		requestFocusInWindow();
+		setFocusTraversalKeysEnabled(false);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -273,6 +274,11 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 				} else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_KP_RIGHT) {
 					move(right);
 				}
+			}
+			if (!mapOn&&!instructOn&&e.getKeyCode() == KeyEvent.VK_TAB) {
+				mapOn=true;
+				menuOn=false;
+				game.goToMapView();
 			}
 		}
 
