@@ -7,11 +7,11 @@ import javax.swing.*;
 public class ChamberLayers extends JLayeredPane {
 	private static final long serialVersionUID = -2716144694728695338L;
 	private int animation;
-	public static final int forward = 3;
-	public static final int up = 4;
-	public static final int down = 5;
-	public static final int right = 1;
-	public static final int left = 2;
+//	public static final int forward = 3;
+//	public static final int up = 4;
+//	public static final int down = 5;
+//	public static final int right = 1;
+//	public static final int left = 2;
 	private ChamberView chamberPanel;
 	public HUDPanel HUDPanel;
 	public ChamberLayers(Game game, Maze maze) throws IOException {
