@@ -52,8 +52,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		player = game.getPlayer();
 		setProperties();
 		setupEventListeners();
-		//		setupButtons();
-		//		addButtons();
+		setupButtons();
+		addButtons();
 		this.requestFocusInWindow();
 	}
 
@@ -155,17 +155,17 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		//this.addKeyListener(mapListener);
 	}
 
-	//	private void setupButtons() {
-	//		buttons = new JButton[5];
-	//		for (int i = 0; i < buttons.length; i++) {
-	//			ImageIcon icon = new ImageIcon(iconPath + commands[i] + "Arrow.png");
-	//			buttons[i] = new JButton(icon);
-	//			buttons[i].setActionCommand(commands[i]);
-	//			buttons[i].addActionListener(movementListener);
-	//			buttons[i].setContentAreaFilled(false);
-	//			buttons[i].setBorderPainted(false);
-	//			buttons[i].setFocusable(false);
-	//		}
+		private void setupButtons() {
+			buttons = new JButton[5];
+			for (int i = 0; i < buttons.length; i++) {
+				ImageIcon icon = new ImageIcon(iconPath + commands[i] + "Arrow.png");
+				buttons[i] = new JButton(icon);
+				buttons[i].setActionCommand(commands[i]);
+				buttons[i].addActionListener(movementListener);
+				buttons[i].setContentAreaFilled(false);
+				buttons[i].setBorderPainted(false);
+				buttons[i].setFocusable(false);
+			}
 	//		menuOn = false;
 	//		ImageIcon menuIcon = new ImageIcon(iconPath + "Hamburger.png");	
 	//		toggleMenu = new JButton(menuIcon);
@@ -246,7 +246,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	//		quit.addActionListener(this);
 	//		quit.setMargin(new Insets(0, 0, 0, 0));
 	//		quit.setFocusable(false);
-	//	}
+		}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("map")) {
@@ -269,10 +269,10 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 		c.gridx = 0;
 		c.gridy = 0;
-		menuPanel.add(map, c);
+		menuPanel.add(new JLabel(), c);
 		c.gridx = 1;
 		c.gridy = 0;
-		menuPanel.add(toggleMenu, c);
+		menuPanel.add(new JLabel(), c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.gridwidth = 2;
@@ -286,6 +286,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		c.gridwidth = 2;
 		menuPanel.add(new JLabel(), c);
 
+		menuPanel.setEnabled(false);
+		
 		dPadPanel = new JPanel();
 		dPadPanel.setOpaque(false);
 		dPadPanel.setLayout(new GridLayout(3, 3, 0, 0));
@@ -298,7 +300,11 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		dPadPanel.add(new JLabel());
 		dPadPanel.add(buttons[4]);
 		dPadPanel.add(new JLabel());
-
+		dPadPanel.setEnabled(true);
+		for (Component comp : dPadPanel.getComponents()) {
+			comp.setEnabled(true);
+		}
+		
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 5; j++)
 				if (i == 0 && j == 4)
@@ -307,11 +313,11 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 					this.add(dPadPanel);
 				else
 					this.add(new JLabel());
-
-		//enableComponents(getRoom(maze, player), player.getOrientation());
-		for (Component comp : this.getComponents()) {
-			comp.setFocusable(false);
-		}
+//
+//		//enableComponents(getRoom(maze, player), player.getOrientation());
+//		for (Component comp : this.getComponents()) {
+//			comp.setFocusable(false);
+//		}
 	}
 
 	public void disableComponents() {
