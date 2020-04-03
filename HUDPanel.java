@@ -17,17 +17,10 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	public static final int down = 3;
 	public static final int right = 4;
 	public static final int left = 5;
-	private JButton map;
 	private boolean menuOn;
-	private JButton toggleMenu;
 	private MovementListener movementListener;
-	//private MapListener mapListener;
-	//private MenuListener menuListener;
 	private ChamberLayers chamberLayers;
-	private int rows;
-	private int cols;
-	private JPanel menuPanel, dPadPanel;
-	private JButton menuMap, instructions, quit;
+	private JPanel dPadPanel;
 	public HUDPanel hudPanel = this;
 
 	private final BufferedImage mapWordBtn, instructionsBtn, quitBtn, menuBtn, mapBtn;
@@ -148,11 +141,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 	private void setupEventListeners() {
 		movementListener = new MovementListener(game.getPlayer());
-		//mapListener = new MapListener(game);
-		//menuListener = new MenuListener();
 		game.getFrame().addKeyListener(movementListener);
 		game.getFrame().addMouseListener(this);
-		//this.addKeyListener(mapListener);
 	}
 
 		private void setupButtons() {
@@ -166,86 +156,6 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 				buttons[i].setBorderPainted(false);
 				buttons[i].setFocusable(false);
 			}
-	//		menuOn = false;
-	//		ImageIcon menuIcon = new ImageIcon(iconPath + "Hamburger.png");	
-	//		toggleMenu = new JButton(menuIcon);
-	//		toggleMenu.setFocusable(false);
-	//		toggleMenu.addActionListener(new ActionListener () {
-	//			public void actionPerformed (ActionEvent event) {
-	//				menuOn = !menuOn;
-	//				menuPanel.removeAll();
-	//				GridBagConstraints c = new GridBagConstraints ();
-	//				c.fill = GridBagConstraints.BOTH;
-	//				c.weightx = 1;
-	//				c.weighty = 1;
-	//				c.gridx = 0;
-	//				c.gridy = 0;
-	//				menuPanel.add(map, c);
-	//				c.gridx = 1;
-	//				c.gridy = 0;
-	//				menuPanel.add(toggleMenu, c);
-	//				
-	//				if (menuOn) {
-	//					c.gridx = 0;
-	//					c.gridy = 1;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(menuMap, c);
-	//					c.gridx = 0;
-	//					c.gridy = 2;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(instructions, c);
-	//					c.gridx = 0;
-	//					c.gridy = 3;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(quit, c);
-	//				} else {					
-	//					c.gridx = 0;
-	//					c.gridy = 1;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(new JLabel(), c);
-	//					c.gridx = 0;
-	//					c.gridy = 2;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(new JLabel(), c);
-	//					c.gridx = 0;
-	//					c.gridy = 3;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(new JLabel(), c);
-	//				}
-	//				hudPanel.revalidate();
-	//				hudPanel.repaint();
-	//				chamberLayers.revalidate();
-	//				chamberLayers.repaint();
-	//				game.getFrame().revalidate();
-	//				game.getFrame().repaint();
-	//			}
-	//		});
-	//		toggleMenu.setMargin(new Insets(0, 0, 0, 0));
-	//		toggleMenu.setContentAreaFilled(false);
-	//		toggleMenu.setBorderPainted(false);
-	//		ImageIcon mapIcon = new ImageIcon(iconPath + "Scroll.png");		
-	//		map = new JButton(mapIcon);
-	//		map.addActionListener(mapListener);
-	//		map.setMargin(new Insets(0, 0, 0, 0));
-	//		map.setContentAreaFilled(false);
-	//		map.setBorderPainted(false);
-	//		map.setFocusable(false);
-	//
-	//		menuMap = new JButton("Map");
-	//		menuMap.setActionCommand("map");
-	//		menuMap.addActionListener(this);
-	//		menuMap.setMargin(new Insets(0, 0, 0, 0));
-	//		menuMap.setFocusable(false);
-	//		instructions = new JButton("Instructions");
-	//		instructions.setActionCommand("instructions");
-	//		instructions.addActionListener(this);
-	//		instructions.setMargin(new Insets(0, 0, 0, 0));
-	//		instructions.setFocusable(false);
-	//		quit = new JButton("Quit Game");
-	//		quit.setActionCommand("quit");
-	//		quit.addActionListener(this);
-	//		quit.setMargin(new Insets(0, 0, 0, 0));
-	//		quit.setFocusable(false);
 		}
 
 	public void actionPerformed(ActionEvent e) {
@@ -258,36 +168,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
-	private void addButtons() {
-		menuPanel = new JPanel();
-		menuPanel.setOpaque(false);
-		menuPanel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints ();
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1;
-		c.weighty = 1;
-
-		c.gridx = 0;
-		c.gridy = 0;
-		menuPanel.add(new JLabel(), c);
-		c.gridx = 1;
-		c.gridy = 0;
-		menuPanel.add(new JLabel(), c);
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = 2;
-		menuPanel.add(new JLabel(), c);
-		c.gridx = 0;
-		c.gridy = 2;
-		c.gridwidth = 2;
-		menuPanel.add(new JLabel(), c);
-		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 2;
-		menuPanel.add(new JLabel(), c);
-
-		menuPanel.setEnabled(false);
-		
+	private void addButtons() {	
+		System.out.println("here");
 		dPadPanel = new JPanel();
 		dPadPanel.setOpaque(false);
 		dPadPanel.setLayout(new GridLayout(3, 3, 0, 0));
@@ -301,48 +183,35 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		dPadPanel.add(buttons[4]);
 		dPadPanel.add(new JLabel());
 		dPadPanel.setEnabled(true);
-		for (Component comp : dPadPanel.getComponents()) {
-			comp.setEnabled(true);
-		}
 		
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 5; j++)
 				if (i == 0 && j == 4)
-					this.add(menuPanel);
+					this.add(new JLabel());
 				else if (i == 3 && j == 0)
 					this.add(dPadPanel);
 				else
 					this.add(new JLabel());
-//
-//		//enableComponents(getRoom(maze, player), player.getOrientation());
-//		for (Component comp : this.getComponents()) {
-//			comp.setFocusable(false);
-//		}
+		disableComponents();
+		enableComponents();
 	}
 
 	public void disableComponents() {
-		for (Component comp : menuPanel.getComponents()) {
-			comp.setEnabled(false);
-		}
 		for (Component comp : dPadPanel.getComponents()) {
 			comp.setEnabled(false);
 		}
 	}
 
 	public void enableComponents(Room room, int orientation) {
-		for (Component comp : menuPanel.getComponents()) {
-			comp.setEnabled(true);
-		}
-		for (Component comp : dPadPanel.getComponents()) {
-			comp.setEnabled(true);
-		}
+		buttons[1].setEnabled(true);
+		buttons[3].setEnabled(true);
 		buttons[0].setEnabled(canMove(room, up, orientation));
 		buttons[4].setEnabled(canMove(room, down, orientation));
 		buttons[2].setEnabled(canMove(room, forward, orientation));
 	}
 
 	public void enableComponents () {
-		//enableComponents(getRoom(maze, player), player.getOrientation());
+		enableComponents(getRoom(maze, player), player.getOrientation());
 	}
 
 	public static boolean canMove(Room room, int movementDirection, int playerOrientation) {
@@ -372,7 +241,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 		public void animationFinished() {
 			chamberLayers.setAnimation(0);
-			//enableComponents(getRoom(maze, player), player.getOrientation());
+			enableComponents();
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -409,7 +278,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 		public void move(int direction) {
 			chamberLayers.setAnimation(direction);
-			//disableComponents();
+			disableComponents();
 			double score = (double) maze.shortestPath() / (double) player.getMoves();
 			if (!canMove(getRoom(maze, player), direction, player.getOrientation())) {
 				animationFinished();
@@ -453,39 +322,4 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		}
 		// End of empty methods
 	}
-
-
-
-	//	private class MapListener implements ActionListener, KeyListener {
-	//		private Game game;
-	//
-	//		MapListener(Game game) {
-	//			this.game = game;
-	//		}
-	//
-	//		public void actionPerformed(ActionEvent event) {
-	//			game.goToMapView();
-	//		}
-	//
-	//		public void keyReleased(KeyEvent e) {
-	//			if (e.getKeyCode() == KeyEvent.VK_TAB) {
-	//				game.goToMapView();
-	//			}
-	//		}
-	//
-	//		// Begin empty methods
-	//		public void keyPressed(KeyEvent e) {
-	//		}
-	//
-	//		public void keyTyped(KeyEvent e) {
-	//		}
-	//		// End empty methods
-	//	}
-
-	//	private class MenuListener implements ActionListener {
-	//		public void actionPerformed(ActionEvent arg0) {
-	//			menuOn = !menuOn;
-	//		}
-	//	}
-
 }
