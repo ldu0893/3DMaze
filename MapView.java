@@ -161,8 +161,7 @@ public class MapView extends JPanel {
 			if (e.getActionCommand().equals("Instructions")) {
 				game.toggleInstructions();
 			} else if (e.getActionCommand().equals("Quit Game")) {
-				//new EndScreen();
-				//TODO: end game
+				game.goToIntroScreen();
 			}
 		}
 	}

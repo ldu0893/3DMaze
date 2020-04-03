@@ -103,11 +103,8 @@ public class Game {
 		maze = new Maze(difficulty);
 		player = new Player(position, 0, size, size, size);
 		chamberLayers = new ChamberLayers(this, maze);
-		//chamberView = new ChamberView(this, maze, null);
-		//mapView = new MapView(this, maze);
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(chamberLayers);
-		//gameFrame.add(chamberView);
 		gameFrame.revalidate();
 	}
 
@@ -134,9 +131,6 @@ public class Game {
 	public void submitScore(double score) {
 		minimumScores.add(score);
 		Collections.sort(minimumScores);
-//		for (int i = 0; i < 10; i++) {
-//			topTen = (ArrayList<Double>) minimumScores.subList(0, 9);
-//		}
 	}
 
 	public void win(double score) {
