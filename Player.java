@@ -5,7 +5,6 @@ public class Player {
 	private int moves;
 
 	Player(Position pos, int orient, int xSize, int ySize, int zSize) {
-		//System.out.println("bad");
 		position = pos;
 		orientation = orient;
 		moves = 0;
@@ -15,7 +14,7 @@ public class Player {
 	}
 
 	public Position getPosition() {
-		System.out.println("Accessing player position");
+		//System.out.println("Accessing player position");
 		return position;
 	}
 
