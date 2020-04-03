@@ -74,7 +74,7 @@ public class Maze {
 						if (random < 1) {
 							int randomDoor = (int) (4*Math.random());
 							if (!mazeArray[i][j][k].getDoor(randomDoor)) {
-								mazeArray[i][j][k].setPainting((new Painting()).specifyPainting(0, randomDoor, new Vector(100*i, 100*j, 100*k)));
+								mazeArray[i][j][k].setPainting((new Painting()).specifyPainting(randomDoor, new Vector(100*i, 100*j, 100*k)));
 							}
 						}
 					}

@@ -22,107 +22,6 @@ public class ChamberView extends JPanel {
 	private int phicount, speed;
 	private ChamberLayers chamberLayers;
 
-//	private MovementListener movementListener;
-
-//	private class MovementListener implements ActionListener, KeyListener, MouseListener {
-//		private static final boolean left=true;
-//		private static final boolean right=false;
-//		private static final int forward=0;
-//		private static final int down=1;
-//		private static final int up=2;
-//		private Player player;
-//
-//		public MovementListener() {}
-//
-//		public void actionPerformed(ActionEvent e) {
-//			if (e.getActionCommand().equals("up")) {
-//				moveUp();
-//			} else if (e.getActionCommand().equals("left")) {
-//				turnLeft();
-//			} else if (e.getActionCommand().equals("forward")) {
-//				moveForward();
-//			} else if (e.getActionCommand().equals("right")) {
-//				turnRight();
-//			} else if (e.getActionCommand().equals("down")) {
-//				moveDown();
-//			} else if (e.getActionCommand().equals("Menu")) {
-//				menuOn=!menuOn;
-//			}
-//		}
-//		public void keyTyped (KeyEvent event) {}
-//		public void keyPressed (KeyEvent event) {
-//			if (event.getKeyCode() == KeyEvent.VK_W) {
-//				phicount++;
-//				phi = phicount*Math.PI/40;
-//				//phi += Math.PI/2/30;
-//			} else if (event.getKeyCode() == KeyEvent.VK_S) {
-//				phicount--;
-//				phi = phicount*Math.PI/40;
-//				//phi -= Math.PI/2/30;
-//			} else if (event.getKeyCode() == KeyEvent.VK_A) {
-//				theta -= Math.PI/(2*40);
-//				//phi -= Math.PI/2/30;
-//			} else if (event.getKeyCode() == KeyEvent.VK_D) {
-//				theta += Math.PI/(2*40);
-//				//phi -= Math.PI/2/30;
-//			}
-//		}
-//		public void keyReleased (KeyEvent event) {grah
-//			if (event.getKeyCode() == KeyEvent.VK_TAB) {
-//				game.goToMapView();
-//			}
-//			if (event.getKeyCode() == KeyEvent.VK_1) { speed+=5; System.out.println(speed);}
-//			if (event.getKeyCode() == KeyEvent.VK_2) { speed-=5; System.out.println(speed);}
-//			if (event.getKeyCode() == KeyEvent.VK_4) { timerrun=!timerrun; if (!timerrun) timerOne();}
-//			if (event.getKeyCode() == KeyEvent.VK_3) { timerOne();}
-//
-//
-//			if (event.getKeyCode() == KeyEvent.VK_UP)
-//				moveUp();
-//			else if (event.getKeyCode() == KeyEvent.VK_DOWN)
-//				moveDown();
-//			else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
-//				turnRight();
-//			else if (event.getKeyCode() == KeyEvent.VK_LEFT)
-//				turnLeft();
-//			else if (event.getKeyCode() == KeyEvent.VK_SPACE)
-//				moveForward();
-//			else if (event.getKeyCode() == KeyEvent.VK_O) {
-//				doorAngleN += Math.PI/2 /10;
-//			} else if (event.getKeyCode() == KeyEvent.VK_L) {
-//				doorAngleS += Math.PI/2 /10;
-//			} else if (event.getKeyCode() == KeyEvent.VK_P) {
-//				doorAngleE += Math.PI/2 /10;
-//			} else if (event.getKeyCode() == KeyEvent.VK_I) {
-//				doorAngleW += Math.PI/2 /10;
-//			}
-//			if (timerrun)
-//				timer();
-//		}
-//
-//		public void move(int direction) {
-//			player.moveForward();
-//			int[] position=player.getPosition();
-//			if (position[0]==0&&position[1]==0&&position[2]==0) {
-//				//game.win();
-//			}
-//		}
-//
-//		public void rotate(boolean leftOrRight) {
-//			if (leftOrRight) {
-//				player.turnLeft();
-//			} else {
-//				player.turnRight();
-//			}
-//		}
-//
-//		public void mouseClicked(MouseEvent arg0) {}
-//		public void mouseEntered(MouseEvent arg0) {}
-//		public void mouseExited(MouseEvent arg0) {}
-//		public void mousePressed(MouseEvent arg0) {}
-//		public void mouseReleased(MouseEvent arg0) {}
-//	}
-
 	public ChamberView (Game game, Maze maze, ChamberLayers chamberLayers) {
 		this.chamberLayers = chamberLayers;
 		this.setBackground(Color.WHITE);
@@ -253,7 +152,6 @@ public class ChamberView extends JPanel {
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
 					nextRoom = null;
 					chamberLayers.setAnimation(0);
-					chamberLayers.getHUDPanel().enableComponents();
 				} else if (animationTimer == 80 && (animationType == 4 || animationType == 5)) {
 					animationTimer = -1;
 					pressed=false;
@@ -266,7 +164,6 @@ public class ChamberView extends JPanel {
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
 					nextRoom = null;
 					chamberLayers.setAnimation(0);
-					chamberLayers.getHUDPanel().enableComponents();
 				}
 				if (animationTimer == -1) {
 //					theta = playerDirection*Math.PI/2;
@@ -651,7 +548,8 @@ public class ChamberView extends JPanel {
 		}
 		
 		//Draws all of the triangles
-		for (Triangle tri : triList) {
+		for (int j = 0; j < triList.size(); j++) {
+			Triangle tri = triList.get(j);
 			//System.out.println(tri);
 			Vector[] verts = tri.getVerts();
 			int[] x = new int[3];

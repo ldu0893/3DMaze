@@ -21,15 +21,9 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	private boolean menuOn;
 	private JButton toggleMenu;
 	private MovementListener movementListener;
-	//private MapListener mapListener;
-	//private MenuListener menuListener;
 	private ChamberLayers chamberLayers;
-	private int rows;
-	private int cols;
 	private JPanel menuPanel, dPadPanel;
-	private JButton menuMap, instructions, quit;
 	public HUDPanel hudPanel = this;
-
 	private final BufferedImage mapWordBtn, instructionsBtn, quitBtn, menuBtn, mapBtn;
 	private int releasedX, releasedY;
 	private boolean mapOn, instructOn;
@@ -52,18 +46,25 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		player = game.getPlayer();
 		setProperties();
 		setupEventListeners();
-		//		setupButtons();
-		//		addButtons();
+		setupButtons();
+		addButtons();
 		this.requestFocusInWindow();
 	}
 
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d=(Graphics2D)g;
-		if (menuOn) {
+		if (menuOn)
 			menuOn(g2d);
-		} else {
+		else
 			menuOff(g2d);
-		}
+		
+		g.setColor(Color.WHITE);
+		Font f = new Font("Arial", Font.BOLD, 20);
+		g.setFont(f);
+		g.drawString("Level: " + player.getPosition().getZ() + "     Row: " + player.getPosition().getX() + "     Column: "
+				+ player.getPosition().getY(), (int) (.05 * 600), (int) (.05 * 800));
+		g.drawString("Moves Made: " + player.getMoves(), (int) (.05 * 600), (int) (.08 * 800));
+		g.drawString("Facing: " + player.getOrientation(), (int) (.05 * 600), (int) (.11 * 800));
 	}
 
 	private void checkBtnClick() {
@@ -112,13 +113,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		instructOn=instruct;
 	}
 	
-	public void mouseClicked(MouseEvent e) {
-
-	}
-
-	public void mousePressed(MouseEvent e) {
-
-	}
+	public void mouseClicked(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {}
 
 	public void mouseReleased(MouseEvent e) {
 		if (!mapOn) {
@@ -129,13 +125,9 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
-	public void mouseEntered(MouseEvent e) {
-
-	}
-
-	public void mouseExited(MouseEvent e) {
-
-	}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	
 	private void setProperties() {
 		this.setFocusTraversalKeysEnabled(false);
 		this.setFocusable(true);
@@ -148,105 +140,22 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 	private void setupEventListeners() {
 		movementListener = new MovementListener(game.getPlayer());
-		//mapListener = new MapListener(game);
-		//menuListener = new MenuListener();
 		game.getFrame().addKeyListener(movementListener);
 		game.getFrame().addMouseListener(this);
-		//this.addKeyListener(mapListener);
 	}
 
-	//	private void setupButtons() {
-	//		buttons = new JButton[5];
-	//		for (int i = 0; i < buttons.length; i++) {
-	//			ImageIcon icon = new ImageIcon(iconPath + commands[i] + "Arrow.png");
-	//			buttons[i] = new JButton(icon);
-	//			buttons[i].setActionCommand(commands[i]);
-	//			buttons[i].addActionListener(movementListener);
-	//			buttons[i].setContentAreaFilled(false);
-	//			buttons[i].setBorderPainted(false);
-	//			buttons[i].setFocusable(false);
-	//		}
-	//		menuOn = false;
-	//		ImageIcon menuIcon = new ImageIcon(iconPath + "Hamburger.png");	
-	//		toggleMenu = new JButton(menuIcon);
-	//		toggleMenu.setFocusable(false);
-	//		toggleMenu.addActionListener(new ActionListener () {
-	//			public void actionPerformed (ActionEvent event) {
-	//				menuOn = !menuOn;
-	//				menuPanel.removeAll();
-	//				GridBagConstraints c = new GridBagConstraints ();
-	//				c.fill = GridBagConstraints.BOTH;
-	//				c.weightx = 1;
-	//				c.weighty = 1;
-	//				c.gridx = 0;
-	//				c.gridy = 0;
-	//				menuPanel.add(map, c);
-	//				c.gridx = 1;
-	//				c.gridy = 0;
-	//				menuPanel.add(toggleMenu, c);
-	//				
-	//				if (menuOn) {
-	//					c.gridx = 0;
-	//					c.gridy = 1;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(menuMap, c);
-	//					c.gridx = 0;
-	//					c.gridy = 2;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(instructions, c);
-	//					c.gridx = 0;
-	//					c.gridy = 3;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(quit, c);
-	//				} else {					
-	//					c.gridx = 0;
-	//					c.gridy = 1;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(new JLabel(), c);
-	//					c.gridx = 0;
-	//					c.gridy = 2;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(new JLabel(), c);
-	//					c.gridx = 0;
-	//					c.gridy = 3;
-	//					c.gridwidth = 2;
-	//					menuPanel.add(new JLabel(), c);
-	//				}
-	//				hudPanel.revalidate();
-	//				hudPanel.repaint();
-	//				chamberLayers.revalidate();
-	//				chamberLayers.repaint();
-	//				game.getFrame().revalidate();
-	//				game.getFrame().repaint();
-	//			}
-	//		});
-	//		toggleMenu.setMargin(new Insets(0, 0, 0, 0));
-	//		toggleMenu.setContentAreaFilled(false);
-	//		toggleMenu.setBorderPainted(false);
-	//		ImageIcon mapIcon = new ImageIcon(iconPath + "Scroll.png");		
-	//		map = new JButton(mapIcon);
-	//		map.addActionListener(mapListener);
-	//		map.setMargin(new Insets(0, 0, 0, 0));
-	//		map.setContentAreaFilled(false);
-	//		map.setBorderPainted(false);
-	//		map.setFocusable(false);
-	//
-	//		menuMap = new JButton("Map");
-	//		menuMap.setActionCommand("map");
-	//		menuMap.addActionListener(this);
-	//		menuMap.setMargin(new Insets(0, 0, 0, 0));
-	//		menuMap.setFocusable(false);
-	//		instructions = new JButton("Instructions");
-	//		instructions.setActionCommand("instructions");
-	//		instructions.addActionListener(this);
-	//		instructions.setMargin(new Insets(0, 0, 0, 0));
-	//		instructions.setFocusable(false);
-	//		quit = new JButton("Quit Game");
-	//		quit.setActionCommand("quit");
-	//		quit.addActionListener(this);
-	//		quit.setMargin(new Insets(0, 0, 0, 0));
-	//		quit.setFocusable(false);
-	//	}
+	private void setupButtons() {
+		buttons = new JButton[5];
+		for (int i = 0; i < buttons.length; i++) {
+			ImageIcon icon = new ImageIcon(iconPath + commands[i] + "Arrow.png");
+			buttons[i] = new JButton(icon);
+			buttons[i].setActionCommand(commands[i]);
+			buttons[i].addActionListener(movementListener);
+			buttons[i].setContentAreaFilled(false);
+			buttons[i].setBorderPainted(false);
+			buttons[i].setFocusable(false);
+		}
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("map")) {
@@ -269,10 +178,10 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 		c.gridx = 0;
 		c.gridy = 0;
-		menuPanel.add(map, c);
+		menuPanel.add(new JLabel(), c);
 		c.gridx = 1;
 		c.gridy = 0;
-		menuPanel.add(toggleMenu, c);
+		menuPanel.add(new JLabel(), c);
 		c.gridx = 0;
 		c.gridy = 1;
 		c.gridwidth = 2;
@@ -286,6 +195,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		c.gridwidth = 2;
 		menuPanel.add(new JLabel(), c);
 
+		menuPanel.setEnabled(false);
+		
 		dPadPanel = new JPanel();
 		dPadPanel.setOpaque(false);
 		dPadPanel.setLayout(new GridLayout(3, 3, 0, 0));
@@ -298,7 +209,11 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		dPadPanel.add(new JLabel());
 		dPadPanel.add(buttons[4]);
 		dPadPanel.add(new JLabel());
-
+		dPadPanel.setEnabled(true);
+		for (Component comp : dPadPanel.getComponents()) {
+			comp.setEnabled(true);
+		}
+		
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 5; j++)
 				if (i == 0 && j == 4)
@@ -307,11 +222,6 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 					this.add(dPadPanel);
 				else
 					this.add(new JLabel());
-
-		//enableComponents(getRoom(maze, player), player.getOrientation());
-		for (Component comp : this.getComponents()) {
-			comp.setFocusable(false);
-		}
 	}
 
 	public void disableComponents() {
@@ -333,10 +243,6 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		buttons[0].setEnabled(canMove(room, up, orientation));
 		buttons[4].setEnabled(canMove(room, down, orientation));
 		buttons[2].setEnabled(canMove(room, forward, orientation));
-	}
-
-	public void enableComponents () {
-		//enableComponents(getRoom(maze, player), player.getOrientation());
 	}
 
 	public static boolean canMove(Room room, int movementDirection, int playerOrientation) {
@@ -366,7 +272,6 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 		public void animationFinished() {
 			chamberLayers.setAnimation(0);
-			//enableComponents(getRoom(maze, player), player.getOrientation());
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -403,7 +308,6 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 		public void move(int direction) {
 			chamberLayers.setAnimation(direction);
-			//disableComponents();
 			double score = (double) maze.shortestPath() / (double) player.getMoves();
 			if (!canMove(getRoom(maze, player), direction, player.getOrientation())) {
 				animationFinished();
@@ -438,48 +342,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 				chamberLayers.getChamberView().turnRight();
 			}
 		}
-
-		// Beginning of empty methods
-		public void keyPressed(KeyEvent e) {
-		}
-
-		public void keyTyped(KeyEvent e) {
-		}
-		// End of empty methods
+		
+		public void keyPressed(KeyEvent e) {}
+		public void keyTyped(KeyEvent e) {}
 	}
-
-
-
-	//	private class MapListener implements ActionListener, KeyListener {
-	//		private Game game;
-	//
-	//		MapListener(Game game) {
-	//			this.game = game;
-	//		}
-	//
-	//		public void actionPerformed(ActionEvent event) {
-	//			game.goToMapView();
-	//		}
-	//
-	//		public void keyReleased(KeyEvent e) {
-	//			if (e.getKeyCode() == KeyEvent.VK_TAB) {
-	//				game.goToMapView();
-	//			}
-	//		}
-	//
-	//		// Begin empty methods
-	//		public void keyPressed(KeyEvent e) {
-	//		}
-	//
-	//		public void keyTyped(KeyEvent e) {
-	//		}
-	//		// End empty methods
-	//	}
-
-	//	private class MenuListener implements ActionListener {
-	//		public void actionPerformed(ActionEvent arg0) {
-	//			menuOn = !menuOn;
-	//		}
-	//	}
-
 }
