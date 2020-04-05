@@ -18,7 +18,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	public static final int right = 4;
 	public static final int left = 5;
 	private boolean menuOn;
-	private MovementListener movementListener;
+	public MovementListener movementListener;
 	private ChamberLayers chamberLayers;
 	private JPanel dPadPanel;
 	public HUDPanel hudPanel = this;
@@ -47,7 +47,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		setupEventListeners();
 		setupButtons();
 		addButtons();
-		this.requestFocusInWindow();
+		requestFocusInWindow();
+		setFocusTraversalKeysEnabled(false);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -232,7 +233,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		return maze.getRoom(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	private class MovementListener implements ActionListener, KeyListener {
+	public class MovementListener implements ActionListener, KeyListener {
 		private Player player;
 
 		public MovementListener(Player p) {
@@ -273,6 +274,11 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 				} else if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_KP_RIGHT) {
 					move(right);
 				}
+			}
+			if (!mapOn&&!instructOn&&e.getKeyCode() == KeyEvent.VK_TAB) {
+				mapOn=true;
+				menuOn=false;
+				game.goToMapView();
 			}
 		}
 

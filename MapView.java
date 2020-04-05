@@ -15,7 +15,7 @@ public class MapView extends JPanel {
 	JButton QuitGame;
 	JButton MenuBtn;
 	boolean MenuOn;
-//	private PaintGUI gui;
+	//	private PaintGUI gui;
 	private Color ground;
 	private Color green;
 	private int BoxWidth;
@@ -34,7 +34,7 @@ public class MapView extends JPanel {
 		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.makeFrameFullSize(frame);
 		frame = game.getFrame();
-		
+
 		green = new Color(102, 204, 0);
 		difficulty = maze.getDifficulty();
 
@@ -54,9 +54,10 @@ public class MapView extends JPanel {
 		ReturnChamber = new JButton("Chamber View");
 		ReturnChamber.addActionListener(cl);
 		frame.addKeyListener(cl);
-		//frame.setFocusable(true);
-		//frame.setFocusTraversalKeysEnabled(false);
-		
+		frame.setFocusable(true);
+		//frame.requestFocusInWindow();
+		frame.setFocusTraversalKeysEnabled(false);
+
 		ReturnChamber.setBorder(BorderFactory.createBevelBorder(0, ground, Color.black, Color.white, ground));
 		ReturnChamber.setBackground(Color.white);
 		ReturnChamber.setOpaque(true);
@@ -84,7 +85,7 @@ public class MapView extends JPanel {
 		Color darkGray = new Color(160, 160, 160);
 		MenuPane.setBackground(darkGray);
 		MenuPane.setVisible(false);
-		
+
 		menuListener ml = new menuListener();
 		MenuBtn = new JButton();
 		MapViewPane.add(MenuBtn);
@@ -93,7 +94,7 @@ public class MapView extends JPanel {
 		MenuBtn.setBorderPainted(false);
 		MenuBtn.addActionListener(ml);
 		MenuBtn.setBounds(23 * frame.getWidth() / 25, frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 25);
-		
+
 		LevelListener ll = new LevelListener(this); 
 		Up = new JButton(); 
 		Up.addActionListener(ll); 
@@ -129,7 +130,7 @@ public class MapView extends JPanel {
 	private class ChamberListener implements KeyListener, ActionListener {
 		private Game game;
 		ChamberListener(Game gameParam){ this.game = gameParam; }
-		
+
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Chamber View")) {
 				game.goToChamberView();
@@ -138,12 +139,11 @@ public class MapView extends JPanel {
 		}
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_TAB) {
-				System.out.println("feourydfihbioufh89weoiybhdjk");
 				game.goToChamberView();
 				game.chamberLayers.HUDPanel.changeMap(false);
 			}
 		}
-		
+
 		public void keyTyped(KeyEvent e) {
 			// empty; use keyReleased instead
 			repaint();
@@ -189,7 +189,7 @@ public class MapView extends JPanel {
 		}
 		repaint();
 	}
-	
+
 
 	public void viewDown() {
 		if(currentLvl>0) {
@@ -202,7 +202,7 @@ public class MapView extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		//this.drawHeader(g);
-		
+
 		//Menu and key components
 		Graphics2D g2 = (Graphics2D) g;
 		for(int i = 1; i <= 3; i++) {
@@ -211,7 +211,7 @@ public class MapView extends JPanel {
 			g.drawRoundRect(23 * frame.getWidth() / 25, i*frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 100, 10, 15);
 			g.setColor(Color.gray);
 			g.fillRoundRect(23 * frame.getWidth() / 25, i*frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 100, 10, 15);
-			
+
 		}
 		g.setColor(Color.black);
 		Font KeyFont = new Font ("Times New Roman", 20, 25);
@@ -230,7 +230,7 @@ public class MapView extends JPanel {
 		g.fillPolygon(new int[] {26*frame.getWidth()/30+30, (26*frame.getWidth()/30)+60, ((26*frame.getWidth()/30+30)+(26*frame.getWidth()/30)+60)/2}, new int[] {(18*frame.getHeight()/20)-30, (18*frame.getHeight()/20)-30, (18*frame.getHeight()/20)-80}, 3);
 		g.setColor(ground);
 		g.fillPolygon(new int[] {26*frame.getWidth()/30+30, (26*frame.getWidth()/30)+60, ((26*frame.getWidth()/30+30)+(26*frame.getWidth()/30)+60)/2}, new int[] {(18*frame.getHeight()/20)-30, (18*frame.getHeight()/20)-30, (18*frame.getHeight()/20)-40}, 3);
-		
+
 		//arrow components
 		int arrowLength = frame.getWidth()/18;
 		g.setColor(green);
@@ -239,8 +239,8 @@ public class MapView extends JPanel {
 		g.setColor(Color.red);
 		g.fillPolygon(new int[] {2*frame.getWidth()/30, (2*frame.getWidth()/30)+arrowLength, ((2*frame.getWidth()/30)+(2*frame.getWidth()/30)+arrowLength)/2}, new int[] {(3*frame.getHeight()/5), (3*frame.getHeight()/5), 67*frame.getHeight()/100}, 3);
 		g.fillRect((arrowLength/4)+(2*frame.getWidth()/30), (3*frame.getHeight()/5)-frame.getHeight()/17, arrowLength/2, frame.getHeight()/17);
-			
-	//Map components
+
+		//Map components
 		Color currentColor;
 		if (player.roomVisited(player.getPosition().getX(), player.getPosition().getY(), currentLvl))
 			currentColor = maze.getRoom(player.getPosition().getX(), player.getPosition().getY(), currentLvl).getColor();
@@ -260,7 +260,7 @@ public class MapView extends JPanel {
 			BoxWidth = (60*frame.getWidth()/100)/6;
 			BoxHeight = (70*frame.getHeight()/100)/6;
 		}
-		
+
 		//draws map
 		for(int i = 0; i <levelNum; i++) {
 			for (int j = 0; j<levelNum; j++) {
@@ -318,39 +318,41 @@ public class MapView extends JPanel {
 					j=temp;
 				}
 			}
-			
+
 		}
-		
+
 		//Player current position
 		int[] currentPosition = player.getPosition().toArray();
-		currentPosition[1]=levelNum-currentPosition[1]-1;
-		int currentOrientation = player.getOrientation();
-		if(currentOrientation == 0) {
-			//north
-			g.setColor(Color.blue);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 3);
-			g.setColor(currentColor);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+64*BoxHeight/100, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 3);
-		}else if(currentOrientation == 1){
-			//east
-			g.setColor(Color.blue);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
-			g.setColor(currentColor);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+36*BoxWidth/100,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
-		}else if(currentOrientation == 2){
-			//south
-			g.setColor(Color.blue);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5}, 3);
-			g.setColor(currentColor);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+36*BoxHeight/100, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5}, 3);
-		}else if(currentOrientation == 3){
-			//west
-			g.setColor(Color.blue);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
-			g.setColor(currentColor);
-			g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+64*BoxWidth/100,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
+		if (currentLvl==currentPosition[2]) {
+			currentPosition[1]=levelNum-currentPosition[1]-1;
+			int currentOrientation = player.getOrientation();
+			if(currentOrientation == 0) {
+				//north
+				g.setColor(Color.blue);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 3);
+				g.setColor(currentColor);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+64*BoxHeight/100, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 3);
+			}else if(currentOrientation == 1){
+				//east
+				g.setColor(Color.blue);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
+				g.setColor(currentColor);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+36*BoxWidth/100,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
+			}else if(currentOrientation == 2){
+				//south
+				g.setColor(Color.blue);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5}, 3);
+				g.setColor(currentColor);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+36*BoxHeight/100, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5}, 3);
+			}else if(currentOrientation == 3){
+				//west
+				g.setColor(Color.blue);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
+				g.setColor(currentColor);
+				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+64*BoxWidth/100,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
+			}
 		}
-		
+
 		//Grid labels
 		String[] Label = {"1","2","3","4","5","6"};
 		g.setColor(Color.black);
@@ -360,24 +362,24 @@ public class MapView extends JPanel {
 			g.drawString(Label[i], (i*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2, (20*frame.getHeight()/100)-30);
 			g.drawString(Label[i], (20*frame.getWidth()/100)-50, (i*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2);
 		}
-		
+
 		g.setColor(Color.WHITE);
 		Font f = new Font("Arial", Font.BOLD, 20);
 		g.setFont(f);
-		g.drawString("Level: " + player.getPosition().getZ() + "     Row: " + player.getPosition().getX() + "     Column: "
-				+ player.getPosition().getY(), (int) (.05 * 600), (int) (.05 * 800));
+		g.drawString("Level: " + (player.getPosition().getZ()+1) + "     Row: " + (player.getPosition().getX()+1) + "     Column: "
+				+ (player.getPosition().getY()+1), (int) (.05 * 600), (int) (.05 * 800));
 		g.drawString("Moves Made: " + player.getMoves(), (int) (.05 * 600), (int) (.08 * 800));
 		g.drawString("Facing: " + player.getOrientation(), (int) (.05 * 600), (int) (.11 * 800));
 	}
 
-//	private void makeFrameFullSize(JFrame aFrame) {
-//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//		//aFrame.setSize(screenSize.width, screenSize.height);
-//		aFrame.setSize(800, 600);
-//	}
-	
+	//	private void makeFrameFullSize(JFrame aFrame) {
+	//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	//		//aFrame.setSize(screenSize.width, screenSize.height);
+	//		aFrame.setSize(800, 600);
+	//	}
 
-//	public static void main(String[] args) {
-//		new MapView();
-//	}
+
+	//	public static void main(String[] args) {
+	//		new MapView();
+	//	}
 }
