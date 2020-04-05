@@ -1,5 +1,5 @@
 public class Position {
-	public int x, y, z;
+	private int x, y, z;
 	
 	public int getX() { return x; }
 	public void incrementX () { x++; }

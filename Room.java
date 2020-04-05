@@ -7,21 +7,24 @@ public class Room {
     public static final int west = 3;
     public static final int up = 4;
     public static final int down = 5;
-    private boolean[] doors = new boolean[6];
+    private boolean[] doors;
     private Color wallColor;
-    private boolean[] outside = new boolean[6];
-    private Painting painting = null;
-    private static HashMap<Color, Color> usedColors;
+    private boolean[] outside;
+    private Painting painting;
+    private static ArrayList<Color> usedColors;
     public Room () {
         this(null, null);
     }
     public Room (boolean[] doors, boolean[] outside) {
+    	doors = new boolean[6];
+    	outside = new boolean[6];
+    	painting = null;
         if (doors != null)
             this.doors = doors;
         if (outside != null)
             this.outside = outside;
         if (usedColors == null) {
-            usedColors = new HashMap<Color, Color>();
+            usedColors = new ArrayList<Color>();
         }
         Random rand = new Random();
         int r=0;
@@ -33,7 +36,7 @@ public class Room {
             b = rand.nextInt(255);
         }
         wallColor = new Color(r, g, b);
-        usedColors.put(wallColor, wallColor);
+        usedColors.add(wallColor);
     }
     public void setDoor(int direction, boolean isOpen) {
         doors[direction] = isOpen;
@@ -44,8 +47,11 @@ public class Room {
     public Color getColor() {
         return wallColor;
     }
-    public boolean colorUsed(Color color) {
-        return usedColors.containsKey(color);
+    private boolean colorUsed(Color color) {
+        for (Color usedColor : usedColors)
+        	if (color.equals(usedColor))
+        		return true;
+        return false;
     }
     public static void resetColors() {
         usedColors.clear();

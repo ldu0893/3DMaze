@@ -35,10 +35,10 @@ public class PrimsAlgorithm {
 		while (frontier.size() > 0) {
 			//System.out.println("Frontier size: " + frontier.size());
 			Position newRoom = frontier.get((int) (frontier.size() * Math.random()));
-			connectRoom(maze, visited, newRoom);
-			visited[newRoom.x][newRoom.y][newRoom.z] = true;
+			connectRoom(maze, newRoom);
+			visited[newRoom.getX()][newRoom.getY()][newRoom.getZ()] = true;
 			frontier.remove(newRoom);
-			addFrontier(visited, frontier, newRoom);
+			addFrontier(newRoom);
 		}
 		//System.out.println(maze.length);
 		if (Maze.shortestPath(maze)<16) {
@@ -49,16 +49,16 @@ public class PrimsAlgorithm {
 		return maze;
 	}
 
-	private void addFrontier (boolean[][][] visited, ArrayList<Position> frontier, Position newRoom) {
-		Position[] possibleFrontier = {new Position(newRoom.x + 1, newRoom.y, newRoom.z),
-				new Position(newRoom.x - 1, newRoom.y, newRoom.z),
-				new Position(newRoom.x, newRoom.y + 1, newRoom.z),
-				new Position(newRoom.x, newRoom.y - 1, newRoom.z),
-				new Position(newRoom.x, newRoom.y, newRoom.z + 1),
-				new Position(newRoom.x, newRoom.y, newRoom.z - 1)};
+	private void addFrontier (Position newRoom) {
+		Position[] possibleFrontier = {new Position(newRoom.getX()  + 1, newRoom.getY(), newRoom.getZ()),
+				new Position(newRoom.getX() - 1, newRoom.getY(), newRoom.getZ()),
+				new Position(newRoom.getX(), newRoom.getY() + 1, newRoom.getZ()),
+				new Position(newRoom.getX(), newRoom.getY() - 1, newRoom.getZ()),
+				new Position(newRoom.getX(), newRoom.getY(), newRoom.getZ() + 1),
+				new Position(newRoom.getX(), newRoom.getY(), newRoom.getZ() - 1)};
 		for (Position pos : possibleFrontier) {
 			//System.out.println("frontier.contains(newRoom): " + frontier.contains(newRoom));
-			if (pos.isValid(visited.length) && !visited[pos.x][pos.y][pos.z]) {
+			if (pos.isValid(visited.length) && !visited[pos.getX()][pos.getY()][pos.getZ()]) {
 				boolean inFrontier = false;
 				for (Position frontierPos : frontier)
 					if (frontierPos.equals(pos)) {
@@ -71,7 +71,7 @@ public class PrimsAlgorithm {
 		}
 	}
 
-	private void connectRoom (Room[][][] maze, boolean[][][] visited, Position newRoom) {
+	private void connectRoom (Room[][][] maze, Position newRoom) {
 		ArrayList<Integer> order = new ArrayList<Integer>();
 		for (int i = 0; i < 6; i++)
 			order.add(i);
@@ -79,61 +79,61 @@ public class PrimsAlgorithm {
 		for (Integer direction : order) {
 			switch (direction) {
 			case 0: //connect E
-				Position connectingRoom0 = new Position(newRoom.x + 1, newRoom.y, newRoom.z);
+				Position connectingRoom0 = new Position(newRoom.getX() + 1, newRoom.getY(), newRoom.getZ());
 				if (connectingRoom0.isValid(size) && 
-						visited[connectingRoom0.x][connectingRoom0.y][connectingRoom0.z]) {
-					maze[connectingRoom0.x][connectingRoom0.y][connectingRoom0.z].setDoor(Room.west, true);
-					maze[newRoom.x][newRoom.y][newRoom.z].setDoor(Room.east, true);
+						visited[connectingRoom0.getX()][connectingRoom0.getY()][connectingRoom0.getZ()]) {
+					maze[connectingRoom0.getX()][connectingRoom0.getY()][connectingRoom0.getZ()].setDoor(Room.west, true);
+					maze[newRoom.getX()][newRoom.getY()][newRoom.getZ()].setDoor(Room.east, true);
 					//System.out.println("Connecting" + newRoom + "to " + connectingRoom0 + ".");
 					return;
 				}
 				continue;
 			case 1: // connects W
-				Position connectingRoom1 = new Position(newRoom.x - 1, newRoom.y, newRoom.z);
+				Position connectingRoom1 = new Position(newRoom.getX() - 1, newRoom.getY(), newRoom.getZ());
 				if (connectingRoom1.isValid(size) && 
-						visited[connectingRoom1.x][connectingRoom1.y][connectingRoom1.z]) {
-					maze[connectingRoom1.x][connectingRoom1.y][connectingRoom1.z].setDoor(Room.east, true);
-					maze[newRoom.x][newRoom.y][newRoom.z].setDoor(Room.west, true);
+						visited[connectingRoom1.getX()][connectingRoom1.getY()][connectingRoom1.getZ()]) {
+					maze[connectingRoom1.getX()][connectingRoom1.getY()][connectingRoom1.getZ()].setDoor(Room.east, true);
+					maze[newRoom.getX()][newRoom.getY()][newRoom.getZ()].setDoor(Room.west, true);
 					//System.out.println("Connecting" + newRoom + "to " + connectingRoom1 + ".");
 					return;
 				}
 				continue;
 			case 2: // connects N
-				Position connectingRoom2 = new Position(newRoom.x, newRoom.y + 1, newRoom.z);
+				Position connectingRoom2 = new Position(newRoom.getX(), newRoom.getY() + 1, newRoom.getZ());
 				if (connectingRoom2.isValid(size) && 
-						visited[connectingRoom2.x][connectingRoom2.y][connectingRoom2.z]) {
-					maze[connectingRoom2.x][connectingRoom2.y][connectingRoom2.z].setDoor(Room.south, true);
-					maze[newRoom.x][newRoom.y][newRoom.z].setDoor(Room.north, true);
+						visited[connectingRoom2.getX()][connectingRoom2.getY()][connectingRoom2.getZ()]) {
+					maze[connectingRoom2.getX()][connectingRoom2.getY()][connectingRoom2.getZ()].setDoor(Room.south, true);
+					maze[newRoom.getX()][newRoom.getY()][newRoom.getZ()].setDoor(Room.north, true);
 					//System.out.println("Connecting" + newRoom + "to " + connectingRoom2 + ".");
 					return;
 				}
 				continue;
 			case 3: // connects S
-				Position connectingRoom3 = new Position(newRoom.x, newRoom.y - 1, newRoom.z);
+				Position connectingRoom3 = new Position(newRoom.getX(), newRoom.getY() - 1, newRoom.getZ());
 				if (connectingRoom3.isValid(size) && 
-						visited[connectingRoom3.x][connectingRoom3.y][connectingRoom3.z]) {
-					maze[connectingRoom3.x][connectingRoom3.y][connectingRoom3.z].setDoor(Room.north, true);
-					maze[newRoom.x][newRoom.y][newRoom.z].setDoor(Room.south, true);
+						visited[connectingRoom3.getX()][connectingRoom3.getY()][connectingRoom3.getZ()]) {
+					maze[connectingRoom3.getX()][connectingRoom3.getY()][connectingRoom3.getZ()].setDoor(Room.north, true);
+					maze[newRoom.getX()][newRoom.getY()][newRoom.getZ()].setDoor(Room.south, true);
 					//System.out.println("Connecting" + newRoom + "to " + connectingRoom3 + ".");
 					return;
 				}
 				continue;
 			case 4: // connects U
-				Position connectingRoom4 = new Position(newRoom.x, newRoom.y, newRoom.z + 1);
+				Position connectingRoom4 = new Position(newRoom.getX(), newRoom.getY(), newRoom.getZ() + 1);
 				if (connectingRoom4.isValid(size) && 
-						visited[connectingRoom4.x][connectingRoom4.y][connectingRoom4.z]) {
-					maze[connectingRoom4.x][connectingRoom4.y][connectingRoom4.z].setDoor(Room.down, true);
-					maze[newRoom.x][newRoom.y][newRoom.z].setDoor(Room.up, true);
+						visited[connectingRoom4.getX()][connectingRoom4.getY()][connectingRoom4.getZ()]) {
+					maze[connectingRoom4.getX()][connectingRoom4.getY()][connectingRoom4.getZ()].setDoor(Room.down, true);
+					maze[newRoom.getX()][newRoom.getY()][newRoom.getZ()].setDoor(Room.up, true);
 					//System.out.println("Connecting" + newRoom + "to " + connectingRoom4 + ".");
 					return;
 				}
 				continue;
 			case 5: // connects D
-				Position connectingRoom5 = new Position(newRoom.x, newRoom.y, newRoom.z - 1);
+				Position connectingRoom5 = new Position(newRoom.getX(), newRoom.getY(), newRoom.getZ() - 1);
 				if (connectingRoom5.isValid(size) && 
-						visited[connectingRoom5.x][connectingRoom5.y][connectingRoom5.z]) {
-					maze[connectingRoom5.x][connectingRoom5.y][connectingRoom5.z].setDoor(Room.up, true);
-					maze[newRoom.x][newRoom.y][newRoom.z].setDoor(Room.down, true);
+						visited[connectingRoom5.getX()][connectingRoom5.getY()][connectingRoom5.getZ()]) {
+					maze[connectingRoom5.getX()][connectingRoom5.getY()][connectingRoom5.getZ()].setDoor(Room.up, true);
+					maze[newRoom.getX()][newRoom.getY()][newRoom.getZ()].setDoor(Room.down, true);
 					//System.out.println("Connecting" + newRoom + " to " + connectingRoom5 + ".");
 					return;
 				}

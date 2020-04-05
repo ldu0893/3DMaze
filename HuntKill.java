@@ -1,13 +1,13 @@
 import java.util.*;
 
 public class HuntKill {
-	ArrayList<int[]> roomsVisited;
-	int numRooms;
-	Room[][][] rooms;
-	public static void main(String[] args) {
-		HuntKill test = new HuntKill(4);
-		test.generateMaze();
-	}
+	private ArrayList<int[]> roomsVisited;
+	private int numRooms;
+	private Room[][][] rooms;
+//	public static void main(String[] args) {
+//		HuntKill test = new HuntKill(4);
+//		test.generateMaze();
+//	}
 
 	public HuntKill(int roomNum) {
 		roomsVisited=new ArrayList<int[]>();
@@ -73,7 +73,7 @@ public class HuntKill {
 		return rooms;
 	}
 
-	public int[] hunt() {
+	private int[] hunt() {
 		boolean tester = true;
 		int[] returnval = new int[3];
 		for (int i = 0; i < numRooms; i++) {

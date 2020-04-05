@@ -4,12 +4,12 @@ public class KruskalsAlgorithm {
 	private int size;
 	private int[][][] maze;
 	private Room[][][] mazerooms;
-	KruskalsAlgorithm(int size) {
+	public KruskalsAlgorithm(int size) {
 		this.size=size;
 		reset();
 	}
 
-	public Room[][][] generate() {
+	public Room[][][] generateMaze () {
 		Random rand=new Random();
 		do {
 			int x=rand.nextInt(size);
@@ -44,7 +44,7 @@ public class KruskalsAlgorithm {
 		} while (!done());
 		if (Maze.shortestPath(mazerooms)<25) {
 			reset();
-			return generate();
+			return generateMaze();
 		}
 		return mazerooms;
 	}

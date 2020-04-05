@@ -4,7 +4,7 @@ public class Player {
 	private boolean[][][] roomVisits;
 	private int moves;
 
-	Player(Position pos, int orient, int xSize, int ySize, int zSize) {
+	public Player (Position pos, int orient, int xSize, int ySize, int zSize) {
 		position = pos;
 		orientation = orient;
 		moves = 0;

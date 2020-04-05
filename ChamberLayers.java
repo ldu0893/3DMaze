@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class ChamberLayers extends JLayeredPane {
-	private static final long serialVersionUID = -2716144694728695338L;
+//	private static final long serialVersionUID = -2716144694728695338L;
 	private int animation;
 //	public static final int forward = 3;
 //	public static final int up = 4;
@@ -42,14 +42,14 @@ public class ChamberLayers extends JLayeredPane {
 		return animation;
 	}
 
-	public static void main(String[] args) throws IOException {
-		ChamberLayers chamber = new ChamberLayers(new Game(), new Maze(1));
-
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		frame.add(chamber);
-		frame.setSize(800, 600);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) throws IOException {
+//		ChamberLayers chamber = new ChamberLayers(new Game(), new Maze(1));
+//
+//		JFrame frame = new JFrame();
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		JFrame.setDefaultLookAndFeelDecorated(true);
+//		frame.add(chamber);
+//		frame.setSize(800, 600);
+//		frame.setVisible(true);
+//	}
 }

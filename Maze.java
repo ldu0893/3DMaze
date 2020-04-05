@@ -23,7 +23,7 @@ public class Maze {
 			mazeArray = (new PrimsAlgorithm(5)).generateMaze();
 			size = 5;
 		} else if (difficulty == 2) { // Kruskal's Algorithm
-			mazeArray = (new KruskalsAlgorithm(6)).generate();
+			mazeArray = (new KruskalsAlgorithm(6)).generateMaze();
 			size = 6;
 		} else {
 			mazeArray = new Room[5][5][5];
@@ -49,7 +49,7 @@ public class Maze {
 		if (difficulty == 1) { // Prim's Algorithm
 			mazeArray = (new PrimsAlgorithm(size)).generateMaze();
 		} else if (difficulty == 2) { // Kruskal's Algorithm
-			mazeArray = (new KruskalsAlgorithm(size)).generate();
+			mazeArray = (new KruskalsAlgorithm(size)).generateMaze();
 		} else {
 			mazeArray = new Room[5][5][5];
 			for (int i = 0; i < 5; i++)
@@ -352,9 +352,9 @@ public class Maze {
 	}
 	
 	
-	public static void main (String[] args) {
-		Maze maze = new Maze(0);
-		maze.printMaze();
-		System.out.println("Shortest Path: " + maze.shortestPath());
-	}
+//	public static void main (String[] args) {
+//		Maze maze = new Maze(0);
+//		maze.printMaze();
+//		System.out.println("Shortest Path: " + maze.shortestPath());
+//	}
 }
