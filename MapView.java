@@ -5,15 +5,15 @@ import javax.swing.*;
 public class MapView extends JPanel {
 	private Game game;
 	private Maze maze;
-	JFrame frame;
+	private JFrame frame;
 	private JPanel MapViewPane;
-	JPanel MenuPane;
+	private JPanel MenuPane;
 	private JButton Up;
 	private JButton Down;
-	JButton ReturnChamber;
-	JButton Instructions;
-	JButton QuitGame;
-	JButton MenuBtn;
+	private JButton ReturnChamber;
+	private JButton Instructions;
+	private JButton QuitGame;
+	private JButton MenuBtn;
 	boolean MenuOn;
 	//	private PaintGUI gui;
 	private Color ground;
@@ -23,7 +23,7 @@ public class MapView extends JPanel {
 	int difficulty;
 	int levelNum;
 	int currentLvl;
-	Player player;
+	private Player player;
 
 	public MapView(Game game, Maze maze) {
 		this.game = game;
@@ -113,7 +113,7 @@ public class MapView extends JPanel {
 		currentLvl = player.getPosition().getZ();
 	}
 
-	class menuListener implements ActionListener {
+	private class menuListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (!MenuOn) {
 				MenuOn = true;
@@ -134,13 +134,13 @@ public class MapView extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Chamber View")) {
 				game.goToChamberView();
-				game.chamberLayers.HUDPanel.changeMap(false);
+				game.getChamberLayers ().HUDPanel.changeMap(false);
 			}
 		}
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_TAB) {
 				game.goToChamberView();
-				game.chamberLayers.HUDPanel.changeMap(false);
+				game.getChamberLayers ().HUDPanel.changeMap(false);
 			}
 		}
 
@@ -156,7 +156,7 @@ public class MapView extends JPanel {
 		}
 	}
 
-	class OptionsListener implements ActionListener {
+	private class OptionsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Instructions")) {
 				game.toggleInstructions();
@@ -168,7 +168,7 @@ public class MapView extends JPanel {
 
 	private class LevelListener implements ActionListener {
 		private MapView mapView;
-		LevelListener(MapView mapview){ mapView = mapview; }
+		public LevelListener(MapView mapview){ mapView = mapview; }
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == Up) {

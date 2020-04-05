@@ -22,11 +22,15 @@ public class Game {
 	private IntroScreen introScreen;
 	private DifficultyScreen difficultyScreen;
 	private ChamberView chamberView;
-	public ChamberLayers chamberLayers;
+	private ChamberLayers chamberLayers;
 	private MapView mapView;
 	private Instructions instructionScreen;
 	private Component backFromInstructions = null;;
 	private EndScreen endScreen;
+	
+	public ChamberLayers getChamberLayers () {
+		return chamberLayers;
+	}
 	
 	public JFrame getFrame () {
 		return gameFrame;

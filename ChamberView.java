@@ -12,17 +12,21 @@ public class ChamberView extends JPanel {
 	private Room currentRoom, nextRoom;
 	private ArrayList<Triangle> triList;
 	private double theta, phi;
-	private java.util.Timer timer = new java.util.Timer();
+	private java.util.Timer timer;
 	private int animationTimer;
 	private int animationType; //0 default, 1 rotate right, 2 rotate left, 3 forwards, 4 upwards, 5 downwards
-	public double doorAngleN, doorAngleS, doorAngleE, doorAngleW, doorAngleU, doorAngleD;
-	public Color[] doorColorArray, nextRoomDoorColorArray;
-	private Color ceilingColor=Color.decode("#C3C3C3");
-	private boolean pressed=false, menuOn=false, timerrun=true;
+	private double doorAngleN, doorAngleS, doorAngleE, doorAngleW, doorAngleU, doorAngleD;
+	private Color[] doorColorArray, nextRoomDoorColorArray;
+	private final Color ceilingColor=Color.decode("#C3C3C3");
+	private boolean pressed, menuOn, timerrun;
 	private int phicount, speed;
 	private ChamberLayers chamberLayers;
 
 	public ChamberView (Game game, Maze maze, ChamberLayers chamberLayers) {
+		timer = new java.util.Timer();
+		pressed=false;
+		menuOn=false;
+		timerrun=true;
 		this.chamberLayers = chamberLayers;
 		this.setBackground(Color.WHITE);
 		this.maze = maze;
@@ -150,6 +154,10 @@ public class ChamberView extends JPanel {
 					}
 					animationType = 0;
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+					if (animationType == 3)
+						chamberLayers.getHUDPanel().enableComponents(nextRoom, playerDirection);
+					else
+						chamberLayers.getHUDPanel().enableComponents(currentRoom, playerDirection);
 					nextRoom = null;
 					chamberLayers.setAnimation(0);
 					chamberLayers.HUDPanel.movementListener.animationFinished();
@@ -163,6 +171,7 @@ public class ChamberView extends JPanel {
 					}
 					animationType = 0;
 					doorAngleN = doorAngleE = doorAngleS = doorAngleW = doorAngleU = doorAngleD = 0;
+					chamberLayers.getHUDPanel().enableComponents(nextRoom, playerDirection);
 					nextRoom = null;
 					chamberLayers.setAnimation(0);
 					chamberLayers.HUDPanel.movementListener.animationFinished();
@@ -174,9 +183,11 @@ public class ChamberView extends JPanel {
 				} else if (animationType == 1) {
 					animationTimer++;
 					theta += Math.PI/(2*40);
+					chamberLayers.getHUDPanel().disableComponents();
 				} else if (animationType == 2) {
 					animationTimer++;
 					theta -= Math.PI/(2*40);
+					chamberLayers.getHUDPanel().disableComponents();
 				} else if (animationType == 3) {
 					animationTimer++;
 					cameraPos = cameraPos.plus(screenPlaneRelPos.scale(100/screenPlaneRelPos.magnitude()/40));
@@ -188,6 +199,7 @@ public class ChamberView extends JPanel {
 						doorAngleS = Math.min(animationTimer, 20)*Math.PI/2/20;
 					else
 						doorAngleW = Math.min(animationTimer, 20)*Math.PI/2/20;
+					chamberLayers.getHUDPanel().disableComponents();
 				} else if (animationType == 4) {
 					if (animationTimer < 20) {
 						phicount++;
@@ -202,6 +214,7 @@ public class ChamberView extends JPanel {
 						doorAngleU += Math.PI /40;
 					}
 					animationTimer++;
+					chamberLayers.getHUDPanel().disableComponents();
 				} else if (animationType == 5) {
 					if (animationTimer < 20) {
 						phicount--;
@@ -216,6 +229,7 @@ public class ChamberView extends JPanel {
 						doorAngleD += Math.PI /40;
 					}
 					animationTimer++;
+					chamberLayers.getHUDPanel().disableComponents();
 				}
 				screenPlaneRelPos = new Vector(15*Math.cos(phi)*Math.sin(theta), 15*Math.cos(phi)*Math.cos(theta), 15*Math.sin(phi));
 				ChamberView.this.repaint();
