@@ -18,7 +18,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	public static final int right = 4;
 	public static final int left = 5;
 	private boolean menuOn;
-	private MovementListener movementListener;
+	//TODO change to private
+	public MovementListener movementListener;
 	private ChamberLayers chamberLayers;
 	private JPanel dPadPanel;
 	public HUDPanel hudPanel = this;

@@ -85,7 +85,8 @@ public class MapView extends JPanel {
 		MenuPane.setBackground(darkGray);
 		MenuPane.setVisible(false);
 		
-		MenuListener ml = new MenuListener();
+		//MenuListener ml = new MenuListener();
+		menuListener ml = new menuListener();
 		MenuBtn = new JButton();
 		MapViewPane.add(MenuBtn);
 		MenuBtn.setOpaque(false);
@@ -112,7 +113,8 @@ public class MapView extends JPanel {
 		currentLvl = player.getPosition().getZ();
 	}
 
-	private class MenuListener implements ActionListener {
+	//change
+	private class menuListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (!MenuOn) {
 				MenuOn = true;
