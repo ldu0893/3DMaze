@@ -245,7 +245,7 @@ public class ChamberView extends JPanel {
 		for (int i = 0; i < 6; i++)
 			if (nextRoom.getDoor(i))
 				if (nextRoom.leadsOutside(i))
-					nextRoomDoorColorArray[i] = Color.DARK_GRAY;
+					nextRoomDoorColorArray[i] = new Color(189, 189, 189);
 				else
 					nextRoomDoorColorArray[i] = Color.BLACK;
 			else if (0 <= i && i <= 3)
@@ -370,7 +370,7 @@ public class ChamberView extends JPanel {
 		for (int i = 0; i < 6; i++)
 		if (currentRoom.getDoor(i))
 			if (currentRoom.leadsOutside(i))
-				doorColorArray[i] = Color.DARK_GRAY;
+				doorColorArray[i] = new Color(189, 189, 189);
 			else
 				doorColorArray[i] = Color.BLACK;
 		else if (0 <= i && i <= 3)
