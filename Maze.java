@@ -74,7 +74,7 @@ public class Maze {
 						if (random < 1) {
 							int randomDoor = (int) (4*Math.random());
 							if (!mazeArray[i][j][k].getDoor(randomDoor)) {
-								mazeArray[i][j][k].setPainting((new Painting()).specifyPainting(randomDoor, new Vector(100*i, 100*j, 100*k)));
+								mazeArray[i][j][k].setPainting((new Painting()).specifyPainting(randomDoor, new Vector(100*i, 100*j, 100*k), true));
 							}
 						}
 					}
@@ -90,9 +90,11 @@ public class Maze {
 		if (exit==0) {
 			mazeArray[0][0][0].setDoor(Room.west, true);
 			mazeArray[0][0][0].setLeadsOutside(Room.west);
+			mazeArray[0][0][0].setPainting(new Painting().specifyPainting(Room.west, new Vector(0, 0, 0), false));
 		} else {
 			mazeArray[0][0][0].setDoor(Room.south, true);
 			mazeArray[0][0][0].setLeadsOutside(Room.south);
+			mazeArray[0][0][0].setPainting(new Painting().specifyPainting(Room.south, new Vector(0, 0, 0), false));
 		}
 	}
 	

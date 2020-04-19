@@ -52,6 +52,29 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 	}
 
 	public void paintComponent(Graphics g) {
+		g.setColor(Color.WHITE);
+		Font f = new Font("Arial", Font.BOLD, 20);
+		g.setFont(f);
+		g.drawString("Level: " + (player.getPosition().getZ()+1) + "     Row: " + (player.getPosition().getX()+1) + "     Column: "
+				+ (player.getPosition().getY()+1), (int) (.05 * 600), (int) (.05 * 800));
+		g.drawString("Moves Made: " + player.getMoves(), (int) (.05 * 600), (int) (.08 * 800));
+		String orientString = "";
+		switch (player.getOrientation()) {
+			case 0:
+				orientString = "North";
+				break;
+			case 1:
+				orientString = "East";
+				break;
+			case 2:
+				orientString = "South";
+				break;
+			case 3:
+				orientString = "West";
+				break;
+		}
+		g.drawString("Facing: " + orientString, (int) (.05 * 600), (int) (.11 * 800));
+		
 		Graphics2D g2d=(Graphics2D)g;
 		if (menuOn) {
 			menuOn(g2d);

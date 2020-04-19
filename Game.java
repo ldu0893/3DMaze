@@ -42,6 +42,7 @@ public class Game {
 	}
 
 	public Game() {
+		Painting.loadImages();
 		minimumScores = new ArrayList<Double>();
 		for (int i = 0; i < 10; i++)
 			minimumScores.add(0.0);

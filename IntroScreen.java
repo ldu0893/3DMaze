@@ -1,6 +1,7 @@
 import javax.swing.*; 
 import java.io.File;
 import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.awt.event.*;
@@ -33,16 +34,14 @@ public class IntroScreen extends JPanel implements ActionListener{
 		instructionsButton.setFont(new Font ("Arial", Font.PLAIN, (int)(height/17)));
 		this.add(instructionsButton);
 		this.game = game;
-		System.out.println("4");
 	}
 	public void paintComponent (Graphics g) {
 		super.paintComponent(g);
-		System.out.println("3");
 		g.setColor(Color.BLUE);
 		g.drawRect(50, 50, 100, 100);
 		BufferedImage i;
 		try {
-			i = ImageIO.read(new File("src/MazeBack.jpg"));
+			i = ImageIO.read(new File("OtherImages/GoodBackgroundAD.jpg"));
 		}
 		catch (Exception e) {
 			i = null;
@@ -50,21 +49,19 @@ public class IntroScreen extends JPanel implements ActionListener{
 		int width = 800;
 		int height = 600;
 		g.drawImage(i,0,0, width, height,null); 
-		g.setFont(new Font ("Calibri", Font.BOLD, (int)(height*.24))); 
-		
-		g.setColor(new Color (0,0,128));
-		g.drawString("3D MAZE", (int)(width*.19), (int)(height*.23));
-		AffineTransform at = new AffineTransform ();
-		at.setToRotation(Math.PI); //look up
-		//g.setTransform(at);
-		g.drawString("3D MAZE", (int)(width*.19), (int)(height*.23));
 		g.setColor(new Color (96,96,96));
 		g.fillRoundRect((int) (width*.34)-3, (int)(height*.5)+2, (int) (width*.32), (int) (height*.14), (int) (width*.02), (int) (width*.02));
 		g.fillRoundRect((int) (width*.34)-3, (int)(height*.68)+2, (int) (width*.32), (int) (height*.14), (int) (width*.02), (int) (width*.02));
 		g.setColor(new Color (178,0,0));
 		g.fillRoundRect((int) (width*.34), (int)(height*.5), (int) (int) (width*.32), (int) (height*.14), (int) (width*.02), (int) (width*.02));
 		g.fillRoundRect((int) (width*.34), (int)(height*.68), (int) (int) (width*.32), (int) (height*.14), (int) (width*.02), (int) (width*.02));
-		
+		g.setFont(new Font ("Calibri", Font.BOLD, (int)(height*.24))); 
+		g.setColor(new Color (0,0,128));
+		Graphics2D g2 = (Graphics2D)g;
+	    AffineTransform a = g2.getTransform();
+	    g2.rotate(-Math.PI/2);
+	    g2.setTransform(a);
+	    g2.drawString("3D MAZE", 118, 200);
 	}
 	public void actionPerformed (ActionEvent event) {
 		String get = event.getActionCommand();

@@ -323,33 +323,109 @@ public class MapView extends JPanel {
 
 		//Player current position
 		int[] currentPosition = player.getPosition().toArray();
+		g.setColor(Color.blue);
 		if (currentLvl==currentPosition[2]) {
 			currentPosition[1]=levelNum-currentPosition[1]-1;
 			int currentOrientation = player.getOrientation();
-			if(currentOrientation == 0) {
-				//north
-				g.setColor(Color.blue);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 3);
-				g.setColor(currentColor);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+64*BoxHeight/100, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 3);
-			}else if(currentOrientation == 1){
-				//east
-				g.setColor(Color.blue);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
-				g.setColor(currentColor);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+36*BoxWidth/100,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
-			}else if(currentOrientation == 2){
-				//south
-				g.setColor(Color.blue);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5}, 3);
-				g.setColor(currentColor);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+36*BoxHeight/100, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5}, 3);
-			}else if(currentOrientation == 3){
-				//west
-				g.setColor(Color.blue);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
-				g.setColor(currentColor);
-				g.fillPolygon(new int[] {(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+64*BoxWidth/100,(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5, (currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5}, new int[] {(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8, (currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8}, 3);
+			if(currentOrientation == 0) //north
+				g.fillPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, 
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, 
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+64*BoxHeight/100,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 
+						4);
+			else if(currentOrientation == 1) //east
+				g.fillPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+36*BoxWidth/100,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5},
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8},
+						4);
+			else if (currentOrientation == 2) //south
+				g.fillPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8},
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+36*BoxHeight/100,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5},
+						4);
+			else if (currentOrientation == 3) //west
+				g.fillPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+64*BoxWidth/100,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5},
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8},
+						4);
+		} else {
+			currentPosition[1]=levelNum-currentPosition[1]-1;
+			int currentOrientation = player.getOrientation();
+			if(currentOrientation == 0) //north
+				g.drawPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8}, 
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5, 
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+64*BoxHeight/100,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5}, 
+						4);
+			else if (currentOrientation == 1) //east
+				g.drawPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+36*BoxWidth/100,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5},
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8},
+						4);
+			else if(currentOrientation == 2) //south
+				g.drawPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+3*BoxWidth/8,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+5*BoxWidth/8},
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+4*BoxHeight/5,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+36*BoxHeight/100,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/5},
+						4);
+			else if(currentOrientation == 3) { //west
+				g.drawPolygon(new int[] {
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+64*BoxWidth/100,
+						(currentPosition[0]*BoxWidth)+(20*frame.getWidth()/100)+4*BoxWidth/5},
+						new int[] {
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+2*BoxHeight/8,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+BoxHeight/2,
+						(currentPosition[1]*BoxHeight)+(20*frame.getHeight()/100)+6*BoxHeight/8},
+						4);
 			}
 		}
 
@@ -369,7 +445,22 @@ public class MapView extends JPanel {
 		g.drawString("Level: " + (player.getPosition().getZ()+1) + "     Row: " + (player.getPosition().getX()+1) + "     Column: "
 				+ (player.getPosition().getY()+1), (int) (.05 * 600), (int) (.05 * 800));
 		g.drawString("Moves Made: " + player.getMoves(), (int) (.05 * 600), (int) (.08 * 800));
-		g.drawString("Facing: " + player.getOrientation(), (int) (.05 * 600), (int) (.11 * 800));
+		String orientString = "";
+		switch (player.getOrientation()) {
+			case 0:
+				orientString = "North";
+				break;
+			case 1:
+				orientString = "East";
+				break;
+			case 2:
+				orientString = "South";
+				break;
+			case 3:
+				orientString = "West";
+				break;
+		}
+		g.drawString("Facing: " + orientString, (int) (.05 * 600), (int) (.11 * 800));
 	}
 
 	//	private void makeFrameFullSize(JFrame aFrame) {

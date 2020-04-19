@@ -17,16 +17,26 @@ import javax.swing.*;
  */
 
 public class Painting {
+	private static ArrayList<BufferedImage> bufferedImages;
+	public static void loadImages () {
+		bufferedImages = new ArrayList<BufferedImage>();
+		try {
+			for (File file : new File("Paintings").listFiles()) {
+				bufferedImages.add(ImageIO.read(file));
+			}
+		} catch (Exception e) {}
+	}
+	
 	private ArrayList<Triangle> triangles;
 	public ArrayList<Triangle> getTriangles () {
 		return triangles;
 	}
+	
 	public Painting () {
 		triangles = new ArrayList<Triangle>();
 	}
 	
-	
-	public Painting specifyPainting (int direction, Vector offset) {
+	public Painting specifyPainting (int direction, Vector offset, boolean random) {
 		Vector aHat, bHat = new Vector(0, 0, 1), directionOffset;
 		if (direction == 0) { //north
 			aHat = new Vector(1, 0, 0);
@@ -42,13 +52,19 @@ public class Painting {
 			directionOffset = new Vector(98, 70, 30);
 		}
 		
-		ArrayList<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
-		try {
-			for (File file : new File("Paintings").listFiles()) {
-				bufferedImages.add(ImageIO.read(file));
-			}
-		} catch (Exception e) {}
-		BufferedImage bufferedImage=bufferedImages.get(new Random().nextInt(bufferedImages.size()));
+//		ArrayList<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
+//		try {
+//			for (File file : new File("Paintings").listFiles()) {
+//				bufferedImages.add(ImageIO.read(file));
+//			}
+//		} catch (Exception e) {}
+		BufferedImage bufferedImage = null;
+		if (random)
+			bufferedImage = bufferedImages.get(new Random().nextInt(bufferedImages.size()));
+		else
+			try {
+				bufferedImage = ImageIO.read(new File("OtherImages/ExitImage.png"));
+			} catch (Exception e) {}
 		int A = bufferedImage.getWidth(), B = bufferedImage.getHeight(), W = 40, H = 40;
 		offset = offset.clone().plus(directionOffset);
 		for (int i = 0; i < A; i++)
