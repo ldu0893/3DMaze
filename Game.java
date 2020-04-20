@@ -10,33 +10,43 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.io.*;
 
 public class Game {
-	private ArrayList<Double> minimumScores = new ArrayList();
-	ArrayList<Double> topTen = new ArrayList();
+	private ArrayList<Double> minimumScores;
+	private ArrayList<Double> topTen;
 	private int screenWidth, screenHeight;
 	private JFrame gameFrame;
 	private Player player;
 	private Maze maze;
 	private IntroScreen introScreen;
 	private DifficultyScreen difficultyScreen;
-	//private ChamberView chamberView;
+	private ChamberView chamberView;
 	private ChamberLayers chamberLayers;
 	private MapView mapView;
 	private Instructions instructionScreen;
 	private Component backFromInstructions = null;;
 	private EndScreen endScreen;
 	
+	public ChamberLayers getChamberLayers () {
+		return chamberLayers;
+	}
+	
 	public JFrame getFrame () {
 		return gameFrame;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Game game = new Game();
 		//game.runGame(1);
 	}
 
 	public Game() {
+		Painting.loadImages();
+		minimumScores = new ArrayList<Double>();
+		for (int i = 0; i < 10; i++)
+			minimumScores.add(0.0);
+		
 		gameFrame = new JFrame();
 		gameFrame.setMinimumSize(new Dimension(800,630));
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +95,7 @@ public class Game {
 		gameFrame.repaint();
 	}
 
-	public void runGame(int difficulty) {
+	public void runGame(int difficulty) throws IOException {
 		int size = 1;
 		if (difficulty == 0) {
 			size = 4;
@@ -94,15 +104,12 @@ public class Game {
 		} else if (difficulty == 2) {
 			size = 6;
 		}
-		int[] positions = { size - 1, size - 1, size - 1 };
+		Position position = new Position(size-1, size-1, size-1);
 		maze = new Maze(difficulty);
-		player = new Player(positions, 0, size, size, size);
+		player = new Player(position, 0, size, size, size);
 		chamberLayers = new ChamberLayers(this, maze);
-		//chamberView = new ChamberView(this, maze, null);
-		//mapView = new MapView(this, maze);
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(chamberLayers);
-		//gameFrame.add(chamberView);
 		gameFrame.revalidate();
 	}
 
@@ -129,16 +136,20 @@ public class Game {
 	public void submitScore(double score) {
 		minimumScores.add(score);
 		Collections.sort(minimumScores);
-		for (int i = 0; i < 10; i++) {
-			topTen = (ArrayList<Double>) minimumScores.subList(0, 9);
-		}
 	}
 
 	public void win(double score) {
 		submitScore(score);
+		topTen = new ArrayList<Double>();
+		if (minimumScores.size() > 10)
+			for (int i = 0; i < 10; i++)
+				topTen.add(minimumScores.get(i));
+		else
+			topTen = minimumScores;
 		endScreen = new EndScreen(score, topTen, this);
-		gameFrame.removeAll();
+		gameFrame.getContentPane().removeAll();
 		gameFrame.add(endScreen);
+		gameFrame.revalidate();
 	}
 
 //	public void drawHeader(Graphics g) {
