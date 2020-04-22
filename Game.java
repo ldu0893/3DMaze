@@ -119,7 +119,6 @@ public class Game {
 
 	public void toggleInstructions() {
 		if (backFromInstructions != null) {
-			getChamberLayers().HUDPanel.changeInstruct(false);
 			gameFrame.getContentPane().removeAll();
 			gameFrame.add(backFromInstructions);
 			gameFrame.revalidate();
