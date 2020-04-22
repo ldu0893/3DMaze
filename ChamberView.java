@@ -522,8 +522,10 @@ public class ChamberView extends JPanel {
 				if (((pos.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() > 0.01)
 					numGoodVerts++;
 			if (numGoodVerts == 0) {
+				try {
 				triList.remove(counter);
 				counter--;
+				}catch (Exception e) {}
 			} else if (numGoodVerts == 2) {
 				if (((vert1.minus(cameraPos)).dot(screenPlaneRelPos))/screenPlaneRelPos.magnitude() < 0.01) { //vert 1 bad 
 					Vector extraVec1 = vert2.plus( vert1.minus(vert2).scale(d_2/(d_1+d_2) - 0.01) );

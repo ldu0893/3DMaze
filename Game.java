@@ -27,6 +27,7 @@ public class Game {
 	private Instructions instructionScreen;
 	private Component backFromInstructions = null;;
 	private EndScreen endScreen;
+	private boolean gameOn;
 	
 	public ChamberLayers getChamberLayers () {
 		return chamberLayers;
@@ -64,6 +65,8 @@ public class Game {
 		
 		gameFrame.add(introScreen);
 		gameFrame.setVisible(true);
+		
+		gameOn=false;
 	}
 
 	public void goToIntroScreen() {
@@ -111,15 +114,20 @@ public class Game {
 		gameFrame.getContentPane().removeAll();
 		gameFrame.add(chamberLayers);
 		gameFrame.revalidate();
+		gameOn=true;
 	}
 
 	public void toggleInstructions() {
 		if (backFromInstructions != null) {
+			getChamberLayers().HUDPanel.changeInstruct(false);
 			gameFrame.getContentPane().removeAll();
 			gameFrame.add(backFromInstructions);
 			gameFrame.revalidate();
 			backFromInstructions.repaint();
 			backFromInstructions = null;
+			if (gameOn) {
+				getChamberLayers().HUDPanel.changeInstruct(false);
+			}
 		} else {
 			backFromInstructions = gameFrame.getContentPane().getComponent(0);
 			gameFrame.getContentPane().removeAll();
@@ -127,6 +135,10 @@ public class Game {
 			gameFrame.revalidate();
 			instructionScreen.repaint();
 		}
+	}
+	
+	public void changeGame(boolean game) {
+		gameOn=game;
 	}
 
 	public ArrayList<Double> getMinimumScores() {
