@@ -134,14 +134,10 @@ public class MapView extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Chamber View")) {
 				game.goToChamberView();
-				game.getChamberLayers ().HUDPanel.changeMap(false);
+				game.getChamberLayers().HUDPanel.changeMap(false);
 			}
 		}
 		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_TAB) {
-				game.goToChamberView();
-				game.getChamberLayers ().HUDPanel.changeMap(false);
-			}
 		}
 
 		public void keyTyped(KeyEvent e) {
@@ -162,6 +158,7 @@ public class MapView extends JPanel {
 				game.toggleInstructions();
 			} else if (e.getActionCommand().equals("Quit Game")) {
 				game.goToIntroScreen();
+				game.changeGame(false);
 			}
 		}
 	}
@@ -277,24 +274,27 @@ public class MapView extends JPanel {
 					g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100, (i*BoxWidth)+20*frame.getWidth()/100, ((j+1)*BoxHeight)+20*frame.getHeight()/100);
 					g.setColor(ground);
 					if(room.getDoor(0)) {
+						System.out.println("na");
 						g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth/3), (j*BoxHeight)+20*frame.getHeight()/100, (i*BoxWidth)+((20*frame.getWidth()/100)+(2*BoxWidth/3)), (j*BoxHeight)+20*frame.getHeight()/100);
 						//g.drawLine(, (j*BoxHeight)+20*frame.getHeight()/100, (i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth), (j*BoxHeight)+20*frame.getHeight()/100);	
-					}else{
 					}
 					if(room.getDoor(1)){
-						g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3));
-						//g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
-					}else{
+						//System.out.println(room);
+						g.setColor(Color.pink);
+//						g.drawLine(0,0,300,300);
+//						System.out.println(20*frame.getHeight()/100+(BoxHeight/3));
+						System.out.println((int)((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth)+" "+(int)((j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3))+" "+(int)((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth)+" "+(int)((j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3)));
+						g.drawLine((int)((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth), (int)((j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3)), (int)((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth), (int)((j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3)));
+						//g.drawLine(0, (j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3), 0, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3));
+						g.setColor(ground);//g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
 					}
 					if(room.getDoor(2)){
 						g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth/3), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight, (i*BoxWidth)+20*frame.getWidth()/100+(2*BoxWidth/3), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
 						//g.drawLine((i*BoxWidth)+((20*frame.getWidth()/100)+(2*BoxWidth/3)), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight, (i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
-					}else{
 					}
 					if(room.getDoor(3)){
-						g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3));
+						//g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3));
 						//g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
-					}else{
 					}
 					if(room.getDoor(4)){
 						g.setColor(green);

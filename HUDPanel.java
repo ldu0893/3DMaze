@@ -101,6 +101,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		} else if (!mapOn&&!instructOn&&menuOn&&releasedX>640&&releasedX<640+quitBtn.getWidth()&&releasedY>250&&releasedY<250+quitBtn.getHeight()) {
 			menuOn=false;
 			game.goToIntroScreen();
+			game.changeGame(false);
 		}		
 	}
 
