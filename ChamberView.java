@@ -505,10 +505,18 @@ public class ChamberView extends JPanel {
 		Vector b_0 = new Vector(Math.sin(theta+Math.PI/2), Math.cos(theta+Math.PI/2), 0);
 		Vector c_0 = a_0.cross(b_0.clone()).scale(1/a_0.magnitude());
 		
-		//Fix all of the triangles that may lie 
+		//Fix all of the triangles that may lie
+		//System.out.println("triList.size(): " + triList.size());
 		for (int counter = 0; counter < triList.size(); counter++) {
+			//System.out.println("counter: " + counter);
 			Triangle tri = triList.get(counter);
-			Color color = tri.getColor();
+			Color color = null;
+			try {
+				color = tri.getColor();
+			} catch (Exception e) {
+				System.out.println("triList.size(): " + triList.size() + "   counter: " + counter);
+				game.goToDifficultySelect();
+			}
 			g.setColor(color);
 			Vector[] verts = tri.getVerts();
 			Vector vert1 = verts[0], vert2 = verts[1], vert3 = verts[2];
