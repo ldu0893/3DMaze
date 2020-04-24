@@ -74,4 +74,9 @@ public class Player {
 		}
 		return false;
 	}
+	
+	//TODO: REMOVE FOR FINAL RELEASE
+	public void setPosition (Position pos) {
+		this.position = pos;
+	}
 }

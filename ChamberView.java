@@ -91,6 +91,17 @@ public class ChamberView extends JPanel {
 		}
 	}
 
+	//TODO: REMOVE FOR FINAL RELEASE
+	public void devExit () {
+		playerPos = new Position(0, 0, 0);
+		currentRoom = maze.getRoom(playerPos);
+		cameraPos = new Vector(50, 50, 50);
+		this.setUpRooms();
+		this.repaint();
+		System.out.println("playerPos: " + playerPos);
+		System.out.println("triList.size(): " + triList.size());
+	}
+	
 	public void moveUp() {
 		if (new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1).isValid(maze.getSize())
 				&& maze.getRoom(playerPos.getX(),  playerPos.getY(),  playerPos.getZ()).getDoor(Room.up)
@@ -510,7 +521,10 @@ public class ChamberView extends JPanel {
 		for (int counter = 0; counter < triList.size(); counter++) {
 			//System.out.println("counter: " + counter);
 			Triangle tri = triList.get(counter);
-			Color color = tri.getColor();
+			Color color = null;
+			try {
+				color = tri.getColor();
+			} catch (Exception e) { color = Color.white; }
 //			try {
 //				color = tri.getColor();
 //			} catch (Exception e) {
