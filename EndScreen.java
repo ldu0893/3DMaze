@@ -1,13 +1,20 @@
 import javax.imageio.ImageIO;
 import javax.swing.*; 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 public class EndScreen extends JPanel implements ActionListener{
 	
-	private double score; private JButton replay; private JButton Score; private JButton replay1; private JButton Score1; private Game game;
+	private double score;
+	private JButton replay;
+	private JButton Score;
+	private JButton replay1;
+	private JButton Score1;
+	private Game game;
+	private ArrayList<Double> topTen;
 	public void paintComponent (Graphics g) {
 		super.paintComponent(g);
 		BufferedImage i;
@@ -22,8 +29,7 @@ public class EndScreen extends JPanel implements ActionListener{
 		int height = 600;
 		g.drawImage(i,0,0, width, height,null); 
 		g.setColor(Color.WHITE);
-		ArrayList <Double> list = game.getMinimumScores(); //?
-		ArrayList <Double> minList = this.getMinimumScores(list);
+		ArrayList <Double> minList = this.getMinimumScores(topTen);
 		g.setFont(new Font ("Arial", Font.PLAIN, (int)(height/20))); 
 		for (int count = 0; count < 5; count++) {
 			int first = count+1; int second = count+6;
@@ -43,32 +49,18 @@ public class EndScreen extends JPanel implements ActionListener{
 		g.fillRoundRect((int) (width*.385), (int)(height*.66), (int) (width*.23), (int) (height*.17), (int) (width*.015), (int) (width*.015));
 	} 
 	private ArrayList <Double> getMinimumScores (ArrayList<Double> list) {
-		int keeping = -1; 
 		ArrayList <Double> sort = new ArrayList <Double> ();	
 		for (Double d: list) {
 			sort.add(d);
 		} 
 		sort.add(this.score);
-		keeping = 0;
-		for (Double d: sort) {
+		for (Double d : list) {
 			double a = d;
 			a = a*1000;
 			a = Math.round(a);
-			sort.set(keeping, a/1000);
-			keeping++;
 		}
-		for (int count = 0; count < 10; count++) {
-			for (int counter = count+1; counter < 11; counter++) {
-				if (sort.get(count) < sort.get(counter)) {
-					double a = sort.get(counter);
-					sort.set(counter, sort.get(count));
-					sort.set(count, a);
-				}
-			}
-		}
-		for (int count = 0; count <= 9; count++) {
-			list.set(count,sort.get(count));
-		}
+		Collections.sort(list);
+		Collections.reverse(list);
 		return list;
 	}
 	public EndScreen (double score, ArrayList <Double> topTen, Game game) { //not sure what topTen should be
@@ -78,6 +70,7 @@ public class EndScreen extends JPanel implements ActionListener{
 		this.game = game;
 		int width = 800;
 		int height = 600;
+		this.topTen=topTen;
 		score = (double) Math.round((score*1000))/1000;
 		this.score=score;
 		replay = new JButton ("Replay"); 
