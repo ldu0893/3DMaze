@@ -510,13 +510,13 @@ public class ChamberView extends JPanel {
 		for (int counter = 0; counter < triList.size(); counter++) {
 			//System.out.println("counter: " + counter);
 			Triangle tri = triList.get(counter);
-			Color color = null;
-			try {
-				color = tri.getColor();
-			} catch (Exception e) {
-				System.out.println("triList.size(): " + triList.size() + "   counter: " + counter);
-				game.goToDifficultySelect();
-			}
+			Color color = tri.getColor();
+//			try {
+//				color = tri.getColor();
+//			} catch (Exception e) {
+//				//System.out.println("triList.size(): " + triList.size() + "   counter: " + counter);
+//				game.goToDifficultySelect();
+//			}
 			g.setColor(color);
 			Vector[] verts = tri.getVerts();
 			Vector vert1 = verts[0], vert2 = verts[1], vert3 = verts[2];
