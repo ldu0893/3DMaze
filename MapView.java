@@ -472,7 +472,7 @@ public class MapView extends JPanel implements MouseListener {
 		Font f = new Font("Arial", Font.BOLD, 20);
 		g.setFont(f);
 		g.drawString("Level: " + (player.getPosition().getZ()+1) + "     Row: " + (player.getPosition().getX()+1) + "     Column: "
-				+ (player.getPosition().getY()+1) + "                         Current Level: " + (currentLvl+1), 
+				+ (player.getPosition().getY()+1) + "                         Shown Level: " + (currentLvl+1), 
 				(int) (.05 * 600), (int) (.05 * 800));
 		g.drawString("Moves Made: " + player.getMoves(), (int) (.05 * 600), (int) (.08 * 800));
 		String orientString = "";
