@@ -55,8 +55,8 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		g.setColor(Color.WHITE);
 		Font f = new Font("Arial", Font.BOLD, 20);
 		g.setFont(f);
-		g.drawString("Level: " + (player.getPosition().getZ()+1) + "     Row: " + (player.getPosition().getX()+1) + "     Column: "
-				+ (player.getPosition().getY()+1), (int) (.05 * 600), (int) (.05 * 800));
+		g.drawString("Level: " + (player.getPosition().getZ()+1) + "     Row: " + (player.getPosition().getY()+1) + "     Column: "
+				+ (player.getPosition().getX()+1), (int) (.05 * 600), (int) (.05 * 800));
 		g.drawString("Moves Made: " + player.getMoves(), (int) (.05 * 600), (int) (.08 * 800));
 		String orientString = "";
 		switch (player.getOrientation()) {
@@ -303,7 +303,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 					move(right);
 				}
 				
-				//TODO: REMOVE FOR FINAL RELASE
+//				//TODO: REMOVE FOR FINAL RELASE
 				else if (e.getKeyCode() == KeyEvent.VK_ALT) {
 					game.getPlayer().setPosition(new Position(0, 0, 0));
 					chamberLayers.getChamberView().devExit();

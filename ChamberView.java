@@ -91,7 +91,7 @@ public class ChamberView extends JPanel {
 		}
 	}
 
-	//TODO: REMOVE FOR FINAL RELEASE
+//	//TODO: REMOVE FOR FINAL RELEASE
 	public void devExit () {
 		playerPos = new Position(0, 0, 0);
 		currentRoom = maze.getRoom(playerPos);
