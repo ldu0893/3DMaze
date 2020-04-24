@@ -510,7 +510,10 @@ public class ChamberView extends JPanel {
 		for (int counter = 0; counter < triList.size(); counter++) {
 			//System.out.println("counter: " + counter);
 			Triangle tri = triList.get(counter);
-			Color color = tri.getColor();
+			Color color = null;
+			try {
+				color = tri.getColor();
+			} catch (Exception e) { color = Color.white; }
 //			try {
 //				color = tri.getColor();
 //			} catch (Exception e) {
