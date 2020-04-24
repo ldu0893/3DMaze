@@ -83,7 +83,7 @@ public class Game {
 		gameFrame.repaint();
 	}
 
-	public void goToMapView() {
+	public void goToMapView() throws IOException {
 		gameFrame.getContentPane().removeAll();
 		mapView = new MapView(this, maze);
 		gameFrame.add(mapView);
