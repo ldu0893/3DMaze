@@ -64,6 +64,7 @@ public class EndScreen extends JPanel implements ActionListener{
 	}
 	public EndScreen (double score, ArrayList <Double> topTen, Game game) { //not sure what topTen should be
 		this.setLayout(null);
+		System.out.println(topTen);
 		this.setBorder(BorderFactory.createEmptyBorder(20,55,20,55));
 		this.setBackground(new Color (190,190,190)); //temporary
 		this.game = game;

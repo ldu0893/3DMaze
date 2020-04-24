@@ -147,10 +147,12 @@ public class Game {
 	public void submitScore(double score) {
 		minimumScores.add(score);
 		Collections.sort(minimumScores);
+		Collections.reverse(minimumScores);
 	}
 
 	public void win(double score) {
 		submitScore(score);
+		System.out.println(minimumScores);
 		topTen = new ArrayList<Double>();
 		if (minimumScores.size() > 10)
 			for (int i = 0; i < 10; i++)
