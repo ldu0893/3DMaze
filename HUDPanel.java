@@ -6,7 +6,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.*;
 public class HUDPanel extends JPanel implements ActionListener, MouseListener {
-	private static String iconPath = "Icons/";
+	private static final String iconPath = "Icons/";
 	private JButton[] buttons;
 	private Game game;
 	private Maze maze;
@@ -83,7 +83,7 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 		}
 	}
 
-	private void checkBtnClick() {
+	private void checkBtnClick() throws IOException {
 		if (!mapOn&&!instructOn&&!menuOn&&releasedX>639&&releasedX<639+mapBtn.getWidth()&&releasedY>43&&releasedY<43+mapBtn.getHeight()) {
 			mapOn=true;
 			menuOn=false;
@@ -143,7 +143,9 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 			releasedX=e.getX();
 			releasedY=e.getY();
 			System.out.println(releasedX+" "+releasedY);
+			try {
 			checkBtnClick();
+			}catch (Exception z) {};
 		}
 	}
 
@@ -185,7 +187,9 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("map")) {
+			try {
 			game.goToMapView();
+			} catch (Exception z) {}
 		} else if (e.getActionCommand().equals("instructions")) {
 			game.toggleInstructions();
 		} else if (e.getActionCommand().equals("quit")) {
@@ -302,7 +306,9 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 			if (!mapOn&&!instructOn&&e.getKeyCode() == KeyEvent.VK_TAB) {
 				mapOn=true;
 				menuOn=false;
+				try {
 				game.goToMapView();
+				} catch (Exception z) {}
 			}
 		}
 

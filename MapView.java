@@ -1,8 +1,13 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class MapView extends JPanel {
+public class MapView extends JPanel implements MouseListener {
 	private Game game;
 	private Maze maze;
 	private JFrame frame;
@@ -24,8 +29,23 @@ public class MapView extends JPanel {
 	int levelNum;
 	int currentLvl;
 	private Player player;
+	
+	private static final String iconPath = "Icons/";
+	
+	private final BufferedImage chamberBtn, instructionsBtn, quitBtn, menuBtn;
+	private int releasedX, releasedY;
+	private boolean menuOn, mapOn, instructOn;
 
-	public MapView(Game game, Maze maze) {
+	public MapView(Game game, Maze maze) throws IOException {
+		chamberBtn=ImageIO.read(new File(iconPath+"Chamber View Button.png"));
+		instructionsBtn=ImageIO.read(new File(iconPath+"Instructions Button.png"));
+		quitBtn=ImageIO.read(new File(iconPath+"Quit Button.png"));
+		menuBtn=ImageIO.read(new File(iconPath+"Menu Button.png"));
+		
+		menuOn=false;
+		mapOn=true;
+		instructOn=false;
+		
 		this.game = game;
 		player = game.getPlayer();
 		this.maze = maze;
@@ -46,7 +66,7 @@ public class MapView extends JPanel {
 		MapViewPane.setBackground(ground);
 
 		MenuPane = new JPanel();
-		MapViewPane.add(MenuPane);
+		//MapViewPane.add(MenuPane);
 		MenuPane.setBounds(15 * frame.getWidth() / 18, 0, frame.getWidth() / 6, 2 * frame.getHeight() / 4);
 		MenuPane.setLayout(null);
 
@@ -62,38 +82,38 @@ public class MapView extends JPanel {
 		ReturnChamber.setBackground(Color.white);
 		ReturnChamber.setOpaque(true);
 
-		OptionsListener ol = new OptionsListener();
-		Instructions = new JButton("Instructions");
-		Instructions.addActionListener(ol);
-		Instructions.setBackground(Color.white);
-		Instructions.setOpaque(true);
-		Instructions.setBorder(BorderFactory.createBevelBorder(0, ground, Color.black, Color.white, ground));
-		QuitGame = new JButton("Quit Game");
-		QuitGame.addActionListener(ol);
-		QuitGame.setBackground(Color.white);
-		QuitGame.setOpaque(true);
-		QuitGame.setBorder(BorderFactory.createBevelBorder(0, ground, Color.black, Color.white, ground));
-		MenuPane.add(ReturnChamber);
-		ReturnChamber.setBounds(MenuPane.getWidth() / 12, 5 * MenuPane.getHeight() / 12, 8 * MenuPane.getWidth() / 10,
-				MenuPane.getHeight() / 10);
-		MenuPane.add(Instructions);
-		Instructions.setBounds(MenuPane.getWidth() / 12, 7 * MenuPane.getHeight() / 12, 8 * MenuPane.getWidth() / 10,
-				MenuPane.getHeight() / 10);
-		MenuPane.add(QuitGame);
-		QuitGame.setBounds(MenuPane.getWidth() / 12, 9 * MenuPane.getHeight() / 12, 8 * MenuPane.getWidth() / 10,
-				MenuPane.getHeight() / 10);
-		Color darkGray = new Color(160, 160, 160);
-		MenuPane.setBackground(darkGray);
-		MenuPane.setVisible(false);
-
-		menuListener ml = new menuListener();
-		MenuBtn = new JButton();
-		MapViewPane.add(MenuBtn);
-		MenuBtn.setOpaque(false);
-		MenuBtn.setContentAreaFilled(false);
-		MenuBtn.setBorderPainted(false);
-		MenuBtn.addActionListener(ml);
-		MenuBtn.setBounds(23 * frame.getWidth() / 25, frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 25);
+//		OptionsListener ol = new OptionsListener();
+//		Instructions = new JButton("Instructions");
+//		Instructions.addActionListener(ol);
+//		Instructions.setBackground(Color.white);
+//		Instructions.setOpaque(true);
+//		Instructions.setBorder(BorderFactory.createBevelBorder(0, ground, Color.black, Color.white, ground));
+//		QuitGame = new JButton("Quit Game");
+//		QuitGame.addActionListener(ol);
+//		QuitGame.setBackground(Color.white);
+//		QuitGame.setOpaque(true);
+//		QuitGame.setBorder(BorderFactory.createBevelBorder(0, ground, Color.black, Color.white, ground));
+//		MenuPane.add(ReturnChamber);
+//		ReturnChamber.setBounds(MenuPane.getWidth() / 12, 5 * MenuPane.getHeight() / 12, 8 * MenuPane.getWidth() / 10,
+//				MenuPane.getHeight() / 10);
+//		MenuPane.add(Instructions);
+//		Instructions.setBounds(MenuPane.getWidth() / 12, 7 * MenuPane.getHeight() / 12, 8 * MenuPane.getWidth() / 10,
+//				MenuPane.getHeight() / 10);
+//		MenuPane.add(QuitGame);
+//		QuitGame.setBounds(MenuPane.getWidth() / 12, 9 * MenuPane.getHeight() / 12, 8 * MenuPane.getWidth() / 10,
+//				MenuPane.getHeight() / 10);
+//		Color darkGray = new Color(160, 160, 160);
+//		MenuPane.setBackground(darkGray);
+//		MenuPane.setVisible(false);
+//
+//		menuListener ml = new menuListener();
+//		MenuBtn = new JButton();
+//		//MapViewPane.add(MenuBtn);
+//		MenuBtn.setOpaque(false);
+//		MenuBtn.setContentAreaFilled(false);
+//		MenuBtn.setBorderPainted(false);
+//		MenuBtn.addActionListener(ml);
+//		MenuBtn.setBounds(23 * frame.getWidth() / 25, frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 25);
 
 		LevelListener ll = new LevelListener(this); 
 		Up = new JButton(); 
@@ -111,6 +131,8 @@ public class MapView extends JPanel {
 		Up.setBounds(8*frame.getWidth()/100, (4*frame.getHeight()/10)+((32*frame.getHeight()/100)-(4*frame.getHeight()/10))/2, frame.getWidth()/36, frame.getHeight()/11);
 		Down.setBounds(8*frame.getWidth()/100, (3*frame.getHeight()/5)-frame.getHeight()/17, frame.getWidth()/36, frame.getHeight()/11);
 		currentLvl = player.getPosition().getZ();
+		
+		addMouseListener(this);
 	}
 
 	private class menuListener implements ActionListener {
@@ -202,14 +224,15 @@ public class MapView extends JPanel {
 
 		//Menu and key components
 		Graphics2D g2 = (Graphics2D) g;
-		for(int i = 1; i <= 3; i++) {
-			g2.setStroke(new BasicStroke(4));
-			g.setColor(Color.BLACK);
-			g.drawRoundRect(23 * frame.getWidth() / 25, i*frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 100, 10, 15);
-			g.setColor(Color.gray);
-			g.fillRoundRect(23 * frame.getWidth() / 25, i*frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 100, 10, 15);
-
-		}
+//		for(int i = 1; i <= 3; i++) {
+//			g2.setStroke(new BasicStroke(4));
+//			g.setColor(Color.BLACK);
+//			g.drawRoundRect(23 * frame.getWidth() / 25, i*frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 100, 10, 15);
+//			g.setColor(Color.gray);
+//			g.fillRoundRect(23 * frame.getWidth() / 25, i*frame.getHeight() / 35, frame.getWidth() / 17, frame.getWidth() / 100, 10, 15);
+//
+//		}
+		g2.setStroke(new BasicStroke(4));
 		g.setColor(Color.black);
 		Font KeyFont = new Font ("Times New Roman", 20, 25);
 		g.setFont(KeyFont);
@@ -469,8 +492,75 @@ public class MapView extends JPanel {
 		}
 		g.drawString("Facing: " + orientString, (int) (.05 * 600), (int) (.11 * 800));
 		
+    if (menuOn) {
+			menuOn(g);
+		} else {
+			menuOff(g);
+		}
+		
+	}
+	
+	private void checkBtnClick() throws IOException {
+		System.out.println(instructOn+" "+mapOn+" "+menuOn);
+		if (!instructOn&&mapOn&&releasedX>708&&releasedX<708+menuBtn.getWidth()&&releasedY>14&&releasedY<14+menuBtn.getHeight()) {
+			menuOn=!menuOn;
+			repaint();
+		} else if (mapOn&&!instructOn&&menuOn&&releasedX>630&&releasedX<630+chamberBtn.getWidth()&&releasedY>101&&releasedY<101+chamberBtn.getHeight()) {
+			game.goToChamberView();
+			game.getChamberLayers().HUDPanel.changeMap(false);
+		} else if (mapOn&&!instructOn&&menuOn&&releasedX>630&&releasedX<630+instructionsBtn.getWidth()&&releasedY>160&&releasedY<160+instructionsBtn.getHeight()) {
+			menuOn=false;
+			game.toggleInstructions();
+		} else if (mapOn&&!instructOn&&menuOn&&releasedX>630&&releasedX<630+quitBtn.getWidth()&&releasedY>219&&releasedY<219+quitBtn.getHeight()) {
+			menuOn=false;
+			game.goToIntroScreen();
+			game.changeGame(false);
+		}		
+	}
+	
+	private void menuOn(Graphics g) {
+		g.setColor(Color.decode("#808080"));
+		g.fillRect(600, 0, 200, 290);
+		g.setColor(Color.black);
+		g.fillRect(600, 0, 7, 297);
+		g.fillRect(600, 290, 200, 7);
+		g.drawImage(chamberBtn, 630, 100, null);
+		g.drawImage(instructionsBtn, 630, 160, null);
+		g.drawImage(quitBtn, 630, 220, null);
+		g.drawImage(menuBtn, 710, 15, null);
+	}
+	
+	private void menuOff(Graphics g) {
+		g.drawImage(menuBtn, 710, 15, null);
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+
 	}
 
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		if (mapOn) {
+			releasedX=e.getX();
+			releasedY=e.getY();
+			System.out.println(releasedX+" "+releasedY);
+			try {
+			checkBtnClick();
+			}catch (Exception z) {};
+		}
+	}
+
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	public void mouseExited(MouseEvent e) {
+
+	}
+	
 	//	private void makeFrameFullSize(JFrame aFrame) {
 	//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	//		//aFrame.setSize(screenSize.width, screenSize.height);
