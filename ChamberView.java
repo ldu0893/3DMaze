@@ -91,16 +91,16 @@ public class ChamberView extends JPanel {
 		}
 	}
 
-//	//TODO: REMOVE FOR FINAL RELEASE
-	public void devExit () {
-		playerPos = new Position(0, 0, 0);
-		currentRoom = maze.getRoom(playerPos);
-		cameraPos = new Vector(50, 50, 50);
-		this.setUpRooms();
-		this.repaint();
-		System.out.println("playerPos: " + playerPos);
-		System.out.println("triList.size(): " + triList.size());
-	}
+////	//TODO: REMOVE FOR FINAL RELEASE
+//	public void devExit () {
+//		playerPos = new Position(0, 0, 0);
+//		currentRoom = maze.getRoom(playerPos);
+//		cameraPos = new Vector(50, 50, 50);
+//		this.setUpRooms();
+//		this.repaint();
+//		System.out.println("playerPos: " + playerPos);
+//		System.out.println("triList.size(): " + triList.size());
+//	}
 	
 	public void moveUp() {
 		if (new Position(playerPos.getX(), playerPos.getY(), playerPos.getZ()+1).isValid(maze.getSize())
