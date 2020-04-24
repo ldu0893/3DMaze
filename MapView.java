@@ -254,9 +254,13 @@ public class MapView extends JPanel implements MouseListener {
 		//arrow components
 		int arrowLength = frame.getWidth()/18;
 		g.setColor(green);
+		if (currentLvl==maze.getSize()-1)
+			g.setColor(Color.gray);
 		g.fillPolygon(new int[] {2*frame.getWidth()/30, (2*frame.getWidth()/30)+arrowLength, ((2*frame.getWidth()/30)+(2*frame.getWidth()/30)+arrowLength)/2}, new int[] {(4*frame.getHeight()/10), (4*frame.getHeight()/10), (32*frame.getHeight()/100)}, 3);
 		g.fillRect((arrowLength/4)+(2*frame.getWidth()/30), (4*frame.getHeight()/10), arrowLength/2, frame.getHeight()/17);
 		g.setColor(Color.red);
+		if (currentLvl==0)
+			g.setColor(Color.gray);
 		g.fillPolygon(new int[] {2*frame.getWidth()/30, (2*frame.getWidth()/30)+arrowLength, ((2*frame.getWidth()/30)+(2*frame.getWidth()/30)+arrowLength)/2}, new int[] {(3*frame.getHeight()/5), (3*frame.getHeight()/5), 67*frame.getHeight()/100}, 3);
 		g.fillRect((arrowLength/4)+(2*frame.getWidth()/30), (3*frame.getHeight()/5)-frame.getHeight()/17, arrowLength/2, frame.getHeight()/17);
 
