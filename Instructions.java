@@ -11,7 +11,7 @@ public class Instructions extends JPanel implements ActionListener{
 		int width = 800;
 		int height = 600;
 		try {
-			final BufferedImage i = ImageIO.read(new File("OtherImages/ArrowThingAD.jpg"));
+			final BufferedImage i = ImageIO.read(new File("OtherImages/ArrowThing.png"));
 			int axel=51;
 			g.drawImage(i,482,244,120,120,null); 
 		}
