@@ -76,7 +76,7 @@ public class Player {
 	}
 	
 //	//TODO: REMOVE FOR FINAL RELEASE
-//	public void setPosition (Position pos) {
-//		this.position = pos;
-//	}
+	public void setPosition (Position pos) {
+		this.position = pos;
+	}
 }
