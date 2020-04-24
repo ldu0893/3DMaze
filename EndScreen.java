@@ -55,9 +55,8 @@ public class EndScreen extends JPanel implements ActionListener{
 		} 
 		sort.add(this.score);
 		for (Double d : list) {
-			double a = d;
-			a = a*1000;
-			a = Math.round(a);
+			double a = (double) Math.round((d*1000))/1000;
+			list.set(list.indexOf(d), a);
 		}
 		Collections.sort(list);
 		Collections.reverse(list);
