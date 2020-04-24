@@ -303,11 +303,11 @@ public class HUDPanel extends JPanel implements ActionListener, MouseListener {
 					move(right);
 				}
 				
-				//TODO: REMOVE FOR FINAL RELASE
-				else if (e.getKeyCode() == KeyEvent.VK_ALT) {
-					game.getPlayer().setPosition(new Position(0, 0, 0));
-					chamberLayers.getChamberView().devExit();
-				}
+//				//TODO: REMOVE FOR FINAL RELASE
+//				else if (e.getKeyCode() == KeyEvent.VK_ALT) {
+//					game.getPlayer().setPosition(new Position(0, 0, 0));
+//					chamberLayers.getChamberView().devExit();
+//				}
 			}
 			if (!mapOn&&!instructOn&&e.getKeyCode() == KeyEvent.VK_TAB) {
 				mapOn=true;
