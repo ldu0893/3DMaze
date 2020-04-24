@@ -302,15 +302,21 @@ public class MapView extends JPanel implements MouseListener {
 //					g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight, ((i+1)*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
 //					g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100, (i*BoxWidth)+20*frame.getWidth()/100, ((j+1)*BoxHeight)+20*frame.getHeight()/100);
 					
+					System.out.println("Room: (" + i + ", " + j + ")");
+					
 					g.setColor(ground);
 					if(room.getDoor(0)) {
+						System.out.println("Door 0");
 						System.out.println("na");
+						g.setColor(ground);
 						g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth/3), (j*BoxHeight)+20*frame.getHeight()/100, (i*BoxWidth)+((20*frame.getWidth()/100)+(2*BoxWidth/3)), (j*BoxHeight)+20*frame.getHeight()/100);
 						//g.drawLine(, (j*BoxHeight)+20*frame.getHeight()/100, (i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth), (j*BoxHeight)+20*frame.getHeight()/100);	
 					}
 					if(room.getDoor(1)){
+						System.out.println("Door 1");
 						//System.out.println(room);
-						g.setColor(Color.pink);
+						//g.setColor(Color.pink);
+						g.setColor(ground);
 //						g.drawLine(0,0,300,300);
 //						System.out.println(20*frame.getHeight()/100+(BoxHeight/3));
 						System.out.println((int)((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth)+" "+(int)((j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3))+" "+(int)((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth)+" "+(int)((j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3)));
@@ -319,18 +325,24 @@ public class MapView extends JPanel implements MouseListener {
 						g.setColor(ground);//g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100+BoxWidth, (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
 					}
 					if(room.getDoor(2)){
+						System.out.println("Door 2");
+						g.setColor(ground);
 						g.drawLine((i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth/3), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight, (i*BoxWidth)+20*frame.getWidth()/100+(2*BoxWidth/3), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
 						//g.drawLine((i*BoxWidth)+((20*frame.getWidth()/100)+(2*BoxWidth/3)), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight, (i*BoxWidth)+20*frame.getWidth()/100+(BoxWidth), (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
 					}
 					if(room.getDoor(3)){
+						System.out.println("Door 3");
+						g.setColor(ground);
 						g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3));
 						//g.drawLine((i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+(2*BoxHeight/3), (i*BoxWidth)+20*frame.getWidth()/100, (j*BoxHeight)+20*frame.getHeight()/100+BoxHeight);
 					}
 					if(room.getDoor(4)){
+						System.out.println("Door 4");
 						g.setColor(green);
 						g.fillPolygon(new int[] {(i*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2, (i*BoxWidth)+((20*frame.getWidth()/100)+BoxWidth/2)-(BoxWidth/4), (i*BoxWidth)+((20*frame.getWidth()/100)+BoxWidth/2)+(BoxWidth/4)}, new int[] {(j*BoxHeight)+20*frame.getHeight()/100, (j*BoxHeight)+(20*frame.getHeight()/100)+(BoxWidth/8), (j*BoxHeight)+(20*frame.getHeight()/100)+(BoxWidth/8)}, 3);
 					}
 					if(room.getDoor(5)){
+						System.out.println("Door 5");
 						g.setColor(Color.red);
 						g.fillPolygon(new int[] {(i*BoxWidth)+(20*frame.getWidth()/100)+BoxWidth/2, (i*BoxWidth)+((20*frame.getWidth()/100)+BoxWidth/2)-(BoxWidth/4), (i*BoxWidth)+((20*frame.getWidth()/100)+BoxWidth/2)+(BoxWidth/4)}, new int[] {((j+1)*BoxHeight)+20*frame.getHeight()/100, ((j+1)*BoxHeight)+(20*frame.getHeight()/100)-(BoxWidth/8), ((j+1)*BoxHeight)+(20*frame.getHeight()/100)-(BoxWidth/8)}, 3);
 					}
